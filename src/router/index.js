@@ -16,13 +16,13 @@ export default new Router({
     },
 
     {
-      path: '/Type01',
+      path: '/type1',
       name: 'Type01',
       component: Type01
     },
 
     {
-      path: '/Type02',
+      path: '/type2',
       name: 'Type02',
       component: Type02
     }
