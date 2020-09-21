@@ -36,15 +36,15 @@ export default {
   },
   methods : {
     toType01 : function() {
-      let type01 = window.open('Type01', "", "resizable=1, height=520, width=500");
+      let type01 = window.open('type1', "", "resizable=1, height=520, width=500");
       //url, name, specs, replace
       // this.$router.push({path: 'Type01'});
     },
 
     toType02 : function() {
-      let type02 = window.open('Type02', "", "resizable=1, height=520, width=840");
+      let type02 = window.open('type2', "", "resizable=1, height=520, width=840");
     },
-    
+
   }
 }
 </script>
