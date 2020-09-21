@@ -1,0 +1,125 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url("reset.css");
+
+html,
+body,
+.wrapper {position:relative;width:100%;height:100%;background:#f0f0f0}
+
+.mainContainer {display:flex;width:100%;height:100%;justify-content:center;align-items:center}
+.mainContainer .boxContainer {width:100%;max-width:500px;padding:170px 50px 50px;box-sizing:border-box}
+.mainContainer .box {position:relative;padding:50px;border-radius:5px;background:#363f4e;box-sizing:border-box;box-shadow:0px 10px 20px 0px rgba(0,0,0,0.2)}
+.mainContainer .box::before {content:'';position:absolute;top:-135px;right:20px;display:block;width:216px;height:135px;background:url('../images/img_main.png') no-repeat 0 0;background-size:cover}
+.mainContainer .logo {width:100%;margin-bottom:30px;text-align:center}
+.mainContainer .logo .img {display:block;width:auto;height:40px;vertical-align:middle}
+.mainContainer .logo .img img {display:block;margin:0 auto;width:100%;max-width:240px;height:100%;object-fit:contain}
+.mainContainer .logo strong {display:inline-block;margin-left:5px;vertical-align:middle;font-size:30px;font-weight:500;color:#fff}
+.mainContainer .text {margin-bottom:30px}
+.mainContainer .text strong {font-size:24px;color:#fff}
+.mainContainer .text p {margin-top:5px;font-size:16px;color:rgba(255,255,255,0.7)}
+.mainContainer .input input {width:100%;height:50px;padding:0 15px;line-height:50px;border-radius:5px;background:#fff;box-sizing:border-box}
+.mainContainer .input + .button {margin-top:10px}
+.mainContainer .button {text-align:center}
+.mainContainer .button button {width:100%;height:50px;line-height:50px;font-weight:500;font-size:16px;color:#fff;border-radius:5px;border:1px solid #fff}
+.mainContainer .button button:active {background:#1a222f;transition:background-color .3s}
+
+.header {position:fixed;top:0;left:0;overflow:hidden;display:flex;width:100%;height:60px;padding:12px 10px;background:#363f4e;box-sizing:border-box;z-index:2}
+.header .logo {margin-right:auto}
+.header .logo .img {display:inline-block;width:auto;height:36px;vertical-align:middle}
+.header .logo .img img {display:block;max-width:120px;height:100%;object-fit:contain}
+.header .logo strong {display:inline-block;margin-left:5px;vertical-align:middle;font-size:16px;font-weight:500;color:#ddd}
+.header .button {margin-left:auto}
+.header .button button {height:36px;padding:0 10px;line-height:36px;text-align:center;font-size:14px;font-weight:500;color:#fff;border-radius:5px;box-sizing:border-box}
+.header .button button:active {background:#1a222f;transition:all .3s}
+
+.container {width:100%;height:100%;padding-top:60px;box-sizing:border-box}
+.container::after {content:'';display:block;clear:both}
+
+.chatContainer {width:100%;height:100%;background:#e1e4e8}
+.chatContainer .chatContent {overflow-y:auto;height:calc(100% - 60px);padding:20px;box-sizing:border-box}
+.chatContainer .chatContent > p {text-align:center;font-size:12px}
+.chatContainer .chatContent > p + p {margin-top:5px}
+.chatContainer .chatContent > p + .message {margin-top:20px}
+.chatContainer .chatContent > .message + .message {margin-top:20px}
+.chatContainer .chatContent > .message + p {margin-top:20px}
+.chatContainer .chatContent .message {margin-top:20px}
+.chatContainer .chatContent .message .name {margin-bottom:5px;font-weight:500}
+.chatContainer .chatContent .message .bubble p {display:inline-block;max-width:calc(100% - 100px);padding:8px 15px;word-break:break-word;border-radius:5px}
+.chatContainer .chatContent .message .bubble .time {vertical-align:bottom;font-size:12px;color:#999}
+.chatContainer .chatContent .message .bubble + .bubble {margin-top:5px}
+.chatContainer .chatContent .message.right .bubble {text-align:right}
+.chatContainer .chatContent .message.right .bubble p {text-align:left;color:#fff;border-top-right-radius:0;background:#6677c0}
+.chatContainer .chatContent .message.left .bubble p {border-top-left-radius:0;background:#fff}
+.chatContainer .chatInput {position:relative;padding:10px 15px;box-sizing:border-box}
+.chatContainer .chatInput input {width:100%;height:40px;padding-left:15px;padding-right:75px;line-height:40px;border-radius:5px;background:#fff;box-sizing:border-box}
+.chatContainer .chatInput input::placeholder {color:#999}
+.chatContainer .chatInput button {overflow:hidden;position:absolute;top:15px;right:20px;display:block;height:30px;line-height:30px;padding:0 15px;color:#fff;border-radius:5px;background:#6677c0}
+.chatContainer .chatInput button:active {background:#5160a3}
+
+.videoContainer {position:fixed;top:0;left:0;width:100%;height:100%;background:#f0f0f0;z-index:10}
+.videoContainer .video {position:relative;overflow:hidden;width:100%;height:100%;background:url('../images/img_user.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .mainVideo {width:100%;height:100%}
+.videoContainer .mainVideo .video.local {position:absolute;top:15px;left:15px;width:30%;height:30%;border-radius:2px;box-shadow:0px 5px 10px 0px rgba(0,0,0,0.2);z-index:1}
+.videoContainer .mainVideo .video video {width:calc(100% + 2px);height:calc(100% + 2px);margin:-1px 0 0 -1px;object-fit:cover;transform:scaleX(-1);-webkit-transform:scaleX(-1)}
+.videoContainer .mainVideo .camoff {background:url('../images/img_camera_off.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .mainVideo .micoff {position:absolute;bottom:10px;left:10px;width:30px;height:30px;border-radius:5px;background:rgba(0,0,0,0.3);z-index:1}
+.videoContainer .mainVideo .micoff::before {content:'';display:block;width:15px;height:16px;margin:7px auto;background:url('../images/icons.png') no-repeat 0 0}
+.videoContainer .shareVideo {position:relative;width:100%;height:100%}
+.videoContainer .shareVideo .video video {width:calc(100% + 2px);height:calc(100% + 2px);margin:-1px 0 0 -1px;object-fit:contain;background:#111}
+
+.videobarContainer {position:fixed;display:flex;top:60px;;left:0;width:100%;padding:10px;box-sizing:border-box;z-index:1}
+.videobarContainer .menu {overflow:hidden;display:flex;width:100%;height:50px;padding-left:15px;padding-right:5px;border-radius:5px;background:#363f4e;box-sizing:border-box}
+.videobarContainer .info {margin-right:auto}
+.videobarContainer .info span {line-height:50px;color:#fff}
+.videobarContainer .info span + span:before {content:'';display:inline-block;width:2px;height:10px;margin-left:5px;margin-right:10px;background:#ccc}
+.videobarContainer .info span:first-child:before {content:'';display:inline-block;width:31px;height:8px;margin-right:15px;background:url('../images/icon_calling.gif') no-repeat 0 center}
+.videobarContainer .button {margin-left:auto}
+.videobarContainer .button button {overflow:hidden;width:36px;height:36px;margin-top:7px;text-indent:-999px;font-size:0;border-radius:5px}
+.videobarContainer .button button:before {content:'';display:block;width:15px;height:15px;margin:0 auto;background:url('../images/icons.png') no-repeat -15px 0}
+.videobarContainer .button button:active {background:rgba(0,0,0,0.3);transition:background-color .3s}
+
+.buttonContainer .button {position:relative}
+.topButton {position:absolute;top:0;left:0;display:flex;width:100%;height:15%;justify-content:flex-end;padding:10px;z-index:1000;box-sizing:border-box}
+.topButton::before {content:'';position:absolute;bottom:0;left:0;display:block;width:100%;height:100%;background:linear-gradient(to top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)}
+.topButton button {display:block;width:36px;height:36px;border-radius:5px}
+.topButton button::before {content:'';display:block;width:20px;height:11px;margin:0 auto;background:url('../images/icons.png') -31px 0}
+.topButton button:active {background:rgba(0,0,0,0.3)}
+.bottomButton {position:absolute;bottom:0;left:0;display:flex;width:100%;height:25%;justify-content:center;align-items:flex-end;padding-bottom:30px;z-index:1000;box-sizing:border-box}
+.bottomButton::before {content:'';position:absolute;bottom:0;left:0;display:block;width:100%;height:100%;background:linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.4) 100%)}
+.bottomButton button {width:60px;height:60px;border-radius:60px;background:rgba(0,0,0,0.7)}
+.bottomButton button:active {background:rgba(0,0,0,0.9);transition:background-color .3s}
+.bottomButton button + button {margin-left:10px}
+.bottomButton button.off {background:#fff}
+.bottomButton button.endCall {background:#ea1717}
+.bottomButton button.endCall:active {background:#cc1414}
+.bottomButton button::before {content:'';display:block;width:24px;height:24px;margin:0 auto;background:url('../images/icons.png') no-repeat 0 -16px}
+.bottomButton button.cam::before {background-position-x:0}
+.bottomButton button.cam.off::before {background-position-x:-24px}
+.bottomButton button.mic::before {background-position-x:-48px}
+.bottomButton button.mic.off::before {background-position-x:-72px}
+.bottomButton button.endCall::before {width:34px;background-position-x:-96px}
+
+.toast {position:fixed;bottom:50px;width:100%;text-align:center;z-index:101}
+.toast p {display:inline-block;padding:8px 25px;color:#fff;border-radius:5px;background:rgba(0,0,0,0.6)}
+
+.modal {position:fixed;top:0;left:0;width:100%;height:100%;z-index:100}
+.modal::before {content:'';position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:rgba(0,0,0,0.5)}
+.modalContainer {position:absolute;top:50%;left:50%;width:auto;min-width:280px;transform:translate(-50%,-50%)}
+.modalContent {padding:30px;border-radius:5px;background:#fff}
+.modalContent p {text-align:center}
+.modalContent .title {margin-bottom:20px;font-weight:500;font-size:16px}
+.modalContent .button {margin-top:30px;text-align:center;}
+.modalContent .button button {padding:8px 25px;border-radius:5px}
+.modalContent .button button + button {margin-left:5px}
+.modalContent .button button.border {padding:6px 23px;color:#363f4e;border:2px solid #363f4e}
+.modalContent .button button.border:active {color:#fff;background:#363f4e;transition:background-color .3s}
+.modalContent .button button.submit {color:#fff;background:#363f4e}
+.modalContent .button button.submit:active {background:#1a222f;transition:background-color .3s}
+.modalContent .button button.cancel {color:#fff;background:#999}
+.modalContent .button button.cancel:active {background:#777;transition:background-color .3s}
+
+@media screen and (max-width: 479px) {
+.mainContainer {align-items:flex-start}
+.mainContainer .boxContainer {padding:170px 10px 10px}
+.mainContainer .box {padding:20px}
+}
