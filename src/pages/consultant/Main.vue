@@ -27,8 +27,8 @@ export default {
     }
   },
   methods: {
-    call: function(){
-      this.$router.push({path: '/room'});
+    call : function() {
+      let type02 = window.open('room', "", "resizable=1, height=520, width=500");
     }
   }
 }
