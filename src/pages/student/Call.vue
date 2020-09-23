@@ -69,5 +69,5 @@ export default {
 </script>
 
 <style>
-  @import '../../../assets/student/css/student.css';
+  @import '../../assets/student/css/student.css';
 </style>

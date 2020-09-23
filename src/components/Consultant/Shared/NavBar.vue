@@ -2,15 +2,14 @@
    <div class="lnb">
       <div class="user">
          <div class="img"></div>
-         <div class="info">
+         <div v-if="!entrance" class="info">
             <p>상담중인 학생이 없습니다.</p>
          </div>
-         <!-- [i] 학생 입장 시
-         <div class="info">
+         <!-- [i] 학생 입장 시-->
+         <div v-if="entrance" class="info">
             <div class="name">홍길동</div>
             <div class="time">2020.01.01 00:00:00</div>
          </div>
-            -->
       </div>
       <div class="menu">
          <ul>
@@ -33,6 +32,8 @@ export default {
   name: 'hello',
   data () {
     return {
+       entrance:false,
+       
     }
   }
 }

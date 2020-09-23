@@ -2,14 +2,17 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 //상담사
-import ConsultantMain from '@/pages/ConsultantMain'
-import ConsultantCall from '@/pages/ConsultantCall'
+import Main from '@/pages/consultant/Main'
+import Call from '@/pages/consultant/Call'
+//학생
+import StudentMain from '@/pages/student/Main'
+import StudentCall from '@/pages/student/Call'
 
+//이 밑은 다 필요없으나 확인용
 import ConsultantConsult from '@/components/consultant/Consult/ConsultantConsult'
 import ConsultantConsultDevice from '@/components/consultant/Consult/ConsultantConsultDevice'
 import ConsultantConsultStudentEntrance from '@/components/consultant/Consult/ConsultantConsultStudentEntrance'
 import ConsultantConsultToast from '@/components/consultant/Consult/ConsultantConsultToast'
-import ConsultantConsultType3 from '@/components/consultant/Consult/ConsultantConsultType3'
 
 import ConsultantVideoConsult from '@/components/consultant/VideoConsult/ConsultantVideoConsult'
 import ConsultantVideoConsultDeviceStart from '@/components/consultant/VideoConsult/ConsultantVideoConsultDeviceStart'
@@ -21,9 +24,9 @@ import ConsultantDisplayShare from '@/components/consultant/DisplayShare/Consult
 import ConsultantPopUp from '@/components/consultant/PopUp/ConsultantPopUp'
 
 //학생
-import StudentMain from '@/components/Student/Main/StudentMain'
+// import StudentMain from '@/components/Student/Main/StudentMain'
 
-import StudentConsult from '@/components/Student/Consult/StudentConsult'
+// import StudentConsult from '@/components/Student/Consult/StudentConsult'
 
 import StudentVideoConsult from '@/components/Student/VideoConsult/StudentVideoConsult'
 import StudentVideoConsultBtn from '@/components/Student/VideoConsult/StudentVideoConsultBtn'
@@ -46,15 +49,34 @@ export default new Router({
     //메인
     {
       path: '/',
-      name: 'ConsultantMain',
-      component: ConsultantMain
+      name: 'Main',
+      component: Main
     },
     //콜
     {
-      path: '/ConsultantCall',
-      name: 'ConsultantCall',
-      component: ConsultantCall
+      path: '/room',
+      name: 'Call',
+      component: Call
     },
+
+    //학생==================================================================
+    {
+      path: '/student',
+      name: 'StudentMain',
+      component: StudentMain
+    },
+    
+    {
+      path: '/student/room',
+      name: 'StudentCall',
+      component: StudentCall
+    },
+    
+
+
+
+
+    //========================================================================
     //상담
     {
       path: '/ConsultantConsult',
@@ -78,12 +100,6 @@ export default new Router({
       path: '/ConsultantConsultToast',
       name: 'ConsultantConsultToast',
       component: ConsultantConsultToast
-    },
-
-    {
-      path: '/ConsultantConsultType3',
-      name: 'ConsultantConsultType3',
-      component: ConsultantConsultType3
     },
 
     //화상상담
@@ -125,17 +141,17 @@ export default new Router({
 
     //학생==================================================================
     //메인
-    {
-      path: '/StudentMain',
-      name: 'StudentMain',
-      component: StudentMain
-    },
+    // {
+    //   path: '/StudentMain',
+    //   name: 'StudentMain',
+    //   component: StudentMain
+    // },
     //상담
-    {
-      path: '/StudentConsult',
-      name: 'StudentConsult',
-      component: StudentConsult
-    },
+    // {
+    //   path: '/StudentConsult',
+    //   name: 'StudentConsult',
+    //   component: StudentConsult
+    // },
     //화상상담
     {
       path: '/StudentVideoConsult',

@@ -1,16 +1,6 @@
 <template>
     <div class="wrapper">
-      <div class="header">
-         <div class="logo">
-            <span class="img">
-               <img src="@/assets/consultant/images/img_logo_sample.png" />
-            </span>
-            <strong>화상 상담</strong>
-         </div>
-         <div class="button">
-            <button>상담종료</button>
-         </div>
-      </div>
+     
       <div class="lnb">
          <div class="user">
             <div class="img"></div>
@@ -18,11 +8,6 @@
                <div class="name">홍길동</div>
                <div class="time">2020.01.01 00:00:00</div>
             </div>
-            <!-- [i] 학생 입장 전
-            <div class="info">
-               <p>상담중인 학생이 없습니다.</p>
-            </div>
-            -->
          </div>
          <div class="menu">
             <ul>

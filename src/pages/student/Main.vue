@@ -16,7 +16,7 @@
                   <input type="text" placeholder="이름을 입력하세요.">
                </div>
                <div class="button">
-                  <button>상담 시작하기</button>
+                  <button @click="call">상담 시작하기</button>
                </div>
             </div>
          </div>
@@ -30,10 +30,15 @@ export default {
   data () {
     return {
     }
+  },
+  methods: {
+    call: function(){
+      this.$router.push({path: '/student/room'});
+    }
   }
 }
 </script>
 
 <style>
-  @import '../../../assets/student/css/student.css';
+  @import '../../assets/student/css/student.css';
 </style>
