@@ -34,6 +34,7 @@ export default {
     return {
        entrance:false,
        
+       
     }
   }
 }
