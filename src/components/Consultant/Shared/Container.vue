@@ -10,11 +10,12 @@
 
          <div class="chatInput">
             <input tyle="text" placeholder="메시지를 입력하세요.">
-            <button @click="check01">전송</button>
+            <button>전송</button>
          </div>
       </div>
       <!-- <VideoConsult v-if="isOn == 1"/> -->
 
+      <DeviceStart v-if="firstModal" />
       <VideoConsult v-if="isOn == 1" />
       
    </div>
@@ -25,6 +26,7 @@
 import StatusBar from './StatusBar'
 import StudentEntrance from '../Consult/ConsultantConsultStudentEntrance'
 import VideoConsult from '../VideoConsult/ConsultantVideoConsult'
+import DeviceStart from '../VideoConsult/ConsultantVideoConsultDeviceStart'
 
 import { eBus } from '../../../commons/eventBus.js'
 
@@ -32,7 +34,8 @@ export default {
    components: {
       StatusBar,
       StudentEntrance,
-      VideoConsult
+      VideoConsult,
+      DeviceStart
    },
    name: 'hello',
    data () {
@@ -40,17 +43,29 @@ export default {
          entrance:false,
          videoOn:false,
          isOn: 0,
+         firstModal: false
       }
    },
    created () {
-      eBus.$on('isOnOne',(data) => {
-         this.isOn = data;
+
+      eBus.$on('isOnOne',(one) => {
+         this.isOn = one;
+         console.log('isOn == '+one);
+         this.firstModal= true;
       });
+
+      eBus.$on('isOnZero',(zero) => {
+         this.isOn = zero;
+         console.log('isOn == '+zero);
+      });
+
+      eBus.$on('closeDeviceStart',(close) => {
+         console.log('closemodal: '+close);
+         this.firstModal = close;
+      });
+
    },
    methods: {
-      check01(){
-         console.log(this.isOn)
-      }
    }
 }
 </script>

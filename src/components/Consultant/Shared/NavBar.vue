@@ -38,7 +38,7 @@ export default {
        entrance: false,
        isOn: 0, //0:기본상담 1: 화상상담 2:화면공유 3:설정
        display: false,
-       videoOn: true
+       videoOn: true,
     }
   },
   methods: {
@@ -55,12 +55,12 @@ export default {
       if(!this.display){
          window.resizeTo(856, 608); //f12보고 다시맞춘값
          this.isOn = 1;
+         eBus.$emit('isOnOne', this.isOn);
       }else{
-         
          window.resizeTo(516, 608) //f12보고 다시맞춘값
          this.isOn = 0;
+         eBus.$emit('isOnZero', this.isOn);
       }
-      eBus.$emit('isOnOne', this.isOn);
       this.display = !this.display;
     }
   }
