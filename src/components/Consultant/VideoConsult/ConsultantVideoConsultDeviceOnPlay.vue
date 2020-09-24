@@ -1,5 +1,5 @@
 <template>
-      <div class="modal">
+<div class="modal">
    <div class="modalContainer">
       <div class="modalContent">
          <div class="title">디바이스 설정</div>

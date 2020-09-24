@@ -58,8 +58,8 @@
                 </ul>
               </div>
               <div class="button">
-                <button class="submit">확인</button>
-                <button class="cancel">취소</button>
+                <button class="submit" @click="handleCloseDeviceStandardBtnClick">확인</button>
+                <button class="cancel" @click="handleCloseDeviceStandardBtnClick">취소</button>
               </div>
           </div>
         </div>
@@ -67,10 +67,18 @@
 </template>
 
 <script>
+
+import { eBus } from '../../../commons/eventBus'
+
 export default {
   name: 'hello',
   data () {
     return {
+    }
+  },
+  methods: {
+    handleCloseDeviceStandardBtnClick() {
+      eBus.$emit('closeDeviceStandard', false);
     }
   }
 }

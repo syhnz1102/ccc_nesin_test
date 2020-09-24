@@ -39,7 +39,6 @@ export default {
        isOn: 0, //버튼 ---- 0:기본상담(선택없음) 1: 화상상담 2:화면공유 3:설정
        videoOn: 0, //비디오화면 ---- 0:기본상담(채팅만) 1: 화상상담 2:화면공유
        display: false,
-       videoOn: true,
     }
   },
   methods: {
@@ -52,7 +51,7 @@ export default {
      // window.resizeTo(508, 538) // 화상off 원래값
      // window.resizeTo(522, 604) // 화상off inner에 맞춘 값
 
-      handleVideoBtnClick() {
+      handleVideoBtnClick() {//화상상담버튼
          if(!this.display){
             window.resizeTo(856, 608); //f12보고 다시맞춘값
             this.isOn = 1;
@@ -67,8 +66,10 @@ export default {
       },
 
       handleSettingBtnClick() {
-         if(this.display && this.isOn == 1){//화상상담중일때 디바이스버튼 실행
-            this.isOn = 3;
+         this.isOn = 3;
+         if(!this.display){//화상통화중이 아닐때 디바이스버튼 실행
+            eBus.$emit('deviceStandard', true);
+         }else if(this.display && this.videoOn == 1){//화상통화중일때 디바이스버튼 실행
             eBus.$emit('deviceOnPlay', true);
          }
       }

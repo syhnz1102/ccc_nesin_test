@@ -15,10 +15,10 @@
       </div>
       <!-- <VideoConsult v-if="isOn == 1"/> -->
 
+      <DeviceStandard v-if="standardSetting" />
       <DeviceStart v-if="firstSetting" />
-      <DeviceOnplay v-if="setting" />
+      <DeviceOnplay v-if="onPlaysetting" />
       <VideoConsult v-if="videoOn == 1" />
-      <!-- <VideoConsult v-if="isOn == 1" /> -->
       
    </div>
 </template>
@@ -28,6 +28,7 @@
 import StatusBar from './StatusBar'
 import StudentEntrance from '../Consult/ConsultantConsultStudentEntrance'
 import VideoConsult from '../VideoConsult/ConsultantVideoConsult'
+import DeviceStandard from '../Consult/ConsultantConsultDevice'
 import DeviceStart from '../VideoConsult/ConsultantVideoConsultDeviceStart'
 import DeviceOnplay from '../VideoConsult/ConsultantVideoConsultDeviceOnplay'
 
@@ -38,6 +39,7 @@ export default {
       StatusBar,
       StudentEntrance,
       VideoConsult,
+      DeviceStandard,
       DeviceStart,
       DeviceOnplay
    },
@@ -48,7 +50,8 @@ export default {
          videoOn: 0,
          isOn: 0,
          firstSetting: false,
-         setting: false,
+         onPlaysetting: false,
+         standardSetting: false
       }
    },
    created () {
@@ -64,18 +67,28 @@ export default {
          this.videoOn = zero;
       });
 
-      eBus.$on('closeDeviceStart',(close) => {
-         this.firstSetting = close;
+      eBus.$on('closeDeviceStart',(bool) => {
+         this.firstSetting = bool;
       });
 
-      eBus.$on('deviceOnPlay',(open) => {
-         this.setting = open;
+      eBus.$on('deviceOnPlay',(bool) => {
+         this.onPlaysetting = bool;
          this.isOn = 3;
       }),
 
-      eBus.$on('closeDeviceOnPlay',(close) => {
-         this.setting = close;
+      eBus.$on('closeDeviceOnPlay',(bool) => {
+         this.onPlaysetting = bool;
          this.isOn = 0;
+      }),
+      //디바이스 열기, 닫기 따로한이유
+      //1.열때와 닫을때 버튼의 컴포넌트가 다름
+      //2.나중에 버튼을 눌렀을때 어차피 device세팅을 세팅창 열기+적용/확인 으로 나눠줘야하기 때문에 굳이 하나로 하지않음
+      eBus.$on('deviceStandard',(bool) => {
+         this.standardSetting = bool;
+      }),
+
+      eBus.$on('closeDeviceStandard',(bool) => {
+         this.standardSetting = bool;
       })
    },
    methods: {

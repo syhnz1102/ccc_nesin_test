@@ -27,13 +27,23 @@
 </template>
 
 <script>
+
+import { eBus } from '../../../commons/eventBus.js'
+
 export default {
   name: 'hello',
   data () {
     return {
-       offVideo: false,
-       offMic: false
+       offVideo: true,
+       offMic: true
     }
+  },
+  created () {
+      eBus.$on('closeDeviceStart',(bool) => {
+         this.offVideo = bool,
+         this.offMic = bool
+         console.log('dsdssd');
+      });
   },
   methods: {
      handleVideoOffBtnClick(){
