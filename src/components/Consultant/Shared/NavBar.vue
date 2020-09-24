@@ -29,39 +29,38 @@
 </template>
 
 <script>
+import { eBus } from '../../../commons/eventBus.js'
+
 export default {
   name: 'hello',
   data () {
     return {
-       entrance:false,
-       isOn:0, //0:기본상담 1: 화상상담 2:화면공유 3:설정
-       display:false
+       entrance: false,
+       isOn: 0, //0:기본상담 1: 화상상담 2:화면공유 3:설정
+       display: false,
+       videoOn: true
     }
   },
   methods: {
+     // 리사이즈 관련
+     // window.resizeBy(340, 0) // 화상on 리사이즈바이
+     // window.resizeTo(848, 538) // 화상on 원래값
+     // window.resizeTo(862, 604); // 화상off inner에 맞춘 값
+
+     // window.resizeBy(340, 0) // 화상off 리사이즈바이
+     // window.resizeTo(508, 538) // 화상off 원래값
+     // window.resizeTo(522, 604) // 화상off inner에 맞춘 값
+
      videoButton : function () {
       if(!this.display){
-         // resizeBy
-         // window.resizeBy(340, 0)
-
-         // 원래값
-         // window.resizeTo(848, 538)
-
-         // inner에 맞춘 값 - 버튼종류가 늘어남에 따라 중복해서 늘어나는현상 방지
-         window.resizeTo(862, 604)
+         window.resizeTo(856, 608); //f12보고 다시맞춘값
          this.isOn = 1;
-         
       }else{
-         // resizeBy
-         // window.resizeBy(340, 0)
-
-         // 원래값
-         // window.resizeTo(508, 538)
-
-         // inner에 맞춘 값
-         window.resizeTo(522, 604)
+         
+         window.resizeTo(516, 608) //f12보고 다시맞춘값
          this.isOn = 0;
       }
+      eBus.$emit('isOnOne', this.isOn);
       this.display = !this.display;
     }
   }

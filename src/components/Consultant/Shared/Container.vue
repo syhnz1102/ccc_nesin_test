@@ -10,34 +10,13 @@
 
          <div class="chatInput">
             <input tyle="text" placeholder="메시지를 입력하세요.">
-            <button>전송</button>
+            <button @click="check01">전송</button>
          </div>
       </div>
-      <div class="videoContainer">
-            <div class="mainVideo">
-               <div class="video camoff">
-                  <div class="micoff"></div>
-                  <!-- <video style="background:url('@/assets/consultant/images/img_video_sample2.jpg') no-repeat center 0;background-size:cover"></video> -->
-               </div>
-               <div class="video local camoff">
-                  <div class="micoff"></div>
-                  <!-- <video style="background:url('@/assets/consultant/images/img_video_sample1.jpg') no-repeat center 0;background-size:cover"></video> -->
-               </div>
-            </div>
-            <div class="videobarContainer">
-               <div class="menu">
-                  <div class="info">
-                     <span>홍길동</span>
-                     <span>00:00</span>
-                  </div>
-                  <div class="button">
-                     <button class="cam off"></button>
-                     <button class="mic off"></button>
-                     <button class="endcall"></button>
-                  </div>
-               </div>
-            </div>
-         </div>
+      <!-- <VideoConsult v-if="isOn == 1"/> -->
+
+      <VideoConsult v-if="isOn == 1" />
+      
    </div>
 </template>
 
@@ -45,16 +24,32 @@
 
 import StatusBar from './StatusBar'
 import StudentEntrance from '../Consult/ConsultantConsultStudentEntrance'
+import VideoConsult from '../VideoConsult/ConsultantVideoConsult'
+
+import { eBus } from '../../../commons/eventBus.js'
 
 export default {
    components: {
       StatusBar,
-      StudentEntrance
+      StudentEntrance,
+      VideoConsult
    },
    name: 'hello',
    data () {
       return {
-         entrance:false
+         entrance:false,
+         videoOn:false,
+         isOn: 0,
+      }
+   },
+   created () {
+      eBus.$on('isOnOne',(data) => {
+         this.isOn = data;
+      });
+   },
+   methods: {
+      check01(){
+         console.log(this.isOn)
       }
    }
 }
