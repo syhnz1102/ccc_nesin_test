@@ -32,7 +32,7 @@ export default {
     }
   },
   methods: {
-    call: function(){
+    call() {
       this.$router.push({path: '/student/room'});
     }
   }

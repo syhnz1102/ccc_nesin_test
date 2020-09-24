@@ -27,7 +27,7 @@ export default {
     }
   },
   methods: {
-    call : function() {
+    call () {
       let type02 = window.open('room', "", "resizable=1, height=524, width=494");//f12보고 다시맞춘값
       // let type02 = window.open('room', "", "resizable=1, height=520, width=500");
     }

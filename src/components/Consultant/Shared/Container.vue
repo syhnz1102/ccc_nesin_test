@@ -15,8 +15,10 @@
       </div>
       <!-- <VideoConsult v-if="isOn == 1"/> -->
 
-      <DeviceStart v-if="firstModal" />
-      <VideoConsult v-if="isOn == 1" />
+      <DeviceStart v-if="firstSetting" />
+      <DeviceOnplay v-if="setting" />
+      <VideoConsult v-if="videoOn == 1" />
+      <!-- <VideoConsult v-if="isOn == 1" /> -->
       
    </div>
 </template>
@@ -27,6 +29,7 @@ import StatusBar from './StatusBar'
 import StudentEntrance from '../Consult/ConsultantConsultStudentEntrance'
 import VideoConsult from '../VideoConsult/ConsultantVideoConsult'
 import DeviceStart from '../VideoConsult/ConsultantVideoConsultDeviceStart'
+import DeviceOnplay from '../VideoConsult/ConsultantVideoConsultDeviceOnplay'
 
 import { eBus } from '../../../commons/eventBus.js'
 
@@ -35,35 +38,45 @@ export default {
       StatusBar,
       StudentEntrance,
       VideoConsult,
-      DeviceStart
+      DeviceStart,
+      DeviceOnplay
    },
    name: 'hello',
    data () {
       return {
          entrance:false,
-         videoOn:false,
+         videoOn: 0,
          isOn: 0,
-         firstModal: false
+         firstSetting: false,
+         setting: false,
       }
    },
    created () {
 
       eBus.$on('isOnOne',(one) => {
          this.isOn = one;
-         console.log('isOn == '+one);
-         this.firstModal= true;
+         this.videoOn = one;
+         this.firstSetting= true;
       });
 
       eBus.$on('isOnZero',(zero) => {
          this.isOn = zero;
-         console.log('isOn == '+zero);
+         this.videoOn = zero;
       });
 
       eBus.$on('closeDeviceStart',(close) => {
-         console.log('closemodal: '+close);
-         this.firstModal = close;
+         this.firstSetting = close;
       });
 
+      eBus.$on('deviceOnPlay',(open) => {
+         this.setting = open;
+         this.isOn = 3;
+      }),
+
+      eBus.$on('closeDeviceOnPlay',(close) => {
+         this.setting = close;
+         this.isOn = 0;
+      })
    },
    methods: {
    }

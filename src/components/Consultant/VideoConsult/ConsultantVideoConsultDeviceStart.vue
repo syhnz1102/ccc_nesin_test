@@ -58,7 +58,7 @@
             <p>화상 상담 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.</p>
             <div class="button">
                <button class="border">새로고침</button>
-               <button class="submit" @click="closeDeviceStart">시작</button>
+               <button class="submit" @click="handleCloseDeviceStartBtnClick">시작</button>
             </div>
          </div>
          <div class="modalCheck">
@@ -82,7 +82,7 @@ export default {
     }
   },
   methods: {
-     closeDeviceStart(){
+     handleCloseDeviceStartBtnClick(){
         eBus.$emit('closeDeviceStart', false);
      }
   }
