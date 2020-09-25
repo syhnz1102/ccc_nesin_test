@@ -20,12 +20,12 @@
 
 <script>
 import StatusBar from './StatusBar'
-import StudentEntrance from '../Consult/ConsultantConsultStudentEntrance'
-import VideoConsult from '../VideoConsult/ConsultantVideoConsult'
-import DeviceStandard from '../Consult/ConsultantConsultDevice'
-import DeviceStart from '../VideoConsult/ConsultantVideoConsultDeviceStart'
-import DeviceOnplay from '../VideoConsult/ConsultantVideoConsultDeviceOnplay'
-import { eBus } from '../../../commons/eventBus.js'
+import StudentEntrance from './Consult/ConsultantConsultStudentEntrance'
+import VideoConsult from './VideoConsult/ConsultantVideoConsult'
+import DeviceStandard from './Consult/ConsultantConsultDevice'
+import DeviceStart from './VideoConsult/ConsultantVideoConsultDeviceStart'
+import DeviceOnplay from './VideoConsult/ConsultantVideoConsultDeviceOnPlay'
+import { eBus } from '../../commons/eventBus.js'
 
 export default {
    components: {

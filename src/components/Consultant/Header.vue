@@ -1,4 +1,3 @@
-
 <template>
    <div class="header">
       <div class="logo">
@@ -8,17 +7,25 @@
          <strong>화상 상담</strong>
       </div>
       <div class="button">
-         <button>상담종료</button>
+         <button @click="handleExitBtn">상담종료</button>
       </div>
    </div>
 </template>
 
 <script>
-import { eBus } from '../../../commons/eventBus';
+import router from "../../router";
+import { sendMessage } from '../../commons/message';
 
 export default {
   data() {
     return {
+
+    }
+  },
+  methods: {
+    handleExitBtn() {
+      sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+      router.push({ path: `/main` });
     }
   }
 }

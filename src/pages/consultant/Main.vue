@@ -12,7 +12,7 @@
                 <p>아래 버튼을 눌러 상담을 시작해보세요.</p>
             </div>
             <div class="button">
-                <button @click="call">상담 시작하기</button>
+                <button @click="handleStartBtnClick">상담 시작하기</button>
             </div>
           </div>
       </div>
@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import { eBus } from '../../commons/eventBus.js'
+import Session from "../../commons/session";
+import { sendMessage } from '../../commons/message';
 
 export default {
   data() {
@@ -28,8 +29,13 @@ export default {
     }
   },
   methods: {
-    call() {
-      let consultWindow = window.open( 'room', "", "resizable=1, height=522, width=492, toolbar=0" );
+    async handleStartBtnClick() {
+      const session = new Session();
+      if (await session.connect()) {
+        sendMessage('CreateRoom', {});
+      } else {
+        session.close();
+      }
     }
   }
 }
