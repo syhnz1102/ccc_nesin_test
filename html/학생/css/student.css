@@ -37,11 +37,11 @@ body,
 
 .chatContainer {width:100%;height:100%;background:#e1e4e8}
 .chatContainer .chatContent {overflow-y:auto;height:calc(100% - 60px);padding:20px;box-sizing:border-box}
-.chatContainer .chatContent > p {text-align:center;font-size:12px}
-.chatContainer .chatContent > p + p {margin-top:5px}
-.chatContainer .chatContent > p + .message {margin-top:20px}
-.chatContainer .chatContent > .message + .message {margin-top:20px}
-.chatContainer .chatContent > .message + p {margin-top:20px}
+.chatContainer .chatContent .notice p {text-align:center;font-size:12px}
+.chatContainer .chatContent .notice + .notice {margin-top:5px}
+.chatContainer .chatContent .notice + .message {margin-top:20px}
+.chatContainer .chatContent .message + .message {margin-top:20px}
+.chatContainer .chatContent .message + .notice {margin-top:20px}
 .chatContainer .chatContent .message {margin-top:20px}
 .chatContainer .chatContent .message .name {margin-bottom:5px;font-weight:500}
 .chatContainer .chatContent .message .bubble p {display:inline-block;max-width:calc(100% - 100px);padding:8px 15px;word-break:break-word;border-radius:5px}
@@ -58,12 +58,12 @@ body,
 
 .videoContainer {position:fixed;top:0;left:0;width:100%;height:100%;background:#f0f0f0;z-index:10}
 .videoContainer .video {position:relative;overflow:hidden;width:100%;height:100%;background:url('../images/img_user.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .camoff {background:url('../images/img_camera_off.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .micoff {position:absolute;bottom:10px;left:10px;width:30px;height:30px;border-radius:5px;background:rgba(0,0,0,0.3);z-index:1}
+.videoContainer .micoff::before {content:'';display:block;width:15px;height:16px;margin:7px auto;background:url('../images/icons.png') no-repeat 0 0}
 .videoContainer .mainVideo {width:100%;height:100%}
 .videoContainer .mainVideo .video.local {position:absolute;top:15px;left:15px;width:30%;height:30%;border-radius:2px;box-shadow:0px 5px 10px 0px rgba(0,0,0,0.2);z-index:1}
 .videoContainer .mainVideo .video video {width:calc(100% + 2px);height:calc(100% + 2px);margin:-1px 0 0 -1px;object-fit:cover;transform:scaleX(-1);-webkit-transform:scaleX(-1)}
-.videoContainer .mainVideo .camoff {background:url('../images/img_camera_off.png') no-repeat center center #f0f0f0;background-size:25% auto}
-.videoContainer .mainVideo .micoff {position:absolute;bottom:10px;left:10px;width:30px;height:30px;border-radius:5px;background:rgba(0,0,0,0.3);z-index:1}
-.videoContainer .mainVideo .micoff::before {content:'';display:block;width:15px;height:16px;margin:7px auto;background:url('../images/icons.png') no-repeat 0 0}
 .videoContainer .shareVideo {position:relative;width:100%;height:100%}
 .videoContainer .shareVideo .video video {width:calc(100% + 2px);height:calc(100% + 2px);margin:-1px 0 0 -1px;object-fit:contain;background:#111}
 
