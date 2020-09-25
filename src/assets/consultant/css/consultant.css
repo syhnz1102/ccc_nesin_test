@@ -1,0 +1,175 @@
+@charset "utf-8";
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+@import url("reset.css");
+
+
+#app,
+html,
+body,
+.wrapper {position:relative;width:100%;height:100%}
+
+.mainContainer {display:flex;width:100%;height:100%;justify-content:center;align-items:center;background:#f0f0f0}
+.mainContainer .boxContainer {width:100%;max-width:500px;padding:150px 50px 50px;box-sizing:border-box}
+.mainContainer .box {position:relative;padding:50px;border-radius:5px;background:#363f4e;box-sizing:border-box;box-shadow:0px 10px 20px 0px rgba(0,0,0,0.2)}
+.mainContainer .box::before {content:'';position:absolute;top:-135px;right:20px;display:block;width:216px;height:135px;background:url('../images/img_main.png') no-repeat 0 0;background-size:cover}
+.mainContainer .logo {width:100%;margin-bottom:40px;text-align:center}
+.mainContainer .logo .img {display:block;width:auto;height:40px;vertical-align:middle}
+.mainContainer .logo .img img {display:block;margin:0 auto;width:100%;max-width:240px;height:100%;object-fit:contain}
+.mainContainer .logo strong {display:inline-block;margin-left:5px;vertical-align:middle;font-size:30px;font-weight:500;color:#fff}
+.mainContainer .text {margin-bottom:40px}
+.mainContainer .text strong {font-size:24px;color:#fff}
+.mainContainer .text p {margin-top:5px;font-size:16px;color:rgba(255,255,255,0.7)}
+.mainContainer .button {text-align:center}
+.mainContainer .button button {width:100%;height:50px;line-height:50px;font-weight:500;font-size:16px;color:#fff;border-radius:5px;border:1px solid #fff}
+.mainContainer .button button:active {background:#1a222f;transition:background-color .3s}
+
+.header {position:fixed;top:0;left:0;overflow:hidden;display:flex;width:100%;height:60px;padding:12px 20px;background:#363f4e;box-sizing:border-box;z-index:2}
+.header .logo {margin-right:auto}
+.header .logo .img {display:inline-block;width:auto;height:36px;vertical-align:middle}
+.header .logo .img img {display:block;height:100%}
+.header .logo strong {display:inline-block;margin-left:5px;vertical-align:middle;font-size:20px;font-weight:500;color:#ddd}
+.header .button {margin-left:auto}
+.header .button button {width:90px;height:36px;line-height:34px;text-align:center;font-size:15px;font-weight:500;color:#fff;border:1px solid #fff;border-radius:5px;box-sizing:border-box}
+.header .button button:active {background:#1a222f;transition:all .3s}
+
+.lnb {float:left;width:120px;height:100%;padding-top:60px;background:#f0f0f0;box-sizing:border-box}
+.lnb .user {padding:20px 0}
+.lnb .user .img {width:80px;height:80px;margin:0 auto;border-radius:80px;background:url('../images/icons.png') no-repeat 0 0}
+.lnb .user .info {margin-top:10px;padding:0 10px;text-align:center}
+.lnb .user .info p {color:#999}
+.lnb .user .info .name {font-weight:500}
+.lnb .user .info .time {margin-top:2px;font-size:12px;color:#666}
+.lnb .menu::before {content:'';display:block;width:100px;height:1px;margin:0 auto 5px;background:#ddd}
+.lnb .menu ul {margin-top:20px}
+.lnb .menu li button {display:block;width:90px;height:80px;margin:0 auto;text-align:center;font-size:15px;color:#999;border-radius:5px}
+.lnb .menu li button::before {content:'';display:block;width:20px;height:20px;margin:0 auto;margin-bottom:2px;background-image:url('../images/icons.png');background-repeat:no-repeat}
+.lnb .menu li:nth-child(1) button::before {background-position:0 -80px}
+.lnb .menu li:nth-child(2) button::before {background-position:-20px -80px}
+.lnb .menu li:nth-child(3) button::before {background-position:-40px -80px}
+.lnb .menu li button:active,
+.lnb .menu li.on button {color:#fff;background:#363f4e;transition:background-color .2s}
+.lnb .menu li button:active::before,
+.lnb .menu li.on button::before {background-position-y:-100px}
+.lnb + .container {display:flex;float:right;width:calc(100% - 120px);height:100%;padding-top:60px;box-sizing:border-box}
+
+.chatContainer {flex:1;height:100%;background:#e1e4e8}
+.chatContainer .chatHeader {display:flex;width:100%;height:50px;padding:0 20px;border-bottom:1px solid #d5d8dc;box-sizing:border-box}
+.chatContainer .chatHeader::after {content:'';display:block;clear:both}
+.chatContainer .chatHeader .state {margin-right:auto;line-height:50px}
+.chatContainer .chatHeader .state::before {content:'';display:inline-block;width:10px;height:10px;margin-right:5px;line-height:60px;border-radius:10px;background:#ccc}
+.chatContainer .chatHeader .state.waiting::before {background:#999}
+.chatContainer .chatHeader .state.start::before {background:#3bcc90}
+.chatContainer .chatHeader .copy {position:relative;margin-left:auto}
+.chatContainer .chatHeader .copy > button {margin-top:10px;padding:5px 10px;color:#333;border-radius:5px}
+.chatContainer .chatHeader .copy > button::before {content:'';display:inline-block;width:15px;height:9px;margin-right:5px;vertical-align:middle;background:url('../images/icons.png') no-repeat -60px -80px;transition:background-color .3s, color .3s}
+.chatContainer .chatHeader .copy > button:active {border:0;background:#ccc}
+.chatContainer .chatHeader .tooltip {position:absolute;top:45px;right:-5px;padding:8px 10px 8px 15px;white-space:nowrap;line-height:normal;font-size:12px;color:#fff;border-radius:5px;background:linear-gradient(96deg,#03c75a,#03a0c7)}
+.chatContainer .chatHeader .tooltip::before {content:'';position:absolute;top:-6px;right:40px;border-bottom:6px solid #03a0c7;border-right:6px solid transparent;border-left:6px solid transparent;}
+.chatContainer .chatHeader .tooltip > button {overflow:hidden;display:inline-block;width:10px;height:12px;margin-left:8px;vertical-align:middle;text-indent:-999px;font-size:0;background:url('../images/icons.png') no-repeat -60px -88px}
+.chatContainer .chatContent {overflow-y:auto;height:calc(100% - 130px);padding:20px;box-sizing:border-box}
+.chatContainer .chatContent > p {text-align:center;font-size:12px}
+.chatContainer .chatContent > p + p {margin-top:5px}
+.chatContainer .chatContent > p + .message {margin-top:20px}
+.chatContainer .chatContent > .message + .message {margin-top:20px}
+.chatContainer .chatContent > .message + p {margin-top:20px}
+.chatContainer .chatContent .message {margin-top:20px}
+.chatContainer .chatContent .message .name {margin-bottom:5px;font-weight:500}
+.chatContainer .chatContent .message .bubble p {display:inline-block;max-width:calc(100% - 100px);padding:8px 15px;word-break:break-word;border-radius:5px}
+.chatContainer .chatContent .message .bubble .time {vertical-align:bottom;font-size:12px;color:#999}
+.chatContainer .chatContent .message .bubble + .bubble {margin-top:5px}
+.chatContainer .chatContent .message.right .bubble {text-align:right}
+.chatContainer .chatContent .message.right .bubble p {text-align:left;color:#fff;border-top-right-radius:0;background:#6677c0}
+.chatContainer .chatContent .message.left .bubble p {border-top-left-radius:0;background:#fff}
+.chatContainer .chatInput {position:relative;padding:15px;box-sizing:border-box}
+.chatContainer .chatInput input {width:100%;height:50px;padding-left:15px;padding-right:75px;line-height:50px;border-radius:5px;background:#fff;box-sizing:border-box}
+.chatContainer .chatInput input::placeholder {color:#999}
+.chatContainer .chatInput button {overflow:hidden;position:absolute;top:23px;right:25px;display:block;height:34px;line-height:30px;padding:0 15px;color:#fff;border-radius:5px;background:#6677c0}
+.chatContainer .chatInput button:active {background:#5160a3}
+
+.videoContainer {position:relative;flex:1;height:100%;background:#f0f0f0}
+.videoContainer .video {position:relative;overflow:hidden;width:100%;height:100%;background:url('../images/img_user.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .mainVideo {width:100%;height:100%}
+.videoContainer .mainVideo .video.local {position:absolute;top:15px;left:15px;width:30%;height:30%;min-width:146px;min-height:226px;border-radius:2px;box-shadow:0px 5px 10px 0px rgba(0,0,0,0.2);z-index:1}
+.videoContainer .mainVideo .video video {width:calc(100% + 2px);height:calc(100% + 2px);margin:-1px 0 0 -1px;object-fit:cover;transform:scaleX(-1);-webkit-transform:scaleX(-1)}
+.videoContainer .mainVideo .camoff {background:url('../images/img_camera_off.png') no-repeat center center #f0f0f0;background-size:25% auto}
+.videoContainer .mainVideo .micoff {position:absolute;top:15px;right:15px;width:30px;height:30px;border-radius:5px;background:rgba(0,0,0,0.3);z-index:1}
+.videoContainer .mainVideo .micoff::before {content:'';display:block;width:15px;height:16px;margin:7px auto;background:url('../images/icons.png') no-repeat -76px -100px}
+.videoContainer .shareVideo {position:relative;display:flex;width:100%;height:100%;justify-content:center;align-items:center;background:#111}
+.videoContainer .shareVideo:before {content:'';position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:linear-gradient(-30deg,#03c75a,#03a0c7);opacity:0.15}
+.videoContainer .shareVideo .share img {height:40px}
+.videoContainer .shareVideo .share p {margin-top:20px;text-align:center;font-size:16px;color:#fff}
+
+.videobarContainer {position:absolute;bottom:0;left:0;width:100%;padding:15px;box-sizing:border-box;z-index:1}
+.videobarContainer .menu {overflow:hidden;display:flex;width:100%;height:50px;padding:0 20px;border-radius:5px;background:#363f4e;box-sizing:border-box}
+.videobarContainer .info {margin-right:auto}
+.videobarContainer .info span {line-height:50px;color:#fff}
+.videobarContainer .info span + span::before {content:'';display:inline-block;width:2px;height:10px;margin-left:5px;margin-right:10px;background:#ccc}
+.videobarContainer .info span:first-child::before {content:'';display:inline-block;width:31px;height:8px;margin-right:15px;background:url('../images/icon_calling.gif') no-repeat 0 center}
+.videobarContainer .button {margin-left:auto}
+.videobarContainer .button button {width:36px;height:36px;margin-top:7px;border-radius:5px}
+.videobarContainer .button button.endcall {width:40px}
+.videobarContainer .button button.endcall::before {width:30px}
+.videobarContainer .button button:active {background:rgba(0,0,0,0.3);transition:background-color .3s}
+.videobarContainer .button button::before {content:'';display:block;width:20px;height:20px;margin:0 auto;background:url('../images/icons.png') no-repeat 0 0}
+.videobarContainer .button button.off::before {opacity:0.5}
+.videobarContainer .button .cam::before {background-position:0 -120px}
+.videobarContainer .button .cam.off::before {background-position:-20px -120px}
+.videobarContainer .button .mic::before {background-position:-40px -120px}
+.videobarContainer .button .mic.off::before {background-position:-60px -120px}
+.videobarContainer .button .endcall::before {background-position:-80px -120px}
+
+.toast {position:fixed;bottom:50px;width:100%;text-align:center;z-index:101}
+.toast p {display:inline-block;padding:8px 25px;color:#fff;border-radius:5px;background:rgba(0,0,0,0.6)}
+
+.modal {position:fixed;top:0;left:0;width:100%;height:100%;z-index:100}
+.modal::before {content:'';position:absolute;top:0;left:0;display:block;width:100%;height:100%;background:rgba(0,0,0,0.5)}
+.modalContainer {position:absolute;top:50%;left:50%;width:auto;min-width:300px;transform:translate(-50%,-50%)}
+.modalContent {padding:30px;border-radius:5px;background:#fff}
+.modalContent p {text-align:center}
+.modalContent .title {margin-bottom:20px;font-weight:500;font-size:16px}
+.modalContent .setting .select li {overflow:hidden}
+.modalContent .setting .select li + li {margin-top:15px}
+.modalContent .setting .select label {display:block;margin-bottom:5px;font-size:12px;color:#333}
+.modalContent .setting .select select {width:100%;height:36px;padding:0 10px;border:1px solid #ddd;border-radius:5px}
+.modalContent .setting .speaker select {float:left;width:calc(100% - 50px)}
+.modalContent .setting .speaker button {overflow:hidden;float:right;width:45px;height:36px;text-indent:-999px;font-size:0;;border-radius:5px;background:#363f4e}
+.modalContent .setting .speaker button::before {content:'';display:block;width:18px;height:16px;margin:0 auto;background:url('../images/icons.png') no-repeat -76px -80px}
+.modalContent .setting .speaker button:active {background-color:#1a222f;transition:background-color .3s}
+.modalContent .setting .speaker button.on {background-color:#1a222f;transition:background-color .3s}
+.modalContent .setting .mic select {float:left;width:calc(100% - 50px)}
+.modalContent .setting .mic .volume {position:relative;float:right;width:45px;height:36px;box-sizing:border-box}
+.modalContent .setting .mic .volume .percent {overflow:hidden;position:absolute;bottom:0;left:5px;height:3px;min-height:10% !important;max-height:80% !important}
+.modalContent .setting .mic .volume span {position:relative;float:left;display:block;width:4px;height:100%}
+.modalContent .setting .mic .volume span + span {margin-left:2px}
+.modalContent .setting .mic .volume span::before {content:'';position:absolute;bottom:0;left:0;display:block;width:100%;height:100%;background:#363f4e;animation-name:volume;animation-duration:.5s;animation-play-state:running;animation-direction:alternate;animation-timing-function:linear;animation-iteration-count:infinite}
+.modalContent .setting .mic .volume span:nth-child(1)::before {height:80%;animation-duration:0}
+.modalContent .setting .mic .volume span:nth-child(2)::before {height:50%;animation-duration:.3s}
+.modalContent .setting .mic .volume span:nth-child(3)::before {height:100%;animation-duration:.6s}
+.modalContent .setting .mic .volume span:nth-child(4)::before {height:70%;animation-duration:.9s}
+.modalContent .setting .mic .volume span:nth-child(5)::before {height:60%;animation-duration:.6s}
+.modalContent .setting .mic .volume span:nth-child(6)::before {height:90%;animation-duration:.3s}
+.modalContent .setting .mic .volume.none .percent {height:3px !important}
+.modalContent .setting .mic .volume.none .percent span::before {height:100% !important;background:#999}
+.modalContent .setting + p {margin-top:10px;color:#363f4e}
+.modalContent .button {margin-top:30px;text-align:center;}
+.modalContent .button button {padding:8px 25px;border-radius:5px}
+.modalContent .button button + button {margin-left:5px}
+.modalContent .button button.border {padding:6px 23px;color:#363f4e;border:2px solid #363f4e}
+.modalContent .button button.border:active {color:#fff;background:#363f4e;transition:background-color .3s}
+.modalContent .button button.submit {color:#fff;background:#363f4e}
+.modalContent .button button.submit:active {background:#1a222f;transition:background-color .3s}
+.modalContent .button button.cancel {color:#fff;background:#999}
+.modalContent .button button.cancel:active {background:#777;transition:background-color .3s}
+.modalCheck {position:absolute;bottom:-30px;left:0}
+.modalCheck .checkbox input[type="checkbox"] {background:transparent}
+.modalCheck .checkbox label {line-height:16px;color:#fff}
+
+@keyframes volume {
+  0% {height:1px}
+  100% {height:100%}
+}
+
+@media screen and (max-width: 780px) {
+.videobarContainer .info {display:none}
+.videobarContainer .button {margin-right:auto}
+}
