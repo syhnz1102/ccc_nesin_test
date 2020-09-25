@@ -31,6 +31,7 @@ export async function onMessage(resp) {
         }
         store.commit('setUserInfo', { id: resp.userId, name: '상담사' });
         store.commit('setRoomInfo', { members: resp.members, roomId: resp.roomId, count: Object.keys(resp.members).length, type: Object.keys(resp.members).length > 2 ? 'multi' : 'p2p' });
+        console.log('store : ', store.state)
       }
       break;
 

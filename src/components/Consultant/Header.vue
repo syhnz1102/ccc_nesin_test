@@ -15,6 +15,7 @@
 <script>
 import router from "../../router";
 import { sendMessage } from '../../commons/message';
+import store from "../../store";
 
 export default {
   data() {
@@ -24,8 +25,11 @@ export default {
   },
   methods: {
     handleExitBtn() {
+      // webRTC.clear();
+      this.$store.state.socket.close();
       sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
       router.push({ path: `/main` });
+      console.log('store : ', store.state)
     }
   }
 }
