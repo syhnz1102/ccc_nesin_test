@@ -67,12 +67,10 @@
 </template>
 
 <script>
-
 import { eBus } from '../../../commons/eventBus'
 
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   },
@@ -84,6 +82,3 @@ export default {
 }
 </script>
 
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

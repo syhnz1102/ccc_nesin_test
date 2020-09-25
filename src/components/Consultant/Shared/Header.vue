@@ -1,3 +1,4 @@
+
 <template>
    <div class="header">
       <div class="logo">
@@ -13,15 +14,12 @@
 </template>
 
 <script>
+import { eBus } from '../../../commons/eventBus';
+
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   }
 }
 </script>
-
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

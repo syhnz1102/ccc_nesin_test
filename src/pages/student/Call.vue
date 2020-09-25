@@ -60,8 +60,7 @@
 
 <script>
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   }

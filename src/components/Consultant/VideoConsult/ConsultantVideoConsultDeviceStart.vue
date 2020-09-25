@@ -76,19 +76,15 @@
 import { eBus } from '../../../commons/eventBus.js'
 
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   },
   methods: {
-     handleCloseDeviceStartBtnClick(){
+     handleCloseDeviceStartBtnClick() {
         eBus.$emit('closeDeviceStart', false);
      }
   }
 }
 </script>
 
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

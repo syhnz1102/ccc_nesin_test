@@ -27,37 +27,29 @@
 </template>
 
 <script>
-
 import { eBus } from '../../../commons/eventBus.js'
 
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
        offVideo: true,
        offMic: true
     }
   },
-  created () {
-      eBus.$on('closeDeviceStart',(bool) => {
+  created() {
+      eBus.$on('closeDeviceStart', ( bool ) => {
          this.offVideo = bool,
          this.offMic = bool
-         console.log('dsdssd');
       });
   },
   methods: {
-     handleVideoOffBtnClick(){
+     handleVideoOffBtnClick() {
         this.offVideo = !this.offVideo;
      },
-     
-     handleMicOffBtnClick(){
+     handleMicOffBtnClick() {
         this.offMic = !this.offMic;
      },
-
   }
 }
 </script>
 
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

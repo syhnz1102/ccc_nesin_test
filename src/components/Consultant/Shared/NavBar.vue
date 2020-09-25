@@ -13,14 +13,13 @@
       </div>
       <div class="menu">
          <ul>
-            <li :class="{ on: isOn == 1 }">
+            <li :class="{ on: isOn == 'videoClicked' }">
                <button @click="handleVideoBtnClick">화상상담</button>
-               <!-- <button>화상상담</button> -->
             </li>
-            <li :class="{ on: isOn == 2 }">
+            <li :class="{ on: isOn == 'displayShareClicked' }">
                <button>화면공유</button>
             </li>
-            <li :class="{ on: isOn == 3 }">
+            <li :class="{ on: isOn == 'deviceClicked' }">
                <button @click="handleSettingBtnClick">설정</button>
             </li>
          </ul>
@@ -32,51 +31,50 @@
 import { eBus } from '../../../commons/eventBus.js'
 
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
        entrance: false,
-       isOn: 0, //버튼 ---- 0:기본상담(선택없음) 1: 화상상담 2:화면공유 3:설정
-       videoOn: 0, //비디오화면 ---- 0:기본상담(채팅만) 1: 화상상담 2:화면공유
+       isOn: 'notClicked',
+       videoOn: 'noVideo',
        display: false,
+       videoInfo: [],
     }
   },
+  created() {
+      eBus.$on('closeDeviceStandard', bool => {
+         this.isOn = 'notClicked';
+      });
+      eBus.$on('closeDeviceOnPlay', bool => {
+         this.isOn = 'videoClicked';
+      });
+  },
   methods: {
-     // 리사이즈 관련
-     // window.resizeBy(340, 0) // 화상on 리사이즈바이
-     // window.resizeTo(848, 538) // 화상on 원래값
-     // window.resizeTo(862, 604); // 화상off inner에 맞춘 값
-
-     // window.resizeBy(340, 0) // 화상off 리사이즈바이
-     // window.resizeTo(508, 538) // 화상off 원래값
-     // window.resizeTo(522, 604) // 화상off inner에 맞춘 값
-
-      handleVideoBtnClick() {//화상상담버튼
-         if(!this.display){
-            window.resizeTo(856, 608); //f12보고 다시맞춘값
-            this.isOn = 1;
-            this.videoOn = 1;
-            eBus.$emit('isOnOne', this.isOn);
-         }else{
-            window.resizeTo(516, 608) //f12보고 다시맞춘값
-            this.isOn = 0;
-            eBus.$emit('isOnZero', this.isOn);
+      handleVideoBtnClick() {
+         if( !this.display ){
+            window.resizeTo( 854, 606 );
+            this.videoInfo = {
+               isOn: 'videoClicked',
+               videoOn: 'videoOn'
+            };
+            eBus.$emit('videoOn', this.videoInfo);
+         } else {
+            window.resizeTo( 514, 606 );
+            this.videoInfo = {
+               isOn: 'notClicked',
+               videoOn: 'noVideo'
+            };
+            eBus.$emit('noVideo', this.videoInfo);
          }
          this.display = !this.display;
       },
-
       handleSettingBtnClick() {
-         this.isOn = 3;
-         if(!this.display){//화상통화중이 아닐때 디바이스버튼 실행
+         this.isOn = 'deviceClicked';
+         if( !this.display ){
             eBus.$emit('deviceStandard', true);
-         }else if(this.display && this.videoOn == 1){//화상통화중일때 디바이스버튼 실행
+         } else if ( this.display && this.videoOn == 'videoOn' ){
             eBus.$emit('deviceOnPlay', true);
          }
       }
   }
 }
 </script>
-
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

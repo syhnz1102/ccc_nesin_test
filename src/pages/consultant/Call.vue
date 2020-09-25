@@ -1,43 +1,29 @@
 <template>
     <div class="wrapper"> 
-      <Device v-if="device"/>
-      <Toast v-if="toast"/>
-
-      <Header/>
-      <NavBar/>
-      <Container/>
+      <Toast v-if="toast" />
+      <Header />
+      <NavBar />
+      <Container />
     </div>
 </template>
 
-
 <script>
-
-import Device from '@/components/consultant/Consult/ConsultantConsultDevice'
 import Toast from '@/components/consultant/Consult/ConsultantConsultToast'
-
 import Header from '@/components/consultant/shared/Header'
 import NavBar from '@/components/consultant/shared/NavBar'
 import Container from '@/components/consultant/shared/Container'
 
-
-
 export default {
   components: {
-    Device,
     Toast,
     NavBar,
     Header,
     Container,
   },
-  name: 'hello',
-  data () {
+  data() {
     return {
       toast: false,
-      device: false
     }
-  },
-  methods: {
-    
   }
 }
 </script>

@@ -26,14 +26,13 @@
 
 <script>
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   },
   methods: {
     call() {
-      this.$router.push({path: '/student/room'});
+      this.$router.push({ path: '/student/room' });
     }
   }
 }

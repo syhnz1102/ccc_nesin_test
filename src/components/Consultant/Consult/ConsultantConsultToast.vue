@@ -6,14 +6,10 @@
 
 <script>
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
     }
   }
 }
 </script>
 
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>

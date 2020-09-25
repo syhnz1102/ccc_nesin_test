@@ -12,8 +12,7 @@
 
 <script>
 export default {
-  name: 'hello',
-  data () {
+  data() {
     return {
        entrance:false,
     }
@@ -21,6 +20,3 @@ export default {
 }
 </script>
 
-<style>
-  @import '../../../assets/consultant/css/consultant.css';
-</style>
