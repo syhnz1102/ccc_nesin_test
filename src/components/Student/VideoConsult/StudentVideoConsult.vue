@@ -1,82 +1,44 @@
 <template>
-   <div class="wrapper">
-      <div class="header">
-         <div class="logo">
-            <span class="img">
-               <img src="@/assets/student/images/img_logo_sample.png" />
-            </span>
-            <strong>화상 상담</strong>
+   <div class="videoContainer">
+      <div class="mainVideo">
+         <div class="video" v-bind:class="{ 'camoff': offVideo }">
+            <div v-if="offMic" class="micoff"></div>
+            <video @click="handleVideoClick" style="background:url('@/assets/student/images/img_video_sample2.jpg') no-repeat center 0;background-size:cover"></video>
          </div>
-         <div class="button">
-            <button>상담종료</button>
-         </div>
-      </div>
-      <div class="container">
-         <div class="chatContainer">
-            <div class="chatContent">
-               <p>상담이 시작되었습니다.</p>
-               <div class="message left">
-                  <div class="name">상담사</div>
-                  <div class="bubble">
-                     <p>안녕하세요.</p>
-                  </div>
-                  <div class="bubble">
-                     <p>한국대학교입니다.</p>
-                     <span class="time">오후 00:00</span>
-                  </div>
-               </div>
-               <div class="message right">
-                  <div class="bubble">
-                     <p>안녕하세요.</p>
-                  </div>
-                  <div class="bubble">
-                     <p>홍길동입니다.</p>
-                  </div>
-                  <div class="bubble">
-                     <span class="time">오후 00:00</span>
-                     <p>입시상담요청 드려요.</p>
-                  </div>
-               </div>
-               <div class="message left">
-                  <div class="name">상담사</div>
-                  <div class="bubble">
-                     <p>화상으로 상담드리겠습니다.</p>
-                  </div>
-                  <div class="bubble">
-                     <p>화면이 나오는걸 원치 않으시면 카메라를 꺼주시면 됩니다.</p>
-                     <span class="time">오후 00:00</span>
-                  </div>
-               </div>
-               <p>화상상담이 시작되었습니다.</p>
-            </div>
-            <div class="chatInput">
-               <input tyle="text" placeholder="메시지를 입력하세요.">
-               <button>전송</button>
-            </div>
-         </div>
-         <div class="videoContainer">
-            <div class="mainVideo">
-               <div class="video">
-                  <video style="background:url('@/assets/student/images/img_video_sample2.jpg') no-repeat center 0;background-size:cover"></video>
-               </div>
-               <div class="video local">
-                  <video style="background:url('@/assets/student/images/img_video_sample1.jpg') no-repeat center 0;background-size:cover"></video>
-               </div>
-            </div>
+         <div class="video local" v-bind:class="{ 'camoff': offVideo }">
+            <div v-if="offMic" class="micoff"></div>
+            <video style="background:url('@/assets/student/images/img_video_sample1.jpg') no-repeat center 0;background-size:cover"></video>
          </div>
       </div>
+      <VideoConsultBtn
+         v-if="!hideBtn"
+         @Btn="btnBinder"
+      />
    </div>
 </template>
 
 <script>
+import VideoConsultBtn from '@/components/student/VideoConsult/StudentVideoConsultBtn'
+
 export default {
-  data() {
-    return {
-    }
-  }
+   components: {
+      VideoConsultBtn
+   },
+   data() {
+      return {
+         offVideo: false,
+         offMic: false,
+         hideBtn: true
+      }
+   },
+   methods: {
+      handleVideoClick() {
+         this.hideBtn = !this.hideBtn;
+      },
+      btnBinder(param) {
+         this.offVideo = param.offVideo,
+         this.offMic = param.offMic
+      }
+   }
 }
 </script>
-
-<style>
-  @import '../../../assets/student/css/student.css';
-</style>
