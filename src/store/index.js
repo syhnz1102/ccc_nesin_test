@@ -12,6 +12,7 @@ export default new Vuex.Store({
     userInfo: {},
     isJoined: false,
     isCalling: false,
+    studentName: ''
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -63,6 +64,15 @@ export default new Vuex.Store({
       state.roomInfo = {}
       if (state.socket) state.socket.close();
       state.socket = null;
+    },
+    setJoinedStatus(state, bool) {
+      state.isJoined = bool;
+    },
+    setCallingStatus(state, bool) {
+      state.isCalling = bool;
+    },
+    setStudentName(state, name) {
+      state.studentName = name;
     }
   }
 })

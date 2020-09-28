@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { eBus } from '../../../commons/eventBus.js'
+import { eBus } from '../../../../commons/eventBus.js'
 
 export default {
   data() {

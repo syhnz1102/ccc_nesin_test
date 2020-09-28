@@ -13,17 +13,17 @@
                   <p>{{ i.contents }}</p>
                </div>
             </div> -->
-            
-            <div v-for="i in chatMessage" v-bind:key="i.idx" v-bind:class="{ left: i.type === 'left', right: i.type === 'right' }" class="message">
-               <div class="bubble">
-                  <!-- <span v-if="i.time" class="time">{{ i.time }}</span> -->
-                  <p>{{ i.contents }}</p>
-               </div>
-               <div class="bubble">
-                  <span v-if="i.time" class="time">{{ i.time }}</span>
-                  <p>{{ i.contents }}</p>
-               </div>
-            </div>
+
+<!--            <div v-for="i in chatMessage" v-bind:key="i.idx" v-bind:class="{ left: i.type === 'left', right: i.type === 'right' }" class="message">-->
+<!--               <div class="bubble">-->
+<!--                  &lt;!&ndash; <span v-if="i.time" class="time">{{ i.time }}</span> &ndash;&gt;-->
+<!--                  <p>{{ i.contents }}</p>-->
+<!--               </div>-->
+<!--               <div class="bubble">-->
+<!--                  <span v-if="i.time" class="time">{{ i.time }}</span>-->
+<!--                  <p>{{ i.contents }}</p>-->
+<!--               </div>-->
+<!--            </div>-->
 
 
             <!-- <p>{{ chatNotice }}</p> -->

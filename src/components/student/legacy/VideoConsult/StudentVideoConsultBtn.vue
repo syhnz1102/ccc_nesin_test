@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { eBus } from '../../../commons/eventBus';
+import { eBus } from '../../../../commons/eventBus';
 
 export default {
    data() {

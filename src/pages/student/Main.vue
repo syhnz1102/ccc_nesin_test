@@ -13,10 +13,10 @@
                   <p>이름을 입력하고 상담을 시작해보세요.</p>
                </div>
                <div class="input">
-                  <input type="text" placeholder="이름을 입력하세요.">
+                  <input ref="name" type="text" placeholder="이름을 입력하세요.">
                </div>
                <div class="button">
-                  <button @click="call">상담 시작하기</button>
+                  <button @click="handleStartBtnClick">상담 시작하기</button>
                </div>
             </div>
          </div>
@@ -25,14 +25,17 @@
 </template>
 
 <script>
+import store from "../../store";
+
 export default {
   data() {
     return {
     }
   },
   methods: {
-    call() {
-      this.$router.push({ path: '/student/room' });
+    handleStartBtnClick() {
+      store.commit('setStudentName', this.$refs.name.value);
+      this.$router.push({ path: `/student/room/${this.$store.state.roomInfo.roomId}` });
     }
   }
 }

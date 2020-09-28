@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { eBus } from '../../../commons/eventBus.js'
+import { eBus } from '../../../../commons/eventBus.js'
 
 export default {
   props: { contents: String },
@@ -34,7 +34,7 @@ export default {
   },
   created() {
     console.log(this.contents);
-  }, 
+  },
   methods: {
     handleSubmitBtnClick() {//화상,화면공유만 다 끄고 채팅만남게
       eBus.$emit('video', this.video);
