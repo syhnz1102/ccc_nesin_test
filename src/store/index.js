@@ -10,6 +10,7 @@ export default new Vuex.Store({
     streamInfo: {},
     roomInfo: {},
     userInfo: {},
+    isJoined: false,
     isCalling: false,
   },
   mutations: {

@@ -24,6 +24,9 @@ export default {
     return {
       toast: false,
     }
+  },
+  destroyed() {
+    if (this.$store.state.socket) this.$store.state.socket.close();
   }
 }
 </script>

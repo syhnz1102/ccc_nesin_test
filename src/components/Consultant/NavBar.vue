@@ -13,13 +13,13 @@
       </div>
       <div class="menu">
          <ul>
-            <li :class="{ on: isOn == 'videoClicked' }">
+            <li :class="{ on: menu === 'call' }">
                <button @click="handleVideoBtnClick">화상상담</button>
             </li>
-            <li :class="{ on: isOn == 'displayShareClicked' }">
+            <li :class="{ on: menu === 'share' }">
                <button>화면공유</button>
             </li>
-            <li :class="{ on: isOn == 'deviceClicked' }">
+            <li :class="{ on: menu === 'setting' }">
                <button @click="handleSettingBtnClick">설정</button>
             </li>
          </ul>
@@ -33,20 +33,20 @@ import { eBus } from '../../commons/eventBus.js'
 export default {
   data() {
     return {
-       entrance: false,
-       isOn: 'notClicked',
-       videoOn: 'noVideo',
-       display: false,
-       videoInfo: [],
+      entrance: false,
+      menu: '', // call, share, setting
+      videoOn: 'noVideo',
+      display: false,
+      videoInfo: [],
     }
   },
   created() {
-      eBus.$on('closeDeviceStandard', bool => {
-         this.isOn = 'notClicked';
-      });
-      eBus.$on('closeDeviceOnPlay', bool => {
-         this.isOn = 'videoClicked';
-      });
+      // eBus.$on('closeDeviceStandard', bool => {
+      //    this.isOn = 'notClicked';
+      // });
+      // eBus.$on('closeDeviceOnPlay', bool => {
+      //    this.isOn = 'videoClicked';
+      // });
   },
   methods: {
       handleVideoBtnClick() {

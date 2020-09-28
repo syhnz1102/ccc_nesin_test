@@ -7,8 +7,8 @@
          </div>
          <StudentEntrance v-if="entrance" /> <!--아직처리안됨-->
          <div class="chatInput">
-            <input tyle="text" placeholder="메시지를 입력하세요.">
-            <button>전송</button>
+            <input type="text" placeholder="메시지를 입력하세요." v-on:keyup.enter="handleSendBtnClick" />
+            <button @click="handleSendBtnClick">전송</button>
          </div>
       </div>
       <DeviceStandard v-if="standardSetting" />
@@ -23,8 +23,8 @@ import StatusBar from './StatusBar'
 import StudentEntrance from './Consult/ConsultantConsultStudentEntrance'
 import VideoConsult from './VideoConsult/ConsultantVideoConsult'
 import DeviceStandard from './Consult/ConsultantConsultDevice'
-import DeviceStart from './VideoConsult/ConsultantVideoConsultDeviceStart'
-import DeviceOnplay from './VideoConsult/ConsultantVideoConsultDeviceOnPlay'
+// import DeviceStart from './VideoConsult/ConsultantVideoConsultDeviceStart'
+// import DeviceOnplay from './VideoConsult/ConsultantVideoConsultDeviceOnPlay'
 import { eBus } from '../../commons/eventBus.js'
 
 export default {
@@ -77,6 +77,12 @@ export default {
       })
    },
    methods: {
+     handleSendBtnClick() {
+       if (!this.$store.state.isCalling) {
+         console.warn('통화가 시작된 뒤 채팅을 시작할 수 있습니다.');
+         return false;
+       }
+     }
    }
 }
 </script>
