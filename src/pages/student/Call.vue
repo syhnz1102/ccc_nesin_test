@@ -50,6 +50,11 @@ export default {
       session.close();
     }
 
+    eBus.$on('showVideo', param => {
+      console.log('showVideo Event : ', param);
+      this.$store.commit('setCallingStatus', param.on);
+      this.isCalling = param.on; // bool
+    })
     // eBus.$on('popUp', param => {//여기서 popUp으로의 컨텐츠전달은 prop으로
     //    this.popUp.on = param.on;
     //    this.popUp.contents = param.contents;

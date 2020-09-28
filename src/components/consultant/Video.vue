@@ -3,11 +3,11 @@
     <div class="mainVideo">
       <div class="video" v-bind:class="{ 'camoff': offVideo }">
         <div v-if="offMic" class="micoff"></div>
-        <video></video>
+        <video ref="remoteVideo"></video>
       </div>
       <div class="video local" v-bind:class="{ 'camoff': offVideo }">
         <div v-if="offMic" class="micoff"></div>
-        <video></video>
+        <video ref="localVideo"></video>
       </div>
     </div>
     <div class="videobarContainer">
@@ -27,6 +27,9 @@
 </template>
 
 <script>
+import WebRTC from "../../commons/webrtc";
+import {eBus} from "../../commons/eventBus";
+
 export default {
   name: "Video",
   data() {
@@ -35,11 +38,22 @@ export default {
       offMic: true
     }
   },
-  created() {
-    // eBus.$on('closeDeviceStart', ( bool ) => {
-    //   this.offVideo = bool,
-    //     this.offMic = bool
-    // });
+  async created() {
+    let stream = await WebRTC.createVideoStream();
+    this.$refs.localVideo.srcObject = stream;
+    this.$refs.localVideo.autoplay = true;
+    this.$refs.localVideo.muted = true;
+    this.$refs.localVideo.playsInline = true;
+
+    // peer 생성
+    await WebRTC.createPeer();
+    await WebRTC.createOffer('local');
+
+    eBus.$on('video', param => {
+      this.$refs.remoteVideo.srcObject = param.stream;
+      this.$refs.remoteVideo.autoplay = true;
+      this.$refs.remoteVideo.playsInline = true;
+    })
   },
   methods: {
     handleVideoOffBtnClick() {

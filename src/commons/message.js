@@ -1,6 +1,6 @@
 import store from '../store';
 import router from '../router';
-// import webRTC from './webrtc';
+import webRTC from './webrtc';
 // import mobile from './mobile';
 import { eBus } from "./eventBus";
 // import screenShare from "./screenshare";
@@ -61,47 +61,40 @@ export async function onMessage(resp) {
       sendMessage('StartSession', { code: '200' });
       if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length, type: resp.useMediaSvr === 'Y' ? 'multi' : 'p2p', host: resp.host });
       store.commit('setJoinedStatus', true);
-      // if (resp.useMediaSvr === 'Y') {
-      //   if (resp.changeView || resp.who === store.state.userInfo.id) {
-      //     // 200619 ivypark, v0.9.3. 1:1 -> N:N 전환 시 화면공유 종료 (stream이 3번째 사용자에게 전달 되지 않음. 끊는 것이 날리지톡 정책)
-      //     if (store.state.streamInfo.screen) {
-      //       eBus.$emit('share', { type: 'remove' });
-      //       eBus.$emit('popup', { on: true, type: 'Alert', title: '화면 공유', contents: '다자 통화 화면 전환으로 인해 화면공유가 종료됩니다.' });
-      //     }
-      //
-      //     store.commit('removePeerInfo', 'local');
-      //     await webRTC.createPeer('local', resp.useMediaSvr === 'Y');
-      //     await webRTC.createOffer('local');
-      //   }
-      // } else {
-      //   await webRTC.createPeer('local', resp.useMediaSvr === 'Y');
-      //   await webRTC.createOffer('local');
-      // }
+
+      // 내신닷컴에서는 StartSession에서 SDP를 전송하지 않음.
+
       break;
-    //
-    // case 'SDP':
-    //   if (resp.code === '200') return;
-    //   if (resp.usage === 'cam') {
-    //     if (resp.sdp.type === 'offer') {
-    //       await webRTC.createPeer(resp.useMediaSvr === 'N' ? 'local' : resp.displayId, resp.useMediaSvr === 'Y', resp.pluginId);
-    //       await webRTC.createAnswer(resp.sdp, resp.useMediaSvr === 'N' ? 'local' : resp.displayId);
-    //       sendMessage('SDP', { code: '200' });
-    //     } else if (resp.sdp.type === 'answer') {
-    //       // if (resp.useMediaSvr === 'Y') await webRTC.createPeer(resp.userId);
-    //       await webRTC.setRemoteDescription(resp.sdp, 'local');
-    //       sendMessage('SDP', { code: '200' });
-    //     }
-    //   } else if (resp.usage === 'screen') {
-    //     if (resp.sdp.type === 'offer') {
-    //       await screenShare.createPeer('screen', resp.useMediaSvr === 'Y', resp.pluginId);
-    //       await webRTC.createAnswer(resp.sdp, 'screen');
-    //       sendMessage('SDP', { code: '200' });
-    //     } else if (resp.sdp.type === 'answer') {
-    //       await webRTC.setRemoteDescription(resp.sdp, 'screen');
-    //       sendMessage('SDP', { code: '200' });
-    //     }
-    //   }
-    //   break;
+
+    case 'SDP':
+      if (resp.code === '200') return;
+      if (resp.usage === 'cam') {
+        if (resp.sdp.type === 'offer') {
+          sendMessage('SDP', { code: '200' });
+          // 학생
+          eBus.$emit('showVideo', { on: true });
+          setTimeout(async () => {
+            await webRTC.createPeer();
+            await webRTC.createAnswer(resp.sdp, 'local');
+          }, 1000);
+          console.log(store.state)
+        } else if (resp.sdp.type === 'answer') {
+          // 상담사
+          await webRTC.setRemoteDescription(resp.sdp, 'local');
+          sendMessage('SDP', { code: '200' });
+          console.log(store.state)
+        }
+      } else if (resp.usage === 'screen') {
+        // if (resp.sdp.type === 'offer') {
+        //   await screenShare.createPeer('screen', resp.useMediaSvr === 'Y', resp.pluginId);
+        //   await webRTC.createAnswer(resp.sdp, 'screen');
+        //   sendMessage('SDP', { code: '200' });
+        // } else if (resp.sdp.type === 'answer') {
+        //   await webRTC.setRemoteDescription(resp.sdp, 'screen');
+        //   sendMessage('SDP', { code: '200' });
+        // }
+      }
+      break;
     //
     // case 'Candidate':
     //   if (resp.usage === 'cam') {
@@ -151,32 +144,23 @@ export async function onMessage(resp) {
     //   })
     //   break;
     //
-    // case 'Presence':
-    //   if (resp.action === 'exit') {
-    //     store.commit('setRoomInfo', { count: store.state.roomInfo.count - 1 });
-    //     if (store.state.roomInfo.count <= 1 && store.state.peerInfo.hasOwnProperty('screen')) {
-    //       eBus.$emit('share', {
-    //         type: 'remove',
-    //         isSharer: true
-    //       })
-    //       eBus.$emit('popup', {
-    //         on: true,
-    //         type: 'Alert',
-    //         title: '화면 공유',
-    //         contents: '다른 모든 사용자가 통화를 종료하여 화면공유가 종료됩니다.'
-    //       })
-    //     }
-    //
-    //     eBus.$emit('video', {
-    //       type: 'remove',
-    //       count: store.state.roomInfo.count,
-    //       id: store.state.roomInfo.type === 'p2p' ? 'remote' : resp.userId
-    //     })
-    //   } else if (resp.action === 'join') {
-    //     if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
-    //   }
-    //   break;
-    //
+    case 'Presence':
+      if (resp.action === 'exit' && window.location.href.indexOf('student') > -1) {
+        // 학생일 경우 상담사가 나가면 자신도 종료 후 메인화면으로 이동
+        if (this.$store.state.socket) {
+          // webRTC.clear();
+
+          this.$store.state.socket.close();
+          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+        }
+
+        router.push({ path: `/student` });
+        console.log('store : ', store.state)
+      } else if (resp.action === 'join') {
+        if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
+      }
+      break;
+
     case 'ChangeName':
       store.commit('setStudentName', resp.name);
       eBus.$emit('entrance', {

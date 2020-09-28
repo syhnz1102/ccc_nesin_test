@@ -36,7 +36,6 @@ export default {
     return {
       entrance: false,
       menu: '', // call, share, setting
-      display: false,
       studentInfo: {
         name: '',
         time: ''
@@ -60,15 +59,18 @@ export default {
   },
   methods: {
     handleVideoBtnClick() {
-      return alert('현재 준비 중인 기능입니다.');
+      // return alert('현재 준비 중인 기능입니다.');
+      this.menu = this.menu === 'call' ? '' : 'call';
 
-      // this.display = !this.display;
-      // if (!this.display) {
-      //   this.menu = 'call';
-      //   window.resizeTo( 854, 606 );
-      // } else {
-      //   window.resizeTo( 514, 606 );
-      // }
+      if (this.menu === 'call') {
+        // Call 상태
+        eBus.$emit('showVideo', { on: true });
+        window.resizeTo( 854, 606 );
+      } else {
+        // Call 상태 아님
+        eBus.$emit('showVideo', { on: false });
+        window.resizeTo( 514, 606 );
+      }
     },
     handleShareBtnClick() {
       return alert('현재 준비 중인 기능입니다.');
