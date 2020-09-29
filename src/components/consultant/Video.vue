@@ -13,8 +13,8 @@
     <div class="videobarContainer">
       <div class="menu">
         <div class="info">
-          <span>홍길동</span>
-          <span>00:00</span>
+          <span>{{ name }}</span>
+          <span>{{ time }}</span>
         </div>
         <div class="button">
           <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo }"></button>
@@ -28,14 +28,18 @@
 
 <script>
 import WebRTC from "../../commons/webrtc";
-import {eBus} from "../../commons/eventBus";
+import { runningTime } from "../../commons/utils";
+import { eBus } from "../../commons/eventBus";
 
 export default {
   name: "Video",
   data() {
     return {
       offVideo: true,
-      offMic: true
+      offMic: true,
+      name: '',
+      time: '00:00',
+      counter: 0
     }
   },
   async created() {
@@ -54,14 +58,24 @@ export default {
       this.$refs.remoteVideo.autoplay = true;
       this.$refs.remoteVideo.playsInline = true;
     })
+    eBus.$on('consultInfo', param => {
+      // this.consultInfo.name = param.name;
+      // this.consultInfo.time = param.time;
+
+      this.name = param.name;
+      setInterval(this.intervalFunc, 1000);
+    })
   },
   methods: {
+    intervalFunc() {
+      this.time = runningTime(this.counter++);
+    },
     handleVideoOffBtnClick() {
       this.offVideo = !this.offVideo;
     },
     handleMicOffBtnClick() {
       this.offMic = !this.offMic;
-    },
+    }
   }
 }
 </script>

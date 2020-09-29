@@ -19,3 +19,21 @@ export const chatTime = () => {
 
   return today
 }
+
+export const runningTime = (counter) => {
+  let sec = counter % 60;
+  let min = Math.floor( counter / 60 );
+  let hour = Math.floor( min / 60 );
+  let time = 'asd'
+
+  //시, 분, 초
+  if( hour < 10 ){ hour = "0" + hour; }
+  if( min < 10 ){ min = "0" + min; }
+  if( sec < 10 ){ sec = "0" + sec; }
+
+  //1시간 전후 시간모양 변경
+  if( hour == 0 ){ time = min + ':' + sec; }
+  else { time = hour + ':' + min + ':' + sec; }
+
+  return time
+}
