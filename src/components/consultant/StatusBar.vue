@@ -35,7 +35,7 @@ export default {
       document.execCommand('copy');
       document.body.removeChild(t);
 
-      // eBus.$emit('toast', '');
+      eBus.$emit('toast', 'URL이 복사 되었습니다.');
     },
     handleCloseBtn() {
       this.showTooltip = !this.showTooltip;

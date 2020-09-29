@@ -9,7 +9,6 @@
       <Chat />
       <Video v-if="isCalling" />
     </div>
-<!--    <Container />-->
   </div>
 </template>
 
