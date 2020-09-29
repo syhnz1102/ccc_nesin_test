@@ -32,6 +32,9 @@ export default {
         sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
       }
 
+      this.$store.commit('setCallingStatus', false);
+      this.$store.commit('setJoinedStatus', false);
+      window.resizeTo( 514, 606 );
       router.push({ path: `/main` });
       console.log('store : ', store.state)
     }

@@ -60,6 +60,7 @@ export default {
   methods: {
     handleVideoBtnClick() {
       // return alert('현재 준비 중인 기능입니다.');
+      if (!this.$store.state.isJoined) return alert('상담 시작 후 통화를 진행할 수 있습니다.');
       this.menu = this.menu === 'call' ? '' : 'call';
 
       if (this.menu === 'call') {
