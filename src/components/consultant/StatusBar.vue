@@ -23,7 +23,7 @@ export default {
   created() {
     eBus.$on('entrance', param => {
       console.log('statusBar = ', param)
-      this.entrance = true;
+      this.entrance = param.entrance;
     });
   },
   methods: {
