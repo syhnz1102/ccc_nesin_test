@@ -6,7 +6,7 @@ import StudentMain from '@/pages/student/Main'
 import StudentCall from '@/pages/student/Call'
 
 import Intro from '@/pages/Intro'; // TO DO DELETE
-
+ 
 Vue.use(Router)
 
 export default new Router({
