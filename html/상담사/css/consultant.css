@@ -4,11 +4,12 @@
 
 html,
 body,
+#app,
 .wrapper {position:relative;width:100%;height:100%}
 
 .mainContainer {display:flex;width:100%;height:100%;justify-content:center;align-items:center;background:#f0f0f0}
-.mainContainer .boxContainer {width:100%;max-width:500px;padding:150px 50px 50px;box-sizing:border-box}
-.mainContainer .box {position:relative;padding:50px;border-radius:5px;background:#363f4e;box-sizing:border-box;box-shadow:0px 10px 20px 0px rgba(0,0,0,0.2)}
+.mainContainer .boxContainer {width:100%;max-width:500px;padding:150px 50px 30px;box-sizing:border-box}
+.mainContainer .box {position:relative;padding:30px 50px;border-radius:5px;background:#363f4e;box-sizing:border-box;box-shadow:0px 10px 20px 0px rgba(0,0,0,0.2)}
 .mainContainer .box::before {content:'';position:absolute;top:-135px;right:20px;display:block;width:216px;height:135px;background:url('../images/img_main.png') no-repeat 0 0;background-size:cover}
 .mainContainer .logo {width:100%;margin-bottom:40px;text-align:center}
 .mainContainer .logo .img {display:block;width:auto;height:40px;vertical-align:middle}
@@ -35,12 +36,13 @@ body,
 .lnb .user .img {width:80px;height:80px;margin:0 auto;border-radius:80px;background:url('../images/icons.png') no-repeat 0 0}
 .lnb .user .info {margin-top:10px;padding:0 10px;text-align:center}
 .lnb .user .info p {color:#999}
-.lnb .user .info .name {font-weight:500}
+.lnb .user .info .name {overflow:hidden;max-width:100px;text-overflow:ellipsis;font-weight:500}
 .lnb .user .info .time {margin-top:2px;font-size:12px;color:#666}
 .lnb .menu::before {content:'';display:block;width:100px;height:1px;margin:0 auto 5px;background:#ddd}
 .lnb .menu ul {margin-top:20px}
 .lnb .menu li button {display:block;width:90px;height:80px;margin:0 auto;text-align:center;font-size:15px;color:#999;border-radius:5px}
 .lnb .menu li button::before {content:'';display:block;width:20px;height:20px;margin:0 auto;margin-bottom:2px;background-image:url('../images/icons.png');background-repeat:no-repeat}
+.lnb .menu li + li {margin-top:5px}
 .lnb .menu li:nth-child(1) button::before {background-position:0 -80px}
 .lnb .menu li:nth-child(2) button::before {background-position:-20px -80px}
 .lnb .menu li:nth-child(3) button::before {background-position:-40px -80px}
@@ -73,7 +75,7 @@ body,
 .chatContainer .chatContent .message {margin-top:20px}
 .chatContainer .chatContent .message .name {margin-bottom:5px;font-weight:500}
 .chatContainer .chatContent .message .bubble p {display:inline-block;max-width:calc(100% - 100px);padding:8px 15px;word-break:break-word;border-radius:5px}
-.chatContainer .chatContent .message .bubble .time {vertical-align:bottom;font-size:12px;color:#999}
+.chatContainer .chatContent .message .bubble .time {padding:0 2px;vertical-align:bottom;font-size:12px;color:#999}
 .chatContainer .chatContent .message .bubble + .bubble {margin-top:5px}
 .chatContainer .chatContent .message.right .bubble {text-align:right}
 .chatContainer .chatContent .message.right .bubble p {text-align:left;color:#fff;border-top-right-radius:0;background:#6677c0}
