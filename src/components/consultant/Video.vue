@@ -1,12 +1,12 @@
 <template>
   <div class="videoContainer">
     <div class="mainVideo">
-      <div class="video" v-bind:class="{ 'camoff': offVideo }">
-        <div v-if="offMic" class="micoff"></div>
+      <div class="video" v-bind:class="{ 'camoff': offVideo.remote }">
+        <div v-if="offMic.remote" class="micoff"></div>
         <video ref="remoteVideo"></video>
       </div>
-      <div class="video local" v-bind:class="{ 'camoff': offVideo }">
-        <div v-if="offMic" class="micoff"></div>
+      <div class="video local" v-bind:class="{ 'camoff': offVideo.local }">
+        <div v-if="offMic.local" class="micoff"></div>
         <video ref="localVideo"></video>
       </div>
     </div>
@@ -17,8 +17,8 @@
           <span>00:00</span>
         </div>
         <div class="button">
-          <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo }"></button>
-          <button @click="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off': offMic }"></button>
+          <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo.local }"></button>
+          <button @click="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off': offMic.local }"></button>
           <button class="endcall"></button>
         </div>
       </div>
@@ -28,14 +28,21 @@
 
 <script>
 import WebRTC from "../../commons/webrtc";
-import {eBus} from "../../commons/eventBus";
+import { eBus } from "../../commons/eventBus";
+import { sendMessage } from "../../commons/message";
 
 export default {
   name: "Video",
   data() {
     return {
-      offVideo: true,
-      offMic: true
+      offVideo: {
+        local: false,
+        remote: false
+      },
+      offMic: {
+        local: false,
+        remote: false
+      }
     }
   },
   async created() {
@@ -50,17 +57,52 @@ export default {
     await WebRTC.createOffer('local');
 
     eBus.$on('video', param => {
-      this.$refs.remoteVideo.srcObject = param.stream;
-      this.$refs.remoteVideo.autoplay = true;
-      this.$refs.remoteVideo.playsInline = true;
+      if (param.type === 'set') {
+        if (param.hasOwnProperty('video')) {
+          this.offVideo[param.id] = param.video;
+          this.$refs.remoteVideo.style = this.offVideo[param.id] ? `display: none` : `display: block`;
+        }
+        if (param.hasOwnProperty('audio')) {
+          this.offMic[param.id] = param.audio;
+        }
+      } else {
+        this.$refs.remoteVideo.srcObject = param.stream;
+        this.$refs.remoteVideo.autoplay = true;
+        this.$refs.remoteVideo.playsInline = true;
+      }
     })
   },
   methods: {
     handleVideoOffBtnClick() {
-      this.offVideo = !this.offVideo;
+      this.offVideo.local = !this.offVideo.local;
+      this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
+
+      let s = this.$store.state;
+      sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');
+
+      if (s.streamInfo.local) {
+        const tracks = s.streamInfo.local.getTracks();
+        tracks.forEach(curr => {
+          if (curr.kind === 'video') {
+            curr.enabled = !this.offVideo.local;
+          }
+        });
+      }
     },
     handleMicOffBtnClick() {
-      this.offMic = !this.offMic;
+      this.offMic.local = !this.offMic.local;
+
+      let s = this.$store.state;
+      sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
+
+      if (s.streamInfo.local) {
+        const tracks = s.streamInfo.local.getTracks();
+        tracks.forEach(curr => {
+          if (curr.kind === 'audio') {
+            curr.enabled = !this.offMic.local;
+          }
+        });
+      }
     },
   }
 }

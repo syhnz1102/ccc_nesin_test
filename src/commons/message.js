@@ -186,23 +186,23 @@ export async function onMessage(resp) {
         message: `${resp.name}님이 입장하였습니다.`
       })
       break;
-    //
-    // case 'SetAudio':
-    //   eBus.$emit('video', {
-    //     type: 'set',
-    //     id: store.state.roomInfo.type === 'p2p' ? 'remote' : resp.userId,
-    //     isOffMic: resp.status
-    //   })
-    //   break;
-    //
-    // case 'SetVideo':
-    //   eBus.$emit('video', {
-    //     type: 'set',
-    //     id: store.state.roomInfo.type === 'p2p' ? 'remote' : resp.userId,
-    //     isOffVideo: resp.status
-    //   })
-    //   break;
-    //
+
+    case 'SetAudio':
+      eBus.$emit('video', {
+        type: 'set',
+        id: 'remote',
+        audio: resp.status
+      })
+      break;
+
+    case 'SetVideo':
+      eBus.$emit('video', {
+        type: 'set',
+        id: 'remote',
+        video: resp.status
+      })
+      break;
+
     case 'Chat':
       eBus.$emit('chat', {
         type: 'left',
