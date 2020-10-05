@@ -83,6 +83,7 @@ export async function onMessage(resp) {
           await webRTC.setRemoteDescription(resp.sdp, 'local');
           sendMessage('SDP', { code: '200' });
           console.log(store.state)
+          eBus.$emit('consultInfo', { name: store.state.studentName });
         }
       } else if (resp.usage === 'screen') {
         // if (resp.sdp.type === 'offer') {
