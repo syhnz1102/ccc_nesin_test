@@ -45,7 +45,7 @@ export default {
   created() {
     eBus.$on('entrance', param => {
       console.log('navBar = ', param)
-      this.entrance = true;
+      this.entrance = param.entrance;
       this.studentInfo.name = param.name;
       this.studentInfo.time = now()
     });

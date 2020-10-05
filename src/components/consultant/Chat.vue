@@ -66,13 +66,13 @@ export default {
     handleSendBtnClick() {
       let message = this.$refs.chatMessage.value;
       if (!message) {
-        alert('메시지를 입력하세요.');
+        eBus.$emit('toast', '메시지를 입력하세요.');
         return false;
       }
 
       this.$refs.chatMessage.value = '';
       if (!this.$store.state.isJoined) {
-        alert('상담이 시작된 뒤 채팅을 시작할 수 있습니다.');
+        eBus.$emit('toast', '상담이 시작된 뒤 채팅을 할 수 있습니다.');
         return false;
       }
 

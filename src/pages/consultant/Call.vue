@@ -1,5 +1,8 @@
 <template>
   <div class="wrapper">
+    <div v-if="toast" class="toast">
+      <p>{{ toast }}</p>
+    </div>
     <Header />
     <NavBar />
     <div class="container">
@@ -25,6 +28,7 @@ export default {
   },
   data() {
     return {
+      toast: '',
       isCalling: false
     }
   },
@@ -33,6 +37,14 @@ export default {
       console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
+    })
+
+    eBus.$on('toast', contents => {
+      if (this.timeout) clearTimeout(this.timeout);
+      this.toast = contents;
+      this.timeout = setTimeout(() => {
+        this.toast = '';
+      }, 500)
     })
   },
   destroyed() {

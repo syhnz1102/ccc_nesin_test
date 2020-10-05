@@ -148,15 +148,28 @@ export async function onMessage(resp) {
     case 'Presence':
       if (resp.action === 'exit' && window.location.href.indexOf('student') > -1) {
         // 학생일 경우 상담사가 나가면 자신도 종료 후 메인화면으로 이동
-        if (this.$store.state.socket) {
+        if (store.state.socket) {
           // webRTC.clear();
 
-          this.$store.state.socket.close();
+          alert('상담이 종료 되었습니다.');
+          store.state.socket.close();
           sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
         }
 
         router.push({ path: `/student` });
         console.log('store : ', store.state)
+      } else if (resp.action === 'exit' && window.location.href.indexOf('student') <= -1) {
+        // 상담사인 경우 방은 유지, notice만 줌
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: `${store.state.studentName}님이 퇴장하였습니다.`
+        })
+
+        store.commit('setStudentName', '');
+        eBus.$emit('entrance', {
+          entrance: false,
+          name: ''
+        })
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
       }
@@ -165,6 +178,7 @@ export async function onMessage(resp) {
     case 'ChangeName':
       store.commit('setStudentName', resp.name);
       eBus.$emit('entrance', {
+        entrance: true,
         name: resp.name
       })
 

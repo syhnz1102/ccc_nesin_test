@@ -23,7 +23,7 @@ export default {
   created() {
     eBus.$on('entrance', param => {
       console.log('statusBar = ', param)
-      this.entrance = true;
+      this.entrance = param.entrance;
     });
   },
   methods: {
@@ -35,7 +35,7 @@ export default {
       document.execCommand('copy');
       document.body.removeChild(t);
 
-      // eBus.$emit('toast', '');
+      eBus.$emit('toast', 'URL이 복사 되었습니다.');
     },
     handleCloseBtn() {
       this.showTooltip = !this.showTooltip;
