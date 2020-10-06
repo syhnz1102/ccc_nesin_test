@@ -14,8 +14,8 @@ class Session {
   connect() {
     return new Promise(resolve => {
       console.debug('----------------- Opened Session -----------------')
-      // this.socket = io.connect('https://localhost:7103/SignalServer', { reconnect: true, 'transports': ['websocket'] })
-      this.socket = io.connect('https://dev.knowledgetalk.co.kr:10099/SignalServer', { reconnect: true, 'transports': ['websocket'] })
+      this.socket = io.connect('https://localhost:7103/SignalServer', { reconnect: true, 'transports': ['websocket'] })
+      // this.socket = io.connect('https://dev.knowledgetalk.co.kr:10099/SignalServer', { reconnect: true, 'transports': ['websocket'] })
       this.socket.on('knowledgetalk', onMessage);
       store.commit('setSocketIo', this.socket);
 

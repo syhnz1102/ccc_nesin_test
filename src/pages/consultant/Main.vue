@@ -4,7 +4,8 @@
           <div class="box">
             <div class="logo">
                 <span class="img">
-                  <img src="@/assets/consultant/images/img_logo_sample.png" />
+                  <!-- <img src="@/assets/consultant/images/img_logo_sample.png" /> -->
+                  <img src="http://knowledgepoint.co.kr/file/sample/img_logo_sample.png" /> <!--로고URL-->
                 </span>
             </div>
             <div class="text">

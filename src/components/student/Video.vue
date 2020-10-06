@@ -10,13 +10,19 @@
         <video ref="localVideo"></video>
       </div>
     </div>
-    <Button />
+    <Button
+      v-bind:offVideo="offVideo"
+      v-bind:offMic="offMic"
+      @localVideo="localVideo"
+      @localMic="localMic"
+    />
   </div>
 </template>
 
 <script>
 import Button from './Button';
 import { eBus } from '../../commons/eventBus';
+import { sendMessage } from "../../commons/message";
 import webRTC from "../../commons/webrtc";
 
 export default {
@@ -58,5 +64,20 @@ export default {
       }
     })
   },
+  methods: {
+    localVideo(param) {
+      this.offVideo.local = param.local
+      this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
+      
+      let s = this.$store.state;
+      sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');
+    },
+    localMic(param) {
+      this.offMic.local = param.local
+
+      let s = this.$store.state;
+      sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
+    }
+  }
 }
 </script>

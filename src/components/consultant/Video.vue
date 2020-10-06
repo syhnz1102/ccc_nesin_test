@@ -31,6 +31,7 @@ import WebRTC from "../../commons/webrtc";
 import { eBus } from "../../commons/eventBus";
 import { sendMessage } from "../../commons/message";
 import { runningTime } from "../../commons/utils";
+import store from '../../store';
 
 export default {
   name: "Video",
@@ -46,7 +47,8 @@ export default {
       },
       name: '',
       time: '00:00',
-      counter: 0
+      counter: 0,
+      interval: null,
     }
   },
   async created() {
@@ -75,17 +77,19 @@ export default {
         this.$refs.remoteVideo.playsInline = true;
       }
     })
-    eBus.$on('consultInfo', param => {
-      // this.consultInfo.name = param.name;
-      // this.consultInfo.time = param.time;
 
+    eBus.$on('consultInfo', param => {
       this.name = param.name;
-      setInterval(this.intervalFunc, 1000);
+      this.interval = setInterval(this.intervalFunc, 1000);
     })
+  },
+  destroyed() {
+    clearInterval(this.interval);
   },
   methods: {
     intervalFunc() {
-      this.time = runningTime(this.counter++);
+      store.commit('setRunningTimeInfo', runningTime(this.counter++));
+      this.time = this.$store.state.runningTime;
     },
     handleVideoOffBtnClick() {
       this.offVideo.local = !this.offVideo.local;

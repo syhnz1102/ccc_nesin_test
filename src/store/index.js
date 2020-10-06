@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
+import { runningTime } from "../commons/utils";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,7 +14,9 @@ export default new Vuex.Store({
     userInfo: {},
     isJoined: false,
     isCalling: false,
-    studentName: ''
+    studentName: '',
+    runningTime: '00:00',
+    counter: 0,
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -73,6 +77,9 @@ export default new Vuex.Store({
     },
     setStudentName(state, name) {
       state.studentName = name;
+    },
+    setRunningTimeInfo(state, param) {
+      state.runningTime = param;
     }
-  }
+  },
 })
