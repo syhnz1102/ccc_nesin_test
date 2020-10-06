@@ -1,10 +1,10 @@
 <template>
   <div class="modal">
     <div class="modalContainer">
-      <div class="modalHeader">
-        <span>{{ pTitle }}</span>
-        <button @click="cancelBtnClick">닫기</button>
-      </div>
+<!--      <div class="modalHeader">-->
+<!--        <span>{{ pTitle }}</span>-->
+<!--        <button @click="cancelBtnClick">닫기</button>-->
+<!--      </div>-->
       <Confirm v-if="contentsType === 'Confirm'" v-bind:ok="okBtnClick" v-bind:cancel="cancelBtnClick" v-bind:contents="pContents" />
       <Alert v-if="contentsType === 'Alert'" v-bind:cancel="cancelBtnClick" v-bind:contents="pContents" />
       <Settings v-if="contentsType === 'Settings'" v-bind:ok="okBtnClick" v-bind:contents="pContents" v-bind:option="option" />
@@ -27,7 +27,6 @@ export default {
       pContents: this.contents,
       okBtnClick: this.ok,
       cancelBtnClick: this.cancel,
-      timeout: null
     }
   },
   mounted() {
