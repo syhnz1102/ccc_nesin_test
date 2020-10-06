@@ -69,6 +69,15 @@ export default {
         })
       }
 
+      if (this.$store.state.isCalling) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '화상 상담이 진행 중입니다.'
+        })
+      }
+
       eBus.$emit('popup', {
         on: true,
         type: 'Settings',
@@ -93,9 +102,17 @@ export default {
       })
     },
     handleShareBtnClick() {
-      this.menu.share = !this.menu.share;
+      if (!this.$store.state.isJoined || !this.$store.state.isCalling) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화면 공유',
+          contents: '화상 상담 시작 후 화면 공유를 진행할 수 있습니다.'
+        })
+      }
 
-      return alert('현재 준비 중인 기능입니다.');
+      this.menu.share = !this.menu.share;
+      eBus.$emit('share', { on: this.menu.share });
     },
     handleSettingBtnClick() {
       this.menu.setting = !this.menu.setting;

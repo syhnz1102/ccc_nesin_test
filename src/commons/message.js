@@ -168,6 +168,9 @@ export async function onMessage(resp) {
         })
 
         store.commit('setStudentName', '');
+        store.commit('setJoinedStatus', false);
+        store.commit('setCallingStatus', false);
+        
         eBus.$emit('entrance', {
           entrance: false,
           name: ''

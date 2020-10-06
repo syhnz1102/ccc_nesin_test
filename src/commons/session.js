@@ -61,7 +61,7 @@ class Session {
   }
 
   close() {
-    this.socket.close();
+    if (this.socket) this.socket.close();
     store.commit('clearAll');
     this.stopInterval();
   }

@@ -13,9 +13,6 @@
 </template>
 
 <script>
-// import { eBus } from '../../commons/eventBus'
-import store from '../../store';
-
 export default {
   name: "Button",
   data() {

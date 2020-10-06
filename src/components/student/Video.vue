@@ -48,6 +48,12 @@ export default {
     this.$refs.localVideo.muted = true;
     this.$refs.localVideo.playsInline = true;
 
+    if (this.$store.state.streamInfo.remote) {
+      this.$refs.remoteVideo.srcObject = this.$store.state.streamInfo.remote;
+      this.$refs.remoteVideo.autoplay = true;
+      this.$refs.remoteVideo.playsInline = true;
+    }
+
     eBus.$on('video', param => {
       if (param.type === 'set') {
         if (param.hasOwnProperty('video')) {
@@ -68,7 +74,7 @@ export default {
     localVideo(param) {
       this.offVideo.local = param.local
       this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
-      
+
       let s = this.$store.state;
       sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');
     },

@@ -18,7 +18,7 @@ export default new Router({
       component: Intro
     },
     {
-      path: '/main/:url', // TO DO modify 'root'
+      path: '/main', // TO DO modify 'root'
       name: 'Main',
       component: Main
     },
