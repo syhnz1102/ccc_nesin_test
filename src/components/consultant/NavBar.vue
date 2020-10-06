@@ -13,13 +13,13 @@
       </div>
       <div class="menu">
          <ul>
-            <li :class="{ on: menu === 'call' }">
+            <li :class="{ on: menu.call }">
                <button @click="handleVideoBtnClick">화상상담</button>
             </li>
-            <li :class="{ on: menu === 'share' }">
+            <li :class="{ on: menu.share }">
                <button @click="handleShareBtnClick">화면공유</button>
             </li>
-            <li :class="{ on: menu === 'setting' }">
+            <li :class="{ on: menu.setting }">
                <button @click="handleSettingBtnClick">설정</button>
             </li>
          </ul>
@@ -35,7 +35,11 @@ export default {
   data() {
     return {
       entrance: false,
-      menu: '', // call, share, setting
+      menu: {
+        call: false,
+        share: false,
+        setting: false
+      },
       studentInfo: {
         name: '',
         time: ''
@@ -50,36 +54,65 @@ export default {
       this.studentInfo.time = now()
     });
 
-    // eBus.$on('closeDeviceStandard', bool => {
-    //    this.isOn = 'notClicked';
-    // });
-    // eBus.$on('closeDeviceOnPlay', bool => {
-    //    this.isOn = 'videoClicked';
-    // });
+    eBus.$on('menu', param => {
+      this.menu[param.menu] = param.on;
+    })
   },
   methods: {
     handleVideoBtnClick() {
-      // return alert('현재 준비 중인 기능입니다.');
-      if (!this.$store.state.isJoined) return alert('상담 시작 후 통화를 진행할 수 있습니다.');
-      this.menu = this.menu === 'call' ? '' : 'call';
-
-      if (this.menu === 'call') {
-        // Call 상태
-        eBus.$emit('showVideo', { on: true });
-        window.resizeTo( 854, 606 );
-      } else {
-        // Call 상태 아님
-        eBus.$emit('showVideo', { on: false });
-        window.resizeTo( 514, 606 );
+      if (!this.$store.state.isJoined) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '상담 시작 후 화상 상담을 진행할 수 있습니다.'
+        })
       }
+
+      eBus.$emit('popup', {
+        on: true,
+        type: 'Settings',
+        title: '디바이스 설정',
+        contents: '화상 상담 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
+        option: { inCall: false, start: true },
+        ok: () => {
+          this.menu.call = !this.menu.call;
+
+          if (this.menu.call) {
+            // Call 상태
+            eBus.$emit('showVideo', { on: true });
+            window.resizeTo( 854, 606 );
+          } else {
+            // Call 상태 아님
+            eBus.$emit('showVideo', { on: false });
+            window.resizeTo( 514, 606 );
+          }
+        },
+        cancel: () => {
+        }
+      })
     },
     handleShareBtnClick() {
+      this.menu.share = !this.menu.share;
+
       return alert('현재 준비 중인 기능입니다.');
     },
     handleSettingBtnClick() {
-      return alert('현재 준비 중인 기능입니다.');
+      this.menu.setting = !this.menu.setting;
 
-      // this.isOn = 'deviceClicked';
+      eBus.$emit('popup', {
+        on: true,
+        type: 'Settings',
+        title: '디바이스 설정',
+        contents: this.$store.state.isCalling ? '화상 상담중에는 디바이스 설정을 변경할 수 없습니다.' : '',
+        option: { inCall: this.$store.state.isCalling, start: false },
+        ok: () => {
+          this.menu.setting = false;
+        },
+        cancel: () => {
+          this.menu.setting = false;
+        }
+      })
     }
   }
 }

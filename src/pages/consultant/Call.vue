@@ -1,5 +1,14 @@
 <template>
   <div class="wrapper">
+    <Popup
+      v-if="popup.on"
+      v-bind:type="popup.type"
+      v-bind:title="popup.title"
+      v-bind:contents="popup.contents"
+      v-bind:option="popup.option"
+      v-bind:ok="handlePopupOkBtnClick"
+      v-bind:cancel="handlePopupCancelBtnClick"
+    />
     <div v-if="toast" class="toast">
       <p>{{ toast }}</p>
     </div>
@@ -13,6 +22,7 @@
 </template>
 
 <script>
+import Popup from '@/components/consultant/Popup';
 import Header from '@/components/consultant/Header';
 import NavBar from '@/components/consultant/NavBar';
 import Chat from '@/components/consultant/Chat';
@@ -21,6 +31,7 @@ import { eBus } from "../../commons/eventBus";
 
 export default {
   components: {
+    Popup,
     NavBar,
     Header,
     Chat,
@@ -29,7 +40,16 @@ export default {
   data() {
     return {
       toast: '',
-      isCalling: false
+      isCalling: false,
+      popup: {
+        on: false,
+        type: '',
+        title: '',
+        contents: '',
+        option: {},
+        ok: null,
+        cancel: null
+      },
     }
   },
   created() {
@@ -38,6 +58,16 @@ export default {
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
     })
+
+    eBus.$on('popup', param => {
+      this.popup.on = param.on;
+      this.popup.type = param.type;
+      this.popup.title = param.title;
+      this.popup.contents = param.contents;
+      this.popup.option = param.option;
+      this.popup.ok = param.ok;
+      this.popup.cancel = param.cancel;
+    });
 
     eBus.$on('toast', contents => {
       if (this.timeout) clearTimeout(this.timeout);
@@ -49,6 +79,16 @@ export default {
   },
   destroyed() {
     if (this.$store.state.socket) this.$store.state.socket.close();
+  },
+  methods: {
+    handlePopupOkBtnClick(param) {
+      this.popup.on = false;
+      if (this.popup.ok) this.popup.ok(param);
+    },
+    handlePopupCancelBtnClick(param) {
+      this.popup.on = false;
+      if (this.popup.cancel) this.popup.cancel(param);
+    },
   }
 }
 </script>

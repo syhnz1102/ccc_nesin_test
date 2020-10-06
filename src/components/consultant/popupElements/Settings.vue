@@ -1,5 +1,6 @@
 <template>
   <div class="modalContent">
+    <div class="title">디바이스 설정</div>
     <div class="setting">
       <ul class="select">
         <li>
@@ -35,21 +36,15 @@
     </div>
     <p>{{ contents }}</p>
     <div class="button">
-      <button class="cancel" v-if="!this.option.inCall" @click="init">{{ this.$t('popup-refresh') }}</button>
-      <button class="submit" @click="ok">{{ this.option.inCall ? this.$t('popup-submit') : this.$t('popup-start') }}</button>
-    </div>
-    <div class="modalCheck">
-      <div class="checkbox">
-        <input id="checkbox" type="checkbox" @change="onChangeCheckbox($event)" v-model="isChecked">
-        <label for="checkbox">{{ $t('popup-checkbox-1') }}</label>
-      </div>
+      <button class="cancel" v-if="this.option.start" @click="init">새로고침</button>
+      <button class="submit" @click="ok">{{ this.option.start ? '시작' : '확인' }}</button>
     </div>
   </div>
 </template>
 
 <script>
-  import { eBus } from '../../commons/eventBus';
-  import store from "../../store";
+  import { eBus } from '../../../commons/eventBus';
+  import store from "../../../store";
 
   export default {
     props: { contents: String, ok: Function, option: Object },
