@@ -58,16 +58,18 @@ export async function onMessage(resp) {
       break;
 
     case 'StartSession':
-      sendMessage('StartSession', { code: '200' });
-      if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length, type: resp.useMediaSvr === 'Y' ? 'multi' : 'p2p', host: resp.host });
-      store.commit('setJoinedStatus', true);
+      if (resp.useMediaSvr && resp.useMediaSvr === 'N') {
+        // 내신닷컴에서는 1:1만 허용
+        sendMessage('StartSession', { code: '200' });
+        if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length, type: resp.useMediaSvr === 'Y' ? 'multi' : 'p2p', host: resp.host });
+        store.commit('setJoinedStatus', true);
+      }
 
       // 내신닷컴에서는 StartSession에서 SDP를 전송하지 않음.
-
       break;
 
     case 'SDP':
-      if (resp.code === '200') return;
+      if (resp.code === '200' || (resp.useMediaSvr && resp.useMediaSvr === 'Y')) return;
       if (resp.usage === 'cam') {
         if (resp.sdp.type === 'offer') {
           sendMessage('SDP', { code: '200' });
