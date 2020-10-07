@@ -5,7 +5,7 @@
         <div class="box">
           <div class="logo">
               <span class="img">
-                <img src="@/assets/consultant/images/img_logo_sample.png" />
+                <img v-bind:src="logoURL" />
               </span>
           </div>
           <div class="text">
@@ -24,11 +24,19 @@
 <script>
 import Session from "../../commons/session";
 import { sendMessage } from '../../commons/message';
+import { eBus } from '../../commons/eventBus';
+import store from "../../store";
 
 export default {
   data() {
     return {
+      logoURL: ''
     }
+  },
+  created() {
+    this.logoURL = unescape(window.location.href.split('logoURL=')[1]);
+    // eBus.$emit('logoURL', this.logoURL);
+    this.$store.commit('setLogoURL', this.logoURL);
   },
   methods: {
     async handleStartBtnClick() {

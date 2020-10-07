@@ -23,7 +23,7 @@ export default {
   name: "Intro",
   methods: {
     btnHandler: () => {
-      window.open('main', '', 'resizable=1, height=520, width=500, toolbar=0');
+      window.open('main?logoURL=http://knowledgepoint.co.kr/file/sample/img_logo_sample.png', '', 'resizable=1, height=520, width=500, toolbar=0');
     }
   }
 }
