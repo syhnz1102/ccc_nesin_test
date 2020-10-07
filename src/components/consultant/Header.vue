@@ -2,7 +2,7 @@
    <div class="header">
       <div class="logo">
          <span class="img">
-            <img src="@/assets/consultant/images/img_logo_sample.png" />
+            <img v-bind:src="logoURL" />
          </span>
          <strong>화상 상담</strong>
       </div>
@@ -21,8 +21,12 @@ import store from "../../store";
 export default {
   data() {
     return {
-
+      logoURL: 'logo here'
     }
+  },
+  created() {
+    this.logoURL = this.$store.state.logoURL;
+    console.log(this.logoURL);
   },
   methods: {
     handleExitBtn() {
@@ -42,7 +46,8 @@ export default {
           this.$store.commit('setCallingStatus', false);
           this.$store.commit('setJoinedStatus', false);
           window.resizeTo( 514, 606 );
-          router.push({ path: `/main` });
+          // router.push({ path: `/main` });
+          router.push({ path: `/main?logoURL=` + this.logoURL });
           console.log('store : ', store.state)
         }
       })

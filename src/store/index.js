@@ -17,6 +17,7 @@ export default new Vuex.Store({
     studentName: '',
     runningTime: '00:00',
     counter: 0,
+    logoURL: ''
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -80,6 +81,9 @@ export default new Vuex.Store({
     },
     setRunningTimeInfo(state, param) {
       state.runningTime = param;
+    },
+    setLogoURL(state, logoURL) {
+      state.logoURL = logoURL;
     }
   },
 })
