@@ -1,6 +1,12 @@
 <template>
   <div class="videoContainer" @click="handleVideoContainerBtnClick">
-    <div class="mainVideo">
+    <div class="shareVideo" v-bind:style="{display: (share ? 'block' : 'none')}">
+      <div class="video">
+        <div v-if="offMic.remote" class="micoff"></div>
+        <video ref="shareVideo"></video>
+      </div>
+    </div>
+    <div class="mainVideo" v-bind:style="{display: (share ? 'none' : 'block')}">
       <div class="video" v-bind:class="{ 'camoff': offVideo.remote }">
         <div v-if="offMic.remote" class="micoff"></div>
         <video ref="remoteVideo"></video>
@@ -32,6 +38,7 @@ export default {
   },
   data() {
     return {
+      share: false,
       offVideo: {
         local: false,
         remote: false
@@ -71,6 +78,13 @@ export default {
         this.$refs.remoteVideo.playsInline = true;
       }
     })
+
+    eBus.$on('share', param => {
+      this.share = param.on;
+      this.$refs.shareVideo.srcObject = param.stream;
+      this.$refs.shareVideo.autoplay = true;
+      this.$refs.shareVideo.playsInline = true;
+    });
   },
   methods: {
     localVideo(param) {

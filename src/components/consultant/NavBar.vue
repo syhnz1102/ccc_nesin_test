@@ -30,6 +30,7 @@
 <script>
 import { eBus } from '../../commons/eventBus.js'
 import { now } from '../../commons/utils';
+import { sendMessage } from '../../commons/message';
 
 export default {
   data() {
@@ -118,6 +119,7 @@ export default {
 
       this.menu.share = !this.menu.share;
       eBus.$emit('share', { on: this.menu.share });
+      sendMessage('SessionReserve', { userId: this.$store.state.userInfo.id, roomId: this.$store.state.roomInfo.roomId })
     },
     handleSettingBtnClick() {
       this.menu.setting = !this.menu.setting;
