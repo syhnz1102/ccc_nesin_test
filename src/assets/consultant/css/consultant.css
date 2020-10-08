@@ -69,10 +69,11 @@ body,
 .chatContainer .chatContent {overflow-y:auto;height:calc(100% - 130px);padding:20px;box-sizing:border-box}
 .chatContainer .chatContent .notice p {text-align:center;font-size:12px}
 .chatContainer .chatContent .notice + .notice {margin-top:5px}
-.chatContainer .chatContent .notice + .message {margin-top:20px}
-.chatContainer .chatContent .message + .message {margin-top:20px}
-.chatContainer .chatContent .message + .notice {margin-top:20px}
-.chatContainer .chatContent .message {margin-top:20px}
+.chatContainer .chatContent .message + .message {margin-top:5px}
+.chatContainer .chatContent .notice + .message,
+.chatContainer .chatContent .message + .notice,
+.chatContainer .chatContent .left + .right,
+.chatContainer .chatContent .right + .left {margin-top:20px}
 .chatContainer .chatContent .message .name {margin-bottom:5px;font-weight:500}
 .chatContainer .chatContent .message .bubble p {display:inline-block;max-width:calc(100% - 100px);padding:8px 15px;word-break:break-word;border-radius:5px}
 .chatContainer .chatContent .message .bubble .time {padding:0 2px;vertical-align:bottom;font-size:12px;color:#999}
