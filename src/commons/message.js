@@ -3,7 +3,7 @@ import router from '../router';
 import webRTC from './webrtc';
 // import mobile from './mobile';
 import { eBus } from "./eventBus";
-// import screenShare from "./screenshare";
+import screenShare from "./screenshare";
 // import utils from './utils';
 // import config from '../config';
 
@@ -88,14 +88,14 @@ export async function onMessage(resp) {
           eBus.$emit('consultInfo', { name: store.state.studentName });
         }
       } else if (resp.usage === 'screen') {
-        // if (resp.sdp.type === 'offer') {
-        //   await screenShare.createPeer('screen', resp.useMediaSvr === 'Y', resp.pluginId);
-        //   await webRTC.createAnswer(resp.sdp, 'screen');
-        //   sendMessage('SDP', { code: '200' });
-        // } else if (resp.sdp.type === 'answer') {
-        //   await webRTC.setRemoteDescription(resp.sdp, 'screen');
-        //   sendMessage('SDP', { code: '200' });
-        // }
+        if (resp.sdp.type === 'offer') {
+          await screenShare.createPeer('screen');
+          await webRTC.createAnswer(resp.sdp, 'screen');
+          sendMessage('SDP', { code: '200' });
+        } else if (resp.sdp.type === 'answer') {
+          await webRTC.setRemoteDescription(resp.sdp, 'screen');
+          sendMessage('SDP', { code: '200' });
+        }
       }
       break;
     //
@@ -119,27 +119,27 @@ export async function onMessage(resp) {
     //   // TODO.
     //   break;
     //
-    // case 'SessionReserve':
-    //   if (resp.code === '200') {
-    //     let stream = await screenShare.createShareStream();
-    //     await screenShare.createPeer('screen', store.state.roomInfo.count > 2);
-    //     await webRTC.createOffer('screen');
-    //     eBus.$emit('share', {
-    //       type: 'add',
-    //       id: 'screen',
-    //       isLocal: true,
-    //       stream,
-    //       count: store.state.roomInfo.count
-    //     })
-    //   } else {
-    //     eBus.$emit('popup', {
-    //       on: true,
-    //       type: 'Alert',
-    //       title: '화면 공유',
-    //       contents: '지금은 화면 공유를 진행할 수 없습니다.'
-    //     })
-    //   }
-    //   break;
+    case 'SessionReserve':
+      if (resp.code === '200') {
+        let stream = await screenShare.createShareStream();
+        await screenShare.createPeer('screen');
+        await webRTC.createOffer('screen');
+        // eBus.$emit('share', {
+        //   type: 'add',
+        //   id: 'screen',
+        //   isLocal: true,
+        //   stream,
+        //   count: store.state.roomInfo.count
+        // })
+      } else {
+        eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화면 공유',
+          contents: '지금은 화면 공유를 진행할 수 없습니다.'
+        })
+      }
+      break;
     //
     // case 'ScreenShareConferenceEndSvr':
     //   eBus.$emit('share', {
@@ -170,7 +170,7 @@ export async function onMessage(resp) {
         store.commit('setStudentName', '');
         store.commit('setJoinedStatus', false);
         store.commit('setCallingStatus', false);
-        
+
         eBus.$emit('entrance', {
           entrance: false,
           name: ''
