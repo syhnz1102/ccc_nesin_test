@@ -17,6 +17,7 @@ import router from "../../router";
 import { sendMessage } from '../../commons/message';
 import { eBus } from "../../commons/eventBus";
 import store from "../../store";
+import webRTC from "../../commons/webrtc";
 
 export default {
   data() {
@@ -33,11 +34,11 @@ export default {
       eBus.$emit('popup', {
         on: true,
         type: 'Confirm',
-        title: '통화 종료',
-        contents: `통화를 종료 하시겠습니까?`,
+        title: '',
+        contents: `상담을 종료 하시겠습니까?`,
         ok: () => {
           if (this.$store.state.socket) {
-            // webRTC.clear();
+            webRTC.clear();
 
             this.$store.state.socket.close();
             sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });

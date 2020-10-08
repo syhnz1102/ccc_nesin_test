@@ -69,6 +69,10 @@ export default new Vuex.Store({
       state.roomInfo = {}
       if (state.socket) state.socket.close();
       state.socket = null;
+
+      state.isJoined = false;
+      state.isCalling = false;
+      state.studentName = '';
     },
     setJoinedStatus(state, bool) {
       state.isJoined = bool;

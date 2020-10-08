@@ -23,7 +23,7 @@ class WebRTC {
 
   createPeer() {
     return new Promise(async (resolve, reject) => {
-      const peer = new RTCPeerConnection({ iceServers: [{ urls: 'turn:106.240.247.44:46000', username: 'kpoint', credential: 'kpoint01' }, { urls : 'stun:106.240.247.44:46000' }] });
+      const peer = new RTCPeerConnection({ iceServers: [{ urls: 'turn:turn.knowledgetalk.co.kr:46000', username: 'kpoint', credential: 'kpoint01' }, { urls : 'stun:stun.knowledgetalk.co.kr:46000' }] });
 
       // peer.onaddstream = ({ stream }) => {
       peer.ontrack = ({ streams }) => {

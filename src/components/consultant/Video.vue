@@ -1,6 +1,12 @@
 <template>
   <div class="videoContainer">
-    <div class="mainVideo">
+    <div class="shareVideo" v-if="share">
+      <div class="share">
+        <img src="../../assets/consultant/images/img_screen_share_sharing.gif" alt="화면 공유중">
+        <p>화면 공유중입니다.</p>
+      </div>
+    </div>
+    <div class="mainVideo" v-bind:style="{display: (share ? 'none' : 'block')}">
       <div class="video" v-bind:class="{ 'camoff': offVideo.remote }">
         <div v-if="offMic.remote" class="micoff"></div>
         <video ref="remoteVideo"></video>
@@ -17,7 +23,7 @@
           <span>{{ time }}</span>
         </div>
         <div class="button">
-          <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo.local }"></button>
+          <button v-if="!isSharing" @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo.local }"></button>
           <button @click="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off': offMic.local }"></button>
           <button @click="handleEndcallBtnClick" class="endcall"></button>
         </div>
@@ -34,9 +40,11 @@ import { runningTime } from "../../commons/utils";
 import store from '../../store';
 
 export default {
+  props: { isSharing: Boolean },
   name: "Video",
   data() {
     return {
+      share: this.isSharing,
       offVideo: {
         local: false,
         remote: false
@@ -77,6 +85,10 @@ export default {
         this.$refs.remoteVideo.playsInline = true;
       }
     })
+
+    eBus.$on('share', param => {
+      this.share = param.on;
+    });
 
     eBus.$on('consultInfo', param => {
       this.name = param.name;

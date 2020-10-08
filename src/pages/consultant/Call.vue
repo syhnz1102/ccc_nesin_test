@@ -16,7 +16,7 @@
     <NavBar />
     <div class="container">
       <Chat />
-      <Video v-if="isCalling" />
+      <Video v-if="isCalling" v-bind:isSharing="isSharing" />
     </div>
   </div>
 </template>
@@ -40,6 +40,7 @@ export default {
   data() {
     return {
       toast: '',
+      isSharing: false,
       isCalling: false,
       popup: {
         on: false,
@@ -57,7 +58,7 @@ export default {
       console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
-
+      this.isSharing = param.type === 'share';
       if(!param.on){ window.resizeTo( 514, 606 ); }
     })
 
