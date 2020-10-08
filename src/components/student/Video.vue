@@ -1,5 +1,5 @@
 <template>
-  <div class="videoContainer">
+  <div class="videoContainer" @click="handleVideoContainerBtnClick">
     <div class="mainVideo">
       <div class="video" v-bind:class="{ 'camoff': offVideo.remote }">
         <div v-if="offMic.remote" class="micoff"></div>
@@ -11,6 +11,7 @@
       </div>
     </div>
     <Button
+      v-if="showButton"
       v-bind:offVideo="offVideo"
       v-bind:offMic="offMic"
       @localVideo="localVideo"
@@ -38,7 +39,8 @@ export default {
       offMic: {
         local: false,
         remote: false
-      }
+      },
+      showButton: false
     }
   },
   async created() {
@@ -77,6 +79,9 @@ export default {
 
       let s = this.$store.state;
       sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
+    },
+    handleVideoContainerBtnClick() {
+      this.showButton = !this.showButton
     }
   }
 }

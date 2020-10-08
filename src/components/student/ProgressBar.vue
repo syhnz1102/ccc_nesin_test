@@ -6,22 +6,22 @@
             <span>{{ runningTime }}</span>
          </div>
          <div class="button">
-            <button @click="handleVideoExitBtnClick">close</button>
+            <button @click.stop="handleEndCallBtnClick">close</button>
          </div>
       </div>
    </div>
 </template>
 
 <script>
-// import { eBus } from '../../commons/eventBus'
+import { eBus } from '../../commons/eventBus';
 import store from '../../store';
 
 export default {
   name: "Button",
   data() {
     return {
-      runningTime: '',
-      interval: this.$store.state.runningTime,
+      interval: null,
+      runningTime: this.$store.state.runningTime,
       screenShare: false,
     }
   },
@@ -37,12 +37,18 @@ export default {
     intervalFunc() {
       this.runningTime = this.$store.state.runningTime;
     },
-    handleVideoExitBtnClick() {
-
-    },
     handleProgressBarBtnClick() {
       this.$emit('hideProgressBar', { on: false });
-    }
+      eBus.$emit('showVideo', { on: true })
+    },
+    handleEndCallBtnClick() {
+      eBus.$emit('showVideo', { on: false })
+
+      eBus.$emit('chat', {
+        type: 'notice',
+        message: '화상 상담이 종료되었습니다.'
+      });
+    },
   }
 }
 </script>

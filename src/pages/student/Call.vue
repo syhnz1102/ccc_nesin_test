@@ -68,6 +68,16 @@ export default {
         // interval 켜기 store에 집어 넣기
         // this.$store.commit('setRunningTimeInfo', false);//screenShare
         this.interval = setInterval(this.intervalFunc, 1000);
+
+        //이것도 progressBar껐다킬땐 예외시켜야함.
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: '화상 상담이 시작되었습니다.'
+        });
+      } else {
+        clearInterval(this.interval);
+        this.counter = 0;
+        this.$store.commit('setRunningTimeInfo', '00:00');
       }
     })
 

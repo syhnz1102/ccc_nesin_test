@@ -7,9 +7,9 @@
     </div>
     <div class="bottomButton">
       <div class="button">
-        <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off' : offVideo.local }"></button>
-        <button @click="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off' : offMic.local }"></button>
-        <button class="endCall"></button>
+        <button @click.stop="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off' : offVideo.local }"></button>
+        <button @click.stop="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off' : offMic.local }"></button>
+        <button @click="handleEndCallBtnClick" class="endCall"></button>
       </div>
     </div>
   </div>
@@ -41,6 +41,14 @@ export default {
     },
     handleProgressBarBtnClick() {
       eBus.$emit('progressBar', { on: true })
+    },
+    handleEndCallBtnClick() {//is calling false하기
+      eBus.$emit('showVideo', { on: false })
+
+      eBus.$emit('chat', {
+        type: 'notice',
+        message: '화상 상담이 종료되었습니다.'
+      });
     }
   }
 }

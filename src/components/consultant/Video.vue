@@ -19,7 +19,7 @@
         <div class="button">
           <button @click="handleVideoOffBtnClick" class="cam" v-bind:class="{ 'off': offVideo.local }"></button>
           <button @click="handleMicOffBtnClick" class="mic" v-bind:class="{ 'off': offMic.local }"></button>
-          <button class="endcall"></button>
+          <button @click="handleEndcallBtnClick" class="endcall"></button>
         </div>
       </div>
     </div>
@@ -122,6 +122,20 @@ export default {
         });
       }
     },
+    handleEndcallBtnClick() {
+      window.resizeTo( 514, 606 );
+      eBus.$emit('showVideo', { on: false });
+
+      eBus.$emit('menu', {
+        on: false,
+        menu: 'call'
+      });
+
+      eBus.$emit('chat', {
+        type: 'notice',
+        message: '화상 상담이 종료되었습니다.'
+      });
+    }
   }
 }
 </script>

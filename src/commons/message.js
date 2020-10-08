@@ -162,6 +162,7 @@ export async function onMessage(resp) {
         console.log('store : ', store.state)
       } else if (resp.action === 'exit' && window.location.href.indexOf('student') <= -1) {
         // 상담사인 경우 방은 유지, notice만 줌
+        // 플러스로 비디오 닫고 인터벌도 끊어주기 (상담사)
         eBus.$emit('chat', {
           type: 'notice',
           message: `${store.state.studentName}님이 퇴장하였습니다.`
@@ -172,6 +173,13 @@ export async function onMessage(resp) {
           entrance: false,
           name: ''
         })
+
+        eBus.$emit('showVideo', { on: false });
+
+        eBus.$emit('menu', {
+          on: false,
+          menu: 'call'
+        });
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
       }

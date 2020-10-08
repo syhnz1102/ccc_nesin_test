@@ -57,6 +57,8 @@ export default {
       console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
+
+      if(!param.on){ window.resizeTo( 514, 606 ); }
     })
 
     eBus.$on('popup', param => {

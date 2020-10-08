@@ -3,9 +3,12 @@ export const now = () => {
   const dd = String(today.getDate()).padStart(2, '0');
   const mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
   const yyyy = today.getFullYear();
-  const hh = today.getHours();
-  const min = today.getMinutes();
-  const ss = today.getSeconds();
+  let hh = today.getHours();
+  let min = today.getMinutes();
+  let ss = today.getSeconds();
+  if ( hh < 10 ){ hh = "0" + hh; }
+  if ( min < 10 ){ min = "0" + min; }
+  if ( ss < 10 ){ ss = "0" + ss; }
   today = yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + min + ':' + ss;
 
   return today
@@ -24,7 +27,8 @@ export const runningTime = (counter) => {
   let sec = counter % 60;
   let min = Math.floor( counter / 60 );
   let hour = Math.floor( min / 60 );
-  let time = 'asd'
+  min = min % 60;
+  let time = ''
 
   //시, 분, 초
   if ( hour < 10 ){ hour = "0" + hour; }

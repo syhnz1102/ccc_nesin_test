@@ -32,10 +32,18 @@ export default {
     return {
     }
   },
+  created() {
+     document.onkeydown = this.doNotReload;
+  },
   methods: {
     handleStartBtnClick() {
       store.commit('setStudentName', this.$refs.name.value);
       this.$router.push({ path: `/student/room/${this.$store.state.roomInfo.roomId}` });
+    },
+    doNotReload() {
+      if ((event.ctrlKey && (event.keyCode === 78 || event.keyCode === 82)) || (event.keyCode === 116)) {//ctrl+n, ctrl+r, f5
+        return confirm("새로고침 시 서비스가 정상적으로 동작하지 않을 수 있습니다. \n새로고침 하시겠습니까?");
+      } 
     }
   }
 }

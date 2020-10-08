@@ -68,7 +68,6 @@ export default {
           contents: '상담 시작 후 화상 상담을 진행할 수 있습니다.'
         })
       }
-
       eBus.$emit('popup', {
         on: true,
         type: 'Settings',
@@ -81,11 +80,16 @@ export default {
           if (this.menu.call) {
             // Call 상태
             eBus.$emit('showVideo', { on: true });
-            window.resizeTo( 854, 606 );
+            window.resizeTo(854, 606);
+            
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: '화상 상담이 시작되었습니다.'
+            });
           } else {
             // Call 상태 아님
             eBus.$emit('showVideo', { on: false });
-            window.resizeTo( 514, 606 );
+            window.resizeTo(514, 606);
           }
         },
         cancel: () => {
