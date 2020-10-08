@@ -32,14 +32,14 @@ body,
 .header .button button:active {background:#1a222f;transition:all .3s}
 
 .lnb {float:left;width:120px;height:100%;padding-top:60px;background:#f0f0f0;box-sizing:border-box}
-.lnb .user {padding:20px 0}
+.lnb .user {padding:15px 0}
 .lnb .user .img {width:80px;height:80px;margin:0 auto;border-radius:80px;background:url('../images/icons.png') no-repeat 0 0}
 .lnb .user .info {margin-top:10px;padding:0 10px;text-align:center}
 .lnb .user .info p {color:#999}
 .lnb .user .info .name {overflow:hidden;max-width:100px;text-overflow:ellipsis;font-weight:500}
 .lnb .user .info .time {margin-top:2px;font-size:12px;color:#666}
 .lnb .menu::before {content:'';display:block;width:100px;height:1px;margin:0 auto;background:#ddd}
-.lnb .menu ul {margin-top:5px}
+.lnb .menu ul {margin-top:15px}
 .lnb .menu li button {display:block;width:90px;height:80px;margin:0 auto;text-align:center;font-size:15px;color:#999;border-radius:5px}
 .lnb .menu li button::before {content:'';display:block;width:20px;height:20px;margin:0 auto;margin-bottom:2px;background-image:url('../images/icons.png');background-repeat:no-repeat}
 .lnb .menu li + li {margin-top:5px}
