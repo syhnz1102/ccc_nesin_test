@@ -3,7 +3,7 @@
     <div class="shareVideo" v-if="share">
       <div class="share">
         <img src="../../assets/consultant/images/img_screen_share_sharing.gif" alt="화면 공유중">
-        <p>화면 공유중입니다.</p>
+        <p>{{ shareMessage }}</p>
       </div>
     </div>
     <div class="mainVideo" v-bind:style="{display: (share ? 'none' : 'block')}">
@@ -45,6 +45,7 @@ export default {
   data() {
     return {
       share: this.isSharing,
+      shareMessage: '로딩 중입니다.',
       offVideo: {
         local: false,
         remote: false
@@ -60,15 +61,21 @@ export default {
     }
   },
   async created() {
-    let stream = await WebRTC.createVideoStream();
-    this.$refs.localVideo.srcObject = stream;
-    this.$refs.localVideo.autoplay = true;
-    this.$refs.localVideo.muted = true;
-    this.$refs.localVideo.playsInline = true;
+    if (this.share) {
+      eBus.$emit('startShare', {})
+      this.shareMessage = '화면 공유 중입니다.';
+      this.$store.commit('setSharingStatus', true);
+    } else {
+      let stream = await WebRTC.createVideoStream();
+      this.$refs.localVideo.srcObject = stream;
+      this.$refs.localVideo.autoplay = true;
+      this.$refs.localVideo.muted = true;
+      this.$refs.localVideo.playsInline = true;
 
-    // peer 생성
-    await WebRTC.createPeer();
-    await WebRTC.createOffer('local');
+      // peer 생성
+      await WebRTC.createPeer();
+      await WebRTC.createOffer('local');
+    }
 
     eBus.$on('video', param => {
       if (param.type === 'set') {
@@ -86,8 +93,19 @@ export default {
       }
     })
 
-    eBus.$on('share', param => {
+    eBus.$on('share', async param => {
       this.share = param.on;
+      if (param.on) {
+        let stream = await WebRTC.createVideoStream();
+        this.$refs.localVideo.srcObject = stream;
+        this.$refs.localVideo.autoplay = true;
+        this.$refs.localVideo.muted = true;
+        this.$refs.localVideo.playsInline = true;
+
+        // peer 생성
+        await WebRTC.createPeer();
+        await WebRTC.createOffer('local');
+      }
     });
 
     eBus.$on('consultInfo', param => {
@@ -135,18 +153,38 @@ export default {
       }
     },
     handleEndcallBtnClick() {
+      let s = this.$store.state;
       window.resizeTo( 514, 606 );
       eBus.$emit('showVideo', { on: false });
 
-      eBus.$emit('menu', {
-        on: false,
-        menu: 'call'
-      });
+      if (this.share) {
+        eBus.$emit('menu', {
+          on: false,
+          menu: 'share'
+        });
 
-      eBus.$emit('chat', {
-        type: 'notice',
-        message: '화상 상담이 종료되었습니다.'
-      });
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: '화면 공유가 종료되었습니다.'
+        });
+
+        sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+        sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
+        this.$store.commit('setSharingStatus', false);
+      } else {
+        eBus.$emit('menu', {
+          on: false,
+          menu: 'call'
+        });
+
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: '화상 상담이 종료되었습니다.'
+        });
+      }
+
+      sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+      WebRTC.endCall();
     }
   }
 }

@@ -14,6 +14,7 @@ export default new Vuex.Store({
     userInfo: {},
     isJoined: false,
     isCalling: false,
+    isSharing: false,
     studentName: '',
     runningTime: '00:00',
     counter: 0,
@@ -50,6 +51,23 @@ export default new Vuex.Store({
     setUserInfo(state, info) {
       Object.assign(state.userInfo, info);
     },
+    endCall(state) {
+      if (Object.keys(state.streamInfo).length > 0) {
+        for (let c in state.streamInfo) {
+          state.streamInfo[c].getTracks().forEach(track => {
+            track.stop();
+          });
+        }
+        state.streamInfo = {};
+      }
+
+      for (let c in state.peerInfo) {
+        state.peerInfo[c].close();
+        delete state.peerInfo[c];
+      }
+
+      state.isCalling = false;
+    },
     clearAll(state) {
       if (Object.keys(state.streamInfo).length > 0) {
         for (let c in state.streamInfo) {
@@ -79,6 +97,9 @@ export default new Vuex.Store({
     },
     setCallingStatus(state, bool) {
       state.isCalling = bool;
+    },
+    setSharingStatus(state, bool) {
+      state.isSharing = bool;
     },
     setStudentName(state, name) {
       state.studentName = name;

@@ -1,15 +1,24 @@
 <template>
   <div class="wrapper">
-<!--    <PopUp-->
-<!--       v-if="popUp.on"-->
-<!--       v-bind:contents="popUp.contents"-->
-<!--    />-->
+    <Popup
+      v-if="popup.on"
+      v-bind:type="popup.type"
+      v-bind:title="popup.title"
+      v-bind:contents="popup.contents"
+      v-bind:option="popup.option"
+      v-bind:ok="handlePopupOkBtnClick"
+      v-bind:cancel="handlePopupCancelBtnClick"
+    />
     <Header />
     <div class="container">
       <Chat />
-      <Video v-if="isCalling && !isHiding" />
+      <Video
+        v-if="isCalling && !isHiding"
+        v-bind:isSharing="share"
+      />
       <ProgressBar
-        v-if="isCalling && isHiding" 
+        v-if="isCalling && isHiding"
+        v-bind:share="share"
         @hideProgressBar="hideProgressBar"
       />
     </div>
@@ -17,11 +26,11 @@
 </template>
 
 <script>
-// import PopUp from '@/components/student/PopUp/StudentPopUp'
 import Header from '@/components/student/Header'
 import Chat from '@/components/student/Chat'
 import Video from '@/components/student/Video'
 import ProgressBar from '@/components/student/ProgressBar'
+import Popup from '@/components/student/Popup'
 
 import { eBus } from '../../commons/eventBus.js'
 import store from "../../store";
@@ -32,17 +41,27 @@ import { runningTime } from "../../commons/utils";
 export default {
   components: {
     Header,
-    // PopUp,
+    Popup,
     Chat,
     Video,
     ProgressBar
   },
   data() {
     return {
+      share: false,
       isCalling: false,
       isHiding: false,
       interval: null,
       counter: 0,
+      popup: {
+        on: false,
+        type: '',
+        title: '',
+        contents: '',
+        option: {},
+        ok: null,
+        cancel: null
+      },
     }
   },
   async created() {
@@ -62,24 +81,34 @@ export default {
     eBus.$on('showVideo', param => {
       console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
+      this.$store.commit('setSharingStatus', param.share);
       this.isCalling = param.on; // bool
+      this.share = param.share;
 
       if (param.on) {
         // interval 켜기 store에 집어 넣기
         // this.$store.commit('setRunningTimeInfo', false);//screenShare
         this.interval = setInterval(this.intervalFunc, 1000);
-
-        //이것도 progressBar껐다킬땐 예외시켜야함.
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: '화상 상담이 시작되었습니다.'
-        });
       } else {
         clearInterval(this.interval);
         this.counter = 0;
         this.$store.commit('setRunningTimeInfo', '00:00');
       }
     })
+
+    eBus.$on('share', param => {
+      this.share = param.on;
+    })
+
+    eBus.$on('popup', param => {
+      this.popup.on = param.on;
+      this.popup.type = param.type;
+      this.popup.title = param.title;
+      this.popup.contents = param.contents;
+      this.popup.option = param.option;
+      this.popup.ok = param.ok;
+      this.popup.cancel = param.cancel;
+    });
 
     eBus.$on('progressBar', param => {
       console.log('progressBar Event : ', param);
@@ -96,6 +125,14 @@ export default {
     clearInterval(this.interval);
   },
   methods: {
+    handlePopupOkBtnClick(param) {
+      this.popup.on = false;
+      if (this.popup.ok) this.popup.ok(param);
+    },
+    handlePopupCancelBtnClick(param) {
+      this.popup.on = false;
+      if (this.popup.cancel) this.popup.cancel(param);
+    },
     intervalFunc() {
       this.$store.commit('setRunningTimeInfo', runningTime(this.counter++));
     },

@@ -38,14 +38,15 @@ export default {
         contents: `상담을 종료 하시겠습니까?`,
         ok: () => {
           if (this.$store.state.socket) {
-            webRTC.clear();
-
-            this.$store.state.socket.close();
             sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+            this.$store.state.socket.close();
+
+            webRTC.clear();
           }
 
           this.$store.commit('setCallingStatus', false);
           this.$store.commit('setJoinedStatus', false);
+          this.$store.commit('setSharingStatus', false);
           window.resizeTo( 514, 606 );
           // router.push({ path: `/main` });
           router.push({ path: `/main?logoURL=` + this.logoURL });

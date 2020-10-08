@@ -58,6 +58,17 @@ export default {
     eBus.$on('menu', param => {
       this.menu[param.menu] = param.on;
     })
+
+    eBus.$on('startShare', param => {
+      let s = this.$store.state;
+
+      if (this.menu.share) {
+        sendMessage('SessionReserve', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+      } else {
+        sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+        sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
+      }
+    })
   },
   methods: {
     handleVideoBtnClick() {
@@ -70,7 +81,7 @@ export default {
         })
       }
 
-      if (this.$store.state.isCalling) {
+      if (this.menu.call) {
         return eBus.$emit('popup', {
           on: true,
           type: 'Alert',
@@ -79,23 +90,109 @@ export default {
         })
       }
 
+      if (this.menu.share) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '화면 공유가 진행 중입니다. 화면 공유를 종료하고 시작해주세요.'
+        })
+      }
+
+      let checked = window.localStorage.getItem('IS_CHECKED_DEVICE') ? JSON.parse(window.localStorage.getItem('IS_CHECKED_DEVICE').toLowerCase()) : false;
+
+      if (!checked) {
+        eBus.$emit('popup', {
+          on: true,
+          type: 'Settings',
+          title: '디바이스 설정',
+          contents: '화상 상담 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
+          option: { inCall: false, start: true },
+          ok: () => {
+            this.menu.call = !this.menu.call;
+
+            if (this.menu.call) {
+              // Call 상태
+              eBus.$emit('showVideo', { on: true });
+              window.resizeTo(854, 606);
+
+              eBus.$emit('chat', {
+                type: 'notice',
+                message: '화상 상담이 시작되었습니다.'
+              });
+            } else {
+              // Call 상태 아님
+              eBus.$emit('showVideo', { on: false });
+              window.resizeTo(514, 606);
+            }
+          },
+          cancel: () => {
+          }
+        })
+      } else {
+        this.menu.call = !this.menu.call;
+
+        if (this.menu.call) {
+          // Call 상태
+          eBus.$emit('showVideo', { on: true });
+          window.resizeTo(854, 606);
+
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: '화상 상담이 시작되었습니다.'
+          });
+        } else {
+          // Call 상태 아님
+          eBus.$emit('showVideo', { on: false });
+          window.resizeTo(514, 606);
+        }
+      }
+    },
+    handleShareBtnClick() {
+      if (!this.$store.state.isJoined) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '상담 시작 후 화상 상담을 진행할 수 있습니다.'
+        })
+      }
+
+      if (this.menu.call) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '화상 상담이 진행 중입니다. 화상 상담을 종료하고 시작해주세요.'
+        })
+      }
+
+      if (this.menu.share) {
+        return eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화상 상담',
+          contents: '화면 공유가 진행 중입니다.'
+        })
+      }
+
       eBus.$emit('popup', {
         on: true,
         type: 'Settings',
         title: '디바이스 설정',
-        contents: '화상 상담 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
+        contents: '화면 공유 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
         option: { inCall: false, start: true },
         ok: () => {
-          this.menu.call = !this.menu.call;
+          this.menu.share = !this.menu.share;
 
-          if (this.menu.call) {
+          if (this.menu.share) {
             // Call 상태
-            eBus.$emit('showVideo', { on: true });
+            eBus.$emit('showVideo', { on: true, type: 'share' });
             window.resizeTo(854, 606);
-            
+
             eBus.$emit('chat', {
               type: 'notice',
-              message: '화상 상담이 시작되었습니다.'
+              message: '화면 공유가 시작되었습니다.'
             });
           } else {
             // Call 상태 아님
@@ -106,20 +203,6 @@ export default {
         cancel: () => {
         }
       })
-    },
-    handleShareBtnClick() {
-      if (!this.$store.state.isJoined || !this.$store.state.isCalling) {
-        return eBus.$emit('popup', {
-          on: true,
-          type: 'Alert',
-          title: '화면 공유',
-          contents: '화상 상담 시작 후 화면 공유를 진행할 수 있습니다.'
-        })
-      }
-
-      this.menu.share = !this.menu.share;
-      eBus.$emit('share', { on: this.menu.share });
-      sendMessage('SessionReserve', { userId: this.$store.state.userInfo.id, roomId: this.$store.state.roomInfo.roomId })
     },
     handleSettingBtnClick() {
       this.menu.setting = !this.menu.setting;

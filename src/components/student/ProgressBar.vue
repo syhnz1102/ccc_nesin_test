@@ -2,7 +2,7 @@
    <div class="videobarContainer" @click="handleProgressBarBtnClick">
       <div class="menu">
          <div class="info">
-            <span>{{ screenShare ? '화면 공유중' : '화상 상담중'}}</span>
+            <span>{{ share ? '화면 공유중' : '화상 상담중'}}</span>
             <span>{{ runningTime }}</span>
          </div>
          <div class="button">
@@ -15,9 +15,12 @@
 <script>
 import { eBus } from '../../commons/eventBus';
 import store from '../../store';
+import {sendMessage} from "../../commons/message";
+import WebRTC from "../../commons/webrtc";
 
 export default {
   name: "Button",
+  props: { share: Boolean },
   data() {
     return {
       interval: null,
@@ -28,7 +31,6 @@ export default {
   created() {
     console.log('progress bar');
     this.interval = setInterval(this.intervalFunc, 1000);
-    this.screenShare = this.$store.state.screenShare; //bool
   },
   destroyed() {
     clearInterval(this.interval);
@@ -39,15 +41,29 @@ export default {
     },
     handleProgressBarBtnClick() {
       this.$emit('hideProgressBar', { on: false });
-      eBus.$emit('showVideo', { on: true })
+      eBus.$emit('showVideo', { on: true, share: this.share })
     },
     handleEndCallBtnClick() {
-      eBus.$emit('showVideo', { on: false })
+      let s = this.$store.state;
+      eBus.$emit('showVideo', { on: false });
 
-      eBus.$emit('chat', {
-        type: 'notice',
-        message: '화상 상담이 종료되었습니다.'
-      });
+      if (this.share) {
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: '화면 공유가 종료되었습니다.'
+        });
+
+        sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
+        this.$store.commit('setSharingStatus', false);
+      } else {
+        eBus.$emit('chat', {
+          type: 'notice',
+          message: '화상 상담이 종료되었습니다.'
+        });
+      }
+
+      sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+      WebRTC.endCall();
     },
   }
 }

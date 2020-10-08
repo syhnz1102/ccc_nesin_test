@@ -168,6 +168,10 @@ class WebRTC {
   //   sendMessage('DestroyRoom', { roomId: store.state.roomInfo.roomId });
   // }
   //
+  endCall() {
+    store.commit('endCall');
+  }
+
   clear() {
     store.commit('clearAll');
   }

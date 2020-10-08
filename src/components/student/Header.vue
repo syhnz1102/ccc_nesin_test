@@ -32,6 +32,10 @@ export default {
          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
        }
 
+       this.$store.commit('setCallingStatus', false);
+       this.$store.commit('setJoinedStatus', false);
+       this.$store.commit('setSharingStatus', false);
+
        router.push({ path: `/student` });
        console.log('store : ', store.state)
        // window.open("about:blank","_self").close();

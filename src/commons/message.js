@@ -74,12 +74,17 @@ export async function onMessage(resp) {
         if (resp.sdp.type === 'offer') {
           sendMessage('SDP', { code: '200' });
           // 학생
-          eBus.$emit('showVideo', { on: true });
+          eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
           setTimeout(async () => {
             await webRTC.createPeer();
             await webRTC.createAnswer(resp.sdp, 'local');
           }, 1000);
           console.log(store.state)
+
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
+          });
         } else if (resp.sdp.type === 'answer') {
           // 상담사
           await webRTC.setRemoteDescription(resp.sdp, 'local');
@@ -92,9 +97,11 @@ export async function onMessage(resp) {
           await screenShare.createPeer('screen');
           await webRTC.createAnswer(resp.sdp, 'screen');
           sendMessage('SDP', { code: '200' });
+          eBus.$emit('showVideo', { on: true, share: true });
         } else if (resp.sdp.type === 'answer') {
           await webRTC.setRemoteDescription(resp.sdp, 'screen');
           sendMessage('SDP', { code: '200' });
+          eBus.$emit('share', { on: true })
         }
       }
       break;
@@ -140,49 +147,92 @@ export async function onMessage(resp) {
         })
       }
       break;
-    //
-    // case 'ScreenShareConferenceEndSvr':
-    //   eBus.$emit('share', {
-    //     type: 'remove'
-    //   })
-    //   break;
-    //
+
+    case 'ScreenShareConferenceEndSvr':
+      eBus.$emit('share', {
+        on: false
+      })
+      break;
+
     case 'Presence':
-      if (resp.action === 'exit' && window.location.href.indexOf('student') > -1) {
-        // 학생일 경우 상담사가 나가면 자신도 종료 후 메인화면으로 이동
-        if (store.state.socket) {
-          // webRTC.clear();
+      if (resp.action === 'exit') {
+        if (window.location.href.indexOf('student') > -1) {
+          // 학생일 경우 상담사가 나가면 자신도 종료 후 메인화면으로 이동
+          eBus.$emit('popup', {
+            on: true,
+            type: 'Alert',
+            title: '상담 종료',
+            contents: '상담이 종료 되었습니다.',
+            cancel: () => {
+              if (store.state.socket) {
+                sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+                webRTC.clear();
+                // store.state.socket.close();
+              }
+              router.push({ path: `/student` });
+              console.log('store : ', store.state)
+            }
+          })
+        } else if (window.location.href.indexOf('student') <= -1) {
+          // 상담사인 경우 방은 유지, notice만 줌
+          // 플러스로 비디오 닫고 인터벌도 끊어주기 (상담사)
+          webRTC.endCall();
 
-          alert('상담이 종료 되었습니다.');
-          store.state.socket.close();
-          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.studentName}님이 퇴장하였습니다.`
+          })
+
+          store.commit('setStudentName', '');
+          store.commit('setJoinedStatus', false);
+          store.commit('setCallingStatus', false);
+
+          eBus.$emit('entrance', {
+            entrance: false,
+            name: ''
+          })
+
+          eBus.$emit('showVideo', { on: false });
+
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'call'
+          });
+
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'share'
+          });
         }
+      } else if (resp.action === 'endCall') {
+        if (window.location.href.indexOf('student') > -1) {
+          // 학생일 경우
+          eBus.$emit('showVideo', { on: false })
 
-        router.push({ path: `/student` });
-        console.log('store : ', store.state)
-      } else if (resp.action === 'exit' && window.location.href.indexOf('student') <= -1) {
-        // 상담사인 경우 방은 유지, notice만 줌
-        // 플러스로 비디오 닫고 인터벌도 끊어주기 (상담사)
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: `${store.state.studentName}님이 퇴장하였습니다.`
-        })
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
+          });
+        } else if (window.location.href.indexOf('student') <= -1) {
+          // 상담사인 경우
+          window.resizeTo( 514, 606 );
+          eBus.$emit('showVideo', { on: false });
 
-        store.commit('setStudentName', '');
-        store.commit('setJoinedStatus', false);
-        store.commit('setCallingStatus', false);
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'call'
+          });
 
-        eBus.$emit('entrance', {
-          entrance: false,
-          name: ''
-        })
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'share'
+          });
 
-        eBus.$emit('showVideo', { on: false });
-
-        eBus.$emit('menu', {
-          on: false,
-          menu: 'call'
-        });
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
+          });
+        }
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
       }

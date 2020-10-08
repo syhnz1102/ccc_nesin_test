@@ -20,6 +20,7 @@
       v-if="showButton"
       v-bind:offVideo="offVideo"
       v-bind:offMic="offMic"
+      v-bind:share="share"
       @localVideo="localVideo"
       @localMic="localMic"
     />
@@ -36,9 +37,10 @@ export default {
   components: {
     Button
   },
+  props: { isSharing: Boolean },
   data() {
     return {
-      share: false,
+      share: this.isSharing,
       offVideo: {
         local: false,
         remote: false
@@ -63,6 +65,13 @@ export default {
       this.$refs.remoteVideo.playsInline = true;
     }
 
+    console.log(this.$store.state.streamInfo)
+    if (this.$store.state.streamInfo.screen) {
+      this.$refs.shareVideo.srcObject = this.$store.state.streamInfo.screen;
+      this.$refs.shareVideo.autoplay = true;
+      this.$refs.shareVideo.playsInline = true;
+    }
+
     eBus.$on('video', param => {
       if (param.type === 'set') {
         if (param.hasOwnProperty('video')) {
@@ -81,9 +90,13 @@ export default {
 
     eBus.$on('share', param => {
       this.share = param.on;
-      this.$refs.shareVideo.srcObject = param.stream;
-      this.$refs.shareVideo.autoplay = true;
-      this.$refs.shareVideo.playsInline = true;
+      this.$store.commit('setSharingStatus', param.on);
+
+      if (param.on && param.hasOwnProperty('stream')) {
+        this.$refs.shareVideo.srcObject = param.stream;
+        this.$refs.shareVideo.autoplay = true;
+        this.$refs.shareVideo.playsInline = true;
+      }
     });
   },
   methods: {
