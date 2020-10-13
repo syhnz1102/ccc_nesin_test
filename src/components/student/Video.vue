@@ -85,6 +85,12 @@ export default {
         this.$refs.remoteVideo.srcObject = param.stream;
         this.$refs.remoteVideo.autoplay = true;
         this.$refs.remoteVideo.playsInline = true;
+
+        if (this.share) {
+          this.offVideo.local = !this.offVideo.local;
+          this.localVideo(this.offVideo);
+          console.log('학생비디오끔')
+        }
       }
     })
 
