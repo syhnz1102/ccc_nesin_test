@@ -1,21 +1,30 @@
-# ccc-nesin
+# nesin
+> nesin.com webrtc consulting service project (* with knowledgetalk)
 
-> A Vue.js project
+### Release Note
+```
+# v0.9.1 (20/10/13)
+- 상담사 화면 로고 삭제 및 userName 받도록 변경
+- 학생 화면 로고 삭제 및 이름 input 삭제
+- 이슈 4건 수정 완료
+ + 디바이스 설정에 다시보지 않기 체크 후 통화 재 시작 시 디바이스 설정 팝업이 나오는 현상
+ + 학생이 화면 숨김 상태에서 통화 종료 후 재 통화 시 학생쪽은 숨김상태로 통화가 시작되는 현상
+ + 화면공유 음소거 시 상대방에게 아이콘 출력 안되는 현상
+ + 학생 이름이 3자 이상인 경우 통화 종료버튼이 밀려 나오지 않던 현상
 
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-
-# build for production and view the bundle analyzer report
-npm run build --report
+# v0.9.0 (20/10/08)
+> initialized version.
+- 기능 개발 1차 완료 ( 상담 생성 및 입장, 채팅, 1:1 통화, 화면 공유, 화면 숨김, 디바이스 설정, 마이크/카메라 On/Off, 통화 종료 )
 ```
 
-For detailed explanation on how things work, checkout the [guide](http://vuejs-templates.github.io/webpack/) and [docs for vue-loader](http://vuejs.github.io/vue-loader).
+### Remain issues
+```
+- 기능 추가 (강제 퇴장)
+- 상담이나 공유 종료 후 재 통화 시 한쪽 영상 화면이 제대로 나오지 않는 현상
+- 학생이 화면 숨김 상태에서 통화 종료 후 재 통화 시 양쪽 다 영상 화면이 출력 되지 않는 현상
+- 통화 종료 후 다시 화상 진행 시 이전에 통화한 시간이 그대로 남아있음
+- 음소거 기능 동작 안됨
+- 화면공유 종료시 화상통화 화면이 잠시 켜졌다가 꺼지는 현상
+- 학생 통화 종료 시 Tab에 Red Dot(카메라 켜짐 아이콘) 없어지지 않는 현상
+- 학생과 상담사의 통화 시간이 불일치
+```
