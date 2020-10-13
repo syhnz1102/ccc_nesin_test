@@ -106,9 +106,6 @@ export default new Vuex.Store({
     },
     setRunningTimeInfo(state, param) {
       state.runningTime = param;
-    },
-    setLogoURL(state, logoURL) {
-      state.logoURL = logoURL;
     }
   },
 })

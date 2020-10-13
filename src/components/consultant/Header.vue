@@ -1,10 +1,10 @@
 <template>
    <div class="header">
       <div class="logo">
-         <span class="img">
-            <img v-bind:src="logoURL" />
-         </span>
-         <strong>화상 상담</strong>
+<!--         <span class="img">-->
+<!--            <img v-bind:src="logoURL" />-->
+<!--         </span>-->
+         <strong>{{ userName }} 상담 방</strong>
       </div>
       <div class="button">
          <button @click="handleExitBtn">상담종료</button>
@@ -22,12 +22,11 @@ import webRTC from "../../commons/webrtc";
 export default {
   data() {
     return {
-      logoURL: 'logo here'
+      userName: ''
     }
   },
   created() {
-    this.logoURL = this.$store.state.logoURL;
-    console.log(this.logoURL);
+    this.userName = this.$store.state.studentName;
   },
   methods: {
     handleExitBtn() {
