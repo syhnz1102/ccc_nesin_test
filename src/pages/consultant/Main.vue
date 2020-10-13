@@ -35,7 +35,6 @@ export default {
     }
   },
   created() {
-    console.log(decodeURI(window.location.href.split('userName=')[1]));
     this.$store.commit('setStudentName', decodeURI(window.location.href.split('userName=')[1]));
     document.onkeydown = this.doNotReload
   },

@@ -208,6 +208,7 @@ export async function onMessage(resp) {
         if (window.location.href.indexOf('student') > -1) {
           // 학생일 경우
           eBus.$emit('showVideo', { on: false })
+          eBus.$emit('progressBar', { on: false });
 
           eBus.$emit('chat', {
             type: 'notice',

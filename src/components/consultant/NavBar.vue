@@ -176,33 +176,56 @@ export default {
         })
       }
 
-      eBus.$emit('popup', {
-        on: true,
-        type: 'Settings',
-        title: '디바이스 설정',
-        contents: '화면 공유 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
-        option: { inCall: false, start: true },
-        ok: () => {
-          this.menu.share = !this.menu.share;
+      let checked = window.localStorage.getItem('IS_CHECKED_DEVICE') ? JSON.parse(window.localStorage.getItem('IS_CHECKED_DEVICE').toLowerCase()) : false;
+      
+      if (!checked) {
+        eBus.$emit('popup', {
+          on: true,
+          type: 'Settings',
+          title: '디바이스 설정',
+          contents: '화면 공유 시작 전 카메라와 마이크가 정상 동작하는지 확인하세요.',
+          option: { inCall: false, start: true },
+          ok: () => {
+            this.menu.share = !this.menu.share;
 
-          if (this.menu.share) {
-            // Call 상태
-            eBus.$emit('showVideo', { on: true, type: 'share' });
-            window.resizeTo(854, 606);
+            if (this.menu.share) {
+              // Call 상태
+              eBus.$emit('showVideo', { on: true, type: 'share' });
+              window.resizeTo(854, 606);
 
-            eBus.$emit('chat', {
-              type: 'notice',
-              message: '화면 공유가 시작되었습니다.'
-            });
-          } else {
-            // Call 상태 아님
-            eBus.$emit('showVideo', { on: false });
-            window.resizeTo(514, 606);
+              eBus.$emit('chat', {
+                type: 'notice',
+                message: '화면 공유가 시작되었습니다.'
+              });
+            } else {
+              // Call 상태 아님
+              eBus.$emit('showVideo', { on: false });
+              window.resizeTo(514, 606);
+            }
+          },
+          cancel: () => {
           }
-        },
-        cancel: () => {
+        });
+      } else {
+        this.menu.share = !this.menu.share;
+
+        if (this.menu.share) {
+          // Call 상태
+          console.log('쇼비디오 NavBar 1')
+          eBus.$emit('showVideo', { on: true, type: 'share' });
+          console.log('쇼비디오 NavBar 2')
+          window.resizeTo(854, 606);
+
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: '화면 공유가 시작되었습니다.'
+          });
+        } else {
+          // Call 상태 아님
+          eBus.$emit('showVideo', { on: false });
+          window.resizeTo(514, 606);
         }
-      })
+      }
     },
     handleSettingBtnClick() {
       this.menu.setting = !this.menu.setting;

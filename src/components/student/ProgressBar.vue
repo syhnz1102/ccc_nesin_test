@@ -46,7 +46,8 @@ export default {
     handleEndCallBtnClick() {
       let s = this.$store.state;
       eBus.$emit('showVideo', { on: false });
-
+      eBus.$emit('progressBar', { on: false });
+      
       if (this.share) {
         eBus.$emit('chat', {
           type: 'notice',
