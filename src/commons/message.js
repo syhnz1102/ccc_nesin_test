@@ -247,6 +247,21 @@ export async function onMessage(resp) {
         }
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
+      } else if (resp.action === 'kick') {
+        eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '상담 종료',
+          contents: '상담이 종료 되었습니다.',
+          cancel: () => {
+            if (store.state.socket) {
+              sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+              webRTC.clear();
+              // store.state.socket.close();
+            }
+            router.push({ path: `/student` });
+          }
+        })
       }
       break;
 

@@ -10,6 +10,7 @@
             <div class="name">{{ studentInfo.name }}</div>
             <div class="time">{{ studentInfo.time }}</div>
          </div>
+         <button @click="handleKickBtnClick">강제퇴장</button>
       </div>
       <div class="menu">
          <ul>
@@ -177,7 +178,7 @@ export default {
       }
 
       let checked = window.localStorage.getItem('IS_CHECKED_DEVICE') ? JSON.parse(window.localStorage.getItem('IS_CHECKED_DEVICE').toLowerCase()) : false;
-      
+
       if (!checked) {
         eBus.$emit('popup', {
           on: true,
@@ -243,6 +244,9 @@ export default {
           this.menu.setting = false;
         }
       })
+    },
+    handleKickBtnClick() {
+      sendMessage('KickOut', { userId: Object.keys(this.$store.state.roomInfo.members).filter(c => c !== this.$store.state.userInfo.id)[0], roomId: this.$store.state.roomInfo.roomId })
     }
   }
 }
