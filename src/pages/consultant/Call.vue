@@ -59,7 +59,7 @@ export default {
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
       this.isSharing = param.type === 'share';
-      if(!param.on){ window.resizeTo( 514, 606 ); }
+      if (!param.on) { window.resizeTo( 514, 606 ); }
     })
 
     eBus.$on('popup', param => {

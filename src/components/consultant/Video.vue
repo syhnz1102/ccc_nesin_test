@@ -90,6 +90,11 @@ export default {
         this.$refs.remoteVideo.srcObject = param.stream;
         this.$refs.remoteVideo.autoplay = true;
         this.$refs.remoteVideo.playsInline = true;
+
+        if (this.share) {
+          this.handleVideoOffBtnClick();
+          console.log('상담사비디오끔')
+        }
       }
     })
 

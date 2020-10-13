@@ -30,7 +30,6 @@ export default {
     }
   },
   created() {
-
   },
   methods: {
     handleVideoOffBtnClick() {
