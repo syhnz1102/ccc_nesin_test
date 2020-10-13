@@ -35,7 +35,8 @@ export default {
     }
   },
   created() {
-    this.$store.commit('setStudentName', unescape(window.location.href.split('userName=')[1]));
+    console.log(decodeURI(window.location.href.split('userName=')[1]));
+    this.$store.commit('setStudentName', decodeURI(window.location.href.split('userName=')[1]));
     document.onkeydown = this.doNotReload
   },
   methods: {
