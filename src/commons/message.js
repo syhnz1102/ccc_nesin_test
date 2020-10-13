@@ -225,6 +225,8 @@ export async function onMessage(resp) {
             type: 'notice',
             message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
           });
+
+          webRTC.endCall();
         } else if (window.location.href.indexOf('student') <= -1) {
           // 상담사인 경우
           window.resizeTo( 514, 606 );
