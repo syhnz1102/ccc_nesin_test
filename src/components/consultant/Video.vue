@@ -36,7 +36,7 @@
 import WebRTC from "../../commons/webrtc";
 import { eBus } from "../../commons/eventBus";
 import { sendMessage } from "../../commons/message";
-import { runningTime } from "../../commons/utils";
+import { getIntervalTime, stopInterval } from "../../commons/utils";
 import store from '../../store';
 
 export default {
@@ -56,7 +56,6 @@ export default {
       },
       name: '',
       time: '00:00',
-      counter: 0,
       interval: null,
     }
   },
@@ -90,6 +89,7 @@ export default {
         this.$refs.remoteVideo.srcObject = param.stream;
         this.$refs.remoteVideo.autoplay = true;
         this.$refs.remoteVideo.playsInline = true;
+        this.interval = setInterval(this.intervalFunc, 1000);
 
         if (this.share) {
           this.handleVideoOffBtnClick();
@@ -115,16 +115,16 @@ export default {
 
     eBus.$on('consultInfo', param => {
       this.name = param.name;
-      this.interval = setInterval(this.intervalFunc, 1000);
+      // this.interval = setInterval(this.intervalFunc, 1000);
     })
   },
   destroyed() {
+    stopInterval();
     clearInterval(this.interval);
   },
   methods: {
     intervalFunc() {
-      store.commit('setRunningTimeInfo', runningTime(this.counter++));
-      this.time = this.$store.state.runningTime;
+      this.time = getIntervalTime();
     },
     handleVideoOffBtnClick() {
       this.offVideo.local = !this.offVideo.local;

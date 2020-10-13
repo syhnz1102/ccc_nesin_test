@@ -36,7 +36,7 @@ import { eBus } from '../../commons/eventBus.js'
 import store from "../../store";
 import { sendMessage } from "../../commons/message";
 import Session from "../../commons/session";
-import { runningTime } from "../../commons/utils";
+import { runningTime, stopInterval } from "../../commons/utils";
 
 export default {
   components: {
@@ -85,14 +85,8 @@ export default {
       this.isCalling = param.on; // bool
       this.share = param.share;
 
-      if (param.on) {
-        // interval 켜기 store에 집어 넣기
-        // this.$store.commit('setRunningTimeInfo', false);//screenShare
-        this.interval = setInterval(this.intervalFunc, 1000);
-      } else {
-        clearInterval(this.interval);
-        this.counter = 0;
-        this.$store.commit('setRunningTimeInfo', '00:00');
+      if (!param.on) {
+        stopInterval();
       }
     })
 
@@ -115,14 +109,9 @@ export default {
       this.isCalling = param.on; // bool
       this.isHiding = param.on;
     })
-
-    // eBus.$on('popUp', param => {//여기서 popUp으로의 컨텐츠전달은 prop으로
-    //    this.popUp.on = param.on;
-    //    this.popUp.contents = param.contents;
-    // });
   },
   destroyed() {
-    clearInterval(this.interval);
+    stopInterval();
   },
   methods: {
     handlePopupOkBtnClick(param) {
@@ -132,9 +121,6 @@ export default {
     handlePopupCancelBtnClick(param) {
       this.popup.on = false;
       if (this.popup.cancel) this.popup.cancel(param);
-    },
-    intervalFunc() {
-      this.$store.commit('setRunningTimeInfo', runningTime(this.counter++));
     },
     hideProgressBar(param) {
       this.isHiding = param.on;

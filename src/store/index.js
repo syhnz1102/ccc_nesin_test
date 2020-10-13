@@ -16,8 +16,6 @@ export default new Vuex.Store({
     isCalling: false,
     isSharing: false,
     studentName: '',
-    runningTime: '00:00',
-    counter: 0,
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -103,8 +101,5 @@ export default new Vuex.Store({
     setStudentName(state, name) {
       state.studentName = name;
     },
-    setRunningTimeInfo(state, param) {
-      state.runningTime = param;
-    }
   },
 })

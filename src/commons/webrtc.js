@@ -1,6 +1,7 @@
 import store from '../store';
 import { eBus } from './eventBus';
 import { sendMessage } from './message';
+import { startInterval } from "./utils";
 
 class WebRTC {
   constraints = { video: true, audio: true };
@@ -55,9 +56,8 @@ class WebRTC {
 
       peer.onconnectionstatechange = e => {
         console.debug(`## ${'local'} onconnectionstatechange ## `, e.currentTarget.connectionState);
-        let state = s.peerInfo['local'].iceConnectionState;
-        if (s.peerInfo['local'] && (state === 'disconnected' || state === 'failed' || state === 'closed')) {
-          // 접속 종료 시키기
+        if (e.currentTarget.connectionState === 'connected') {
+          startInterval();
         }
       };
 

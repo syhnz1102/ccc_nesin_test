@@ -17,6 +17,7 @@
 import { sendMessage } from "../../commons/message";
 import router from "../../router";
 import store from "../../store";
+import webRTC from '../../commons/webrtc'
 
 export default {
   data() {
@@ -26,15 +27,11 @@ export default {
   methods: {
      handleConsultExitBtnClick() {
        if (this.$store.state.socket) {
-         // webRTC.clear();
+         webRTC.clear();
 
          this.$store.state.socket.close();
          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
        }
-
-       this.$store.commit('setCallingStatus', false);
-       this.$store.commit('setJoinedStatus', false);
-       this.$store.commit('setSharingStatus', false);
 
        router.push({ path: `/student` });
        console.log('store : ', store.state)

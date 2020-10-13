@@ -3,7 +3,7 @@
       <div class="menu">
          <div class="info">
             <span>{{ share ? '화면 공유중' : '화상 상담중'}}</span>
-            <span>{{ runningTime }}</span>
+            <span>{{ time }}</span>
          </div>
          <div class="button">
             <button @click.stop="handleEndCallBtnClick">close</button>
@@ -17,6 +17,7 @@ import { eBus } from '../../commons/eventBus';
 import store from '../../store';
 import {sendMessage} from "../../commons/message";
 import WebRTC from "../../commons/webrtc";
+import { getIntervalTime } from "../../commons/utils";
 
 export default {
   name: "Button",
@@ -24,12 +25,11 @@ export default {
   data() {
     return {
       interval: null,
-      runningTime: this.$store.state.runningTime,
+      time: getIntervalTime(),
       screenShare: false,
     }
   },
   created() {
-    console.log('progress bar');
     this.interval = setInterval(this.intervalFunc, 1000);
   },
   destroyed() {
@@ -37,7 +37,7 @@ export default {
   },
   methods: {
     intervalFunc() {
-      this.runningTime = this.$store.state.runningTime;
+      this.time = getIntervalTime();
     },
     handleProgressBarBtnClick() {
       this.$emit('hideProgressBar', { on: false });
@@ -47,7 +47,7 @@ export default {
       let s = this.$store.state;
       eBus.$emit('showVideo', { on: false });
       eBus.$emit('progressBar', { on: false });
-      
+
       if (this.share) {
         eBus.$emit('chat', {
           type: 'notice',

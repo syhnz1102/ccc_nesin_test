@@ -41,3 +41,21 @@ export const runningTime = (counter) => {
 
   return time
 }
+
+let interval = null;
+let time = 0;
+
+export const startInterval = () => {
+  interval = setInterval(() => { time++ }, 1000);
+}
+
+export const stopInterval = () => {
+  if (interval) clearInterval(interval);
+
+  time = 0;
+  interval = null;
+}
+
+export const getIntervalTime = () => {
+  return runningTime(time);
+}
