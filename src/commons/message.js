@@ -43,7 +43,6 @@ export async function onMessage(resp) {
           }
 
           store.commit('setJoinedStatus', true);
-          sendMessage('ChangeName', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId, name: store.state.studentName }, 'signalOp');
           eBus.$emit('chat', {
             type: 'notice',
             message: '상담이 시작되었습니다.'
@@ -63,6 +62,18 @@ export async function onMessage(resp) {
         sendMessage('StartSession', { code: '200' });
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length, type: resp.useMediaSvr === 'Y' ? 'multi' : 'p2p', host: resp.host });
         store.commit('setJoinedStatus', true);
+        if (window.location.href.indexOf('student') <= -1) {
+          sendMessage('ChangeName', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId, name: store.state.studentName }, 'signalOp');
+          eBus.$emit('entrance', {
+            entrance: true,
+            name: store.state.studentName
+          })
+
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.studentName}님이 입장하였습니다.`
+          })
+        }
       }
 
       // 내신닷컴에서는 StartSession에서 SDP를 전송하지 않음.
@@ -183,7 +194,7 @@ export async function onMessage(resp) {
             message: `${store.state.studentName}님이 퇴장하였습니다.`
           })
 
-          store.commit('setStudentName', '');
+          // store.commit('setStudentName', '');
           store.commit('setJoinedStatus', false);
           store.commit('setCallingStatus', false);
 
@@ -241,15 +252,15 @@ export async function onMessage(resp) {
 
     case 'ChangeName':
       store.commit('setStudentName', resp.name);
-      eBus.$emit('entrance', {
-        entrance: true,
-        name: resp.name
-      })
-
-      eBus.$emit('chat', {
-        type: 'notice',
-        message: `${resp.name}님이 입장하였습니다.`
-      })
+      // eBus.$emit('entrance', {
+      //   entrance: true,
+      //   name: resp.name
+      // })
+      //
+      // eBus.$emit('chat', {
+      //   type: 'notice',
+      //   message: `${resp.name}님이 입장하였습니다.`
+      // })
       break;
 
     case 'SetAudio':

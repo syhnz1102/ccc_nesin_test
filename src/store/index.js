@@ -18,7 +18,6 @@ export default new Vuex.Store({
     studentName: '',
     runningTime: '00:00',
     counter: 0,
-    logoURL: ''
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -90,7 +89,7 @@ export default new Vuex.Store({
 
       state.isJoined = false;
       state.isCalling = false;
-      state.studentName = '';
+      // state.studentName = '';
     },
     setJoinedStatus(state, bool) {
       state.isJoined = bool;

@@ -1,10 +1,10 @@
 <template>
    <div class="header">
       <div class="logo">
-         <span class="img">
-            <img src="@/assets/student/images/img_logo_sample.png" />
-         </span>
-         <strong>화상 상담</strong>
+<!--         <span class="img">-->
+<!--            <img src="@/assets/student/images/img_logo_sample.png" />-->
+<!--         </span>-->
+         <strong>입시 화상 상담</strong>
       </div>
       <div class="button">
          <button @click="handleConsultExitBtnClick">상담종료</button>
