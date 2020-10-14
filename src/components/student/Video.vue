@@ -118,6 +118,15 @@ export default {
 
       let s = this.$store.state;
       sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
+
+      if (s.streamInfo.local) {
+        const tracks = s.streamInfo.local.getTracks();
+        tracks.forEach(curr => {
+          if (curr.kind === 'video') {
+            curr.enabled = !this.offVideo.local;
+          }
+        });
+      }
     },
     handleVideoContainerBtnClick() {
       this.showButton = !this.showButton
