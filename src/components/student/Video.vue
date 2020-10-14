@@ -112,6 +112,15 @@ export default {
 
       let s = this.$store.state;
       sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');
+
+      if (s.streamInfo.local) {
+        const tracks = s.streamInfo.local.getTracks();
+        tracks.forEach(curr => {
+          if (curr.kind === 'video') {
+            curr.enabled = !this.offVideo.local;
+          }
+        });
+      }
     },
     localMic(param) {
       this.offMic.local = param.local
@@ -122,8 +131,8 @@ export default {
       if (s.streamInfo.local) {
         const tracks = s.streamInfo.local.getTracks();
         tracks.forEach(curr => {
-          if (curr.kind === 'video') {
-            curr.enabled = !this.offVideo.local;
+          if (curr.kind === 'audio') {
+            curr.enabled = !this.offMic.local;
           }
         });
       }
