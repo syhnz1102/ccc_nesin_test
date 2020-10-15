@@ -171,7 +171,7 @@ export default {
           type: 'notice',
           message: '화면 공유가 종료되었습니다.'
         });
-
+        
         sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
         sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
         this.$store.commit('setSharingStatus', false);

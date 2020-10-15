@@ -1,6 +1,7 @@
 import store from '../store';
 import { sendMessage } from './message';
 import { eBus } from "./eventBus";
+import WebRTC from "./webrtc";
 
 class ScreenShare {
   constructor() {
@@ -77,10 +78,24 @@ class ScreenShare {
         s.streamInfo[uid].getTracks().forEach(track => {
           s.peerInfo['screen'].addTrack(track, s.streamInfo[uid]);
           track.onended = () => {
-            eBus.$emit('share', {
-              type: 'remove',
-              isSharer: true
-            })
+            window.resizeTo( 514, 606 );
+            eBus.$emit('showVideo', { on: false, share: false });
+
+            eBus.$emit('menu', {
+              on: false,
+              menu: 'share'
+            });
+    
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: '화면 공유가 종료되었습니다.'
+            });
+    
+            store.commit('setSharingStatus', false);
+
+            sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+            WebRTC.endCall();
+            
             track.stop();
           }
         });

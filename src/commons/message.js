@@ -228,7 +228,7 @@ export async function onMessage(resp) {
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
           // 학생일 경우
-          eBus.$emit('showVideo', { on: false })
+          eBus.$emit('showVideo', { on: false, share: store.state.isSharing })
           eBus.$emit('progressBar', { on: false });
 
           eBus.$emit('chat', {
