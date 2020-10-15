@@ -268,14 +268,14 @@ export async function onMessage(resp) {
           title: '상담 종료',
           contents: '상담이 종료 되었습니다.',
           cancel: () => {
-            if (store.state.socket) {
-              sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
-              webRTC.clear();
-              // store.state.socket.close();
-            }
             router.push({ path: `/student` });
           }
         })
+
+        if (store.state.socket) {
+          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+          webRTC.clear();
+        }
       }
       break;
 
