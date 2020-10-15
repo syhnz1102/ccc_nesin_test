@@ -1,12 +1,12 @@
 <template>
   <div class="videoContainer" @click="handleVideoContainerBtnClick">
-    <div class="shareVideo" v-bind:style="{display: (share ? 'block' : 'none')}">
+    <div class="shareVideo" v-bind:style="{ display: (share ? 'block' : 'none') }">
       <div class="video">
         <div v-if="offMic.remote" class="micoff"></div>
         <video ref="shareVideo"></video>
       </div>
     </div>
-    <div class="mainVideo" v-bind:style="{display: (share ? 'none' : 'block')}">
+    <div class="mainVideo" v-bind:style="{ display: (share ? 'none' : 'block') }">
       <div class="video" v-bind:class="{ 'camoff': offVideo.remote }">
         <div v-if="offMic.remote" class="micoff"></div>
         <video ref="remoteVideo"></video>
@@ -82,10 +82,12 @@ export default {
           this.offMic[param.id] = param.audio;
         }
       } else {
-        this.$refs.remoteVideo.srcObject = param.stream;
-        this.$refs.remoteVideo.autoplay = true;
-        this.$refs.remoteVideo.playsInline = true;
-        
+        if (this.$refs.remoteVideo) {
+          this.$refs.remoteVideo.srcObject = param.stream;
+          this.$refs.remoteVideo.autoplay = true;
+          this.$refs.remoteVideo.playsInline = true;
+        }
+
         if (this.share) {
           this.offVideo.local = !this.offVideo.local;
           this.localVideo(this.offVideo);
@@ -107,7 +109,7 @@ export default {
   methods: {
     localVideo(param) {
       this.offVideo.local = param.local
-      this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
+      if (this.$refs.localVideo) this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
 
       let s = this.$store.state;
       sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');

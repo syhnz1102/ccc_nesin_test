@@ -25,8 +25,7 @@ export default {
   data() {
     return {
       interval: null,
-      time: getIntervalTime(),
-      screenShare: false,
+      time: getIntervalTime()
     }
   },
   created() {
