@@ -1,11 +1,8 @@
 import store from '../store';
 import router from '../router';
 import webRTC from './webrtc';
-// import mobile from './mobile';
 import { eBus } from "./eventBus";
 import screenShare from "./screenshare";
-// import utils from './utils';
-// import config from '../config';
 
 export async function onMessage(resp) {
   console.debug(`[ ${resp.eventOp} ] Signal -> Web `, resp);
@@ -90,11 +87,12 @@ export async function onMessage(resp) {
         if (resp.sdp.type === 'offer') {
           sendMessage('SDP', { code: '200' });
           // 학생
+          eBus.$emit('video', { type: 'start' });
           eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
           setTimeout(async () => {
             await webRTC.createPeer();
             await webRTC.createAnswer(resp.sdp, 'local');
-          }, 1000);
+          }, 500);
           console.log(store.state)
 
           eBus.$emit('chat', {
@@ -228,7 +226,7 @@ export async function onMessage(resp) {
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
           // 학생일 경우
-          eBus.$emit('showVideo', { on: false, share: store.state.isSharing })
+          eBus.$emit('showVideo', { on: false, share: false })
           eBus.$emit('progressBar', { on: false });
 
           eBus.$emit('chat', {

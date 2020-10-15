@@ -66,6 +66,7 @@ export default {
       this.$store.commit('setSharingStatus', true);
     } else {
       let stream = await WebRTC.createVideoStream();
+      if (!this.$refs.localVideo) return;
       this.$refs.localVideo.srcObject = stream;
       this.$refs.localVideo.autoplay = true;
       this.$refs.localVideo.muted = true;
@@ -76,22 +77,35 @@ export default {
       await WebRTC.createOffer('local');
     }
 
+    eBus.$on('init', param => {
+      this.share = false;
+      this.offVideo = {
+        local: false,
+        remote: false
+      }
+      this.offMic = {
+        local: false,
+        remote: false
+      }
+    })
+
     eBus.$on('video', param => {
       if (param.type === 'set') {
         if (param.hasOwnProperty('video')) {
           this.offVideo[param.id] = param.video;
-          this.$refs.remoteVideo.style = this.offVideo[param.id] ? `display: none` : `display: block`;
+          if (this.$refs.remoteVideo) this.$refs.remoteVideo.style = this.offVideo[param.id] ? `display: none` : `display: block`;
         }
         if (param.hasOwnProperty('audio')) {
           this.offMic[param.id] = param.audio;
         }
       } else {
+        if (!this.$refs.remoteVideo) return;
         this.$refs.remoteVideo.srcObject = param.stream;
         this.$refs.remoteVideo.autoplay = true;
         this.$refs.remoteVideo.playsInline = true;
         this.interval = setInterval(this.intervalFunc, 1000);
 
-        if (this.share) {
+        if (this.share && this.$store.state.isSharing) {
           this.handleVideoOffBtnClick();
         }
       }
@@ -101,6 +115,7 @@ export default {
       this.share = param.on;
       if (param.on) {
         let stream = await WebRTC.createVideoStream();
+        if (!this.$refs.localVideo) return;
         this.$refs.localVideo.srcObject = stream;
         this.$refs.localVideo.autoplay = true;
         this.$refs.localVideo.muted = true;
@@ -127,7 +142,7 @@ export default {
     },
     handleVideoOffBtnClick() {
       this.offVideo.local = !this.offVideo.local;
-      this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
+      if (this.$refs.localVideo) this.$refs.localVideo.style = this.offVideo.local ? `display: none` : `display: block`;
 
       let s = this.$store.state;
       sendMessage('SetVideo', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offVideo.local }, 'signalOp');
@@ -171,7 +186,7 @@ export default {
           type: 'notice',
           message: '화면 공유가 종료되었습니다.'
         });
-        
+
         sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
         sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
         this.$store.commit('setSharingStatus', false);

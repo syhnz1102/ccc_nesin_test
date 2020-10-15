@@ -10,7 +10,7 @@
 <!--               </div>-->
                <div class="text">
                   <strong>쉽고 편리한<br /> 화상 상담 서비스</strong>
-                  <p>이름을 입력하고 상담을 시작해보세요.</p>
+                  <p>아래 버튼을 눌러 상담을 시작해보세요.</p>
                </div>
 <!--               <div class="input">-->
 <!--                  <input ref="name" type="text" placeholder="이름을 입력하세요.">-->

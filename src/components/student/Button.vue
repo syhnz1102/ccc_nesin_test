@@ -34,10 +34,12 @@ export default {
   methods: {
     handleVideoOffBtnClick() {
       this.offVideo.local = !this.offVideo.local;
+      // this.$store.commit('setCallStatus', { video: this.offVideo.local })
       this.$emit("localVideo", this.offVideo);
     },
     handleMicOffBtnClick() {
       this.offMic.local = !this.offMic.local;
+      // this.$store.commit('setCallStatus', { audio: this.offMic.local })
       this.$emit("localMic", this.offMic);
     },
     handleProgressBarBtnClick() {

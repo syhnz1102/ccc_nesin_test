@@ -42,53 +42,57 @@ export default {
     return {
       share: this.isSharing,
       offVideo: {
-        local: false,
+        local: this.$store.state.callStatus.video,
         remote: false
       },
       offMic: {
-        local: false,
+        local: this.$store.state.callStatus.audio,
         remote: false
       },
       showButton: false
     }
   },
-  async created() {
-    let stream = await webRTC.createVideoStream();
-    this.$refs.localVideo.srcObject = stream;
-    this.$refs.localVideo.autoplay = true;
-    this.$refs.localVideo.muted = true;
-    this.$refs.localVideo.playsInline = true;
+  async mounted() {
+    eBus.$on('init', param => {
+      this.share = false;
+      this.offVideo = {
+        local: false,
+        remote: false
+      }
+      this.offMic = {
+        local: false,
+        remote: false
+      }
+      this.showButton = false;
+      if (this.$refs.localVideo) this.$refs.localVideo.style = `display: block`;
+      if (this.$refs.remoteVideo) this.$refs.remoteVideo.style = `display: block`;
+    })
 
-    if (this.$store.state.streamInfo.remote) {
-      this.$refs.remoteVideo.srcObject = this.$store.state.streamInfo.remote;
-      this.$refs.remoteVideo.autoplay = true;
-      this.$refs.remoteVideo.playsInline = true;
-    }
-
-    console.log(this.$store.state.streamInfo)
-    if (this.$store.state.streamInfo.screen) {
-      this.$refs.shareVideo.srcObject = this.$store.state.streamInfo.screen;
-      this.$refs.shareVideo.autoplay = true;
-      this.$refs.shareVideo.playsInline = true;
-    }
-
-    eBus.$on('video', param => {
-      if (param.type === 'set') {
+    eBus.$on('video', async param => {
+      if (param.type === 'start') {
+        if (!this.$refs.localVideo) return;
+        let stream = await webRTC.createVideoStream();
+        this.$refs.localVideo.srcObject = stream;
+        this.$refs.localVideo.autoplay = true;
+        this.$refs.localVideo.muted = true;
+        this.$refs.localVideo.playsInline = true;
+      } else if (param.type === 'set') {
         if (param.hasOwnProperty('video')) {
           this.offVideo[param.id] = param.video;
-          this.$refs.remoteVideo.style = this.offVideo[param.id] ? `display: none` : `display: block`;
+          if (this.$refs.remoteVideo) this.$refs.remoteVideo.style = this.offVideo[param.id] ? `display: none` : `display: block`;
         }
         if (param.hasOwnProperty('audio')) {
           this.offMic[param.id] = param.audio;
         }
       } else {
         if (this.$refs.remoteVideo) {
+          if (!this.$refs.remoteVideo) return;
           this.$refs.remoteVideo.srcObject = param.stream;
           this.$refs.remoteVideo.autoplay = true;
           this.$refs.remoteVideo.playsInline = true;
         }
 
-        if (this.share) {
+        if (this.share && this.$store.state.isSharing) {
           this.offVideo.local = !this.offVideo.local;
           this.localVideo(this.offVideo);
         }
@@ -100,11 +104,14 @@ export default {
       this.$store.commit('setSharingStatus', param.on);
 
       if (param.on && param.hasOwnProperty('stream')) {
+        if (!this.$refs.shareVideo) return;
         this.$refs.shareVideo.srcObject = param.stream;
         this.$refs.shareVideo.autoplay = true;
         this.$refs.shareVideo.playsInline = true;
       }
     });
+  },
+  async created() {
   },
   methods: {
     localVideo(param) {
@@ -128,7 +135,7 @@ export default {
 
       let s = this.$store.state;
       sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
-      
+
       if (s.streamInfo.local) {
         const tracks = s.streamInfo.local.getTracks();
         tracks.forEach(curr => {

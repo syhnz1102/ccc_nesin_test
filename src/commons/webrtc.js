@@ -58,8 +58,41 @@ class WebRTC {
         console.debug(`## ${'local'} onconnectionstatechange ## `, e.currentTarget.connectionState);
         if (e.currentTarget.connectionState === 'connected') {
           startInterval();
-          if (eBus._events['video']) { eBus._events['video'].pop() }
-          if (eBus._events['share']) { eBus._events['share'].pop() }
+          // if (eBus._events['video']) { eBus._events['video'].pop() }
+          // if (eBus._events['share']) { eBus._events['share'].pop() }
+        } else if (e.currentTarget.connectionState === 'failed') {
+          let s = store.state;
+          if (window.location.href.indexOf('student') <= -1) window.resizeTo( 514, 606 );
+          eBus.$emit('showVideo', { on: false });
+
+          if (store.state.isSharing) {
+            eBus.$emit('menu', {
+              on: false,
+              menu: 'share'
+            });
+
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: '화면 공유가 종료되었습니다.'
+            });
+
+            sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+            sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
+            this.$store.commit('setSharingStatus', false);
+          } else {
+            eBus.$emit('menu', {
+              on: false,
+              menu: 'call'
+            });
+
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: '화상 상담이 종료되었습니다.'
+            });
+          }
+
+          sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+          this.endCall();
         }
       };
 
@@ -171,10 +204,12 @@ class WebRTC {
   // }
   //
   endCall() {
+    eBus.$emit('init', {});
     store.commit('endCall');
   }
 
   clear() {
+    eBus.$emit('init', {});
     store.commit('clearAll');
   }
 }

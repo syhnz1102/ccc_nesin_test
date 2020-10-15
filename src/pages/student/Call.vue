@@ -13,11 +13,11 @@
     <div class="container">
       <Chat />
       <Video
-        v-if="isCalling && !isHiding"
+        v-bind:style="{ display: (isCalling && !isHiding ? 'block' : 'none') }"
         v-bind:isSharing="share"
       />
       <ProgressBar
-        v-if="isCalling && isHiding"
+        v-bind:style="{ display: (isCalling && isHiding ? 'block' : 'none') }"
         v-bind:share="share"
         @hideProgressBar="hideProgressBar"
       />
@@ -79,7 +79,6 @@ export default {
     }
 
     eBus.$on('showVideo', param => {
-      console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
       this.$store.commit('setSharingStatus', param.share);
       this.isCalling = param.on; // bool
@@ -105,7 +104,6 @@ export default {
     });
 
     eBus.$on('progressBar', param => {
-      console.log('progressBar Event : ', param);
       this.isCalling = param.on; // bool
       this.isHiding = param.on;
     })

@@ -16,6 +16,10 @@ export default new Vuex.Store({
     isCalling: false,
     isSharing: false,
     studentName: '',
+    callStatus: {
+      video: false,
+      audio: false
+    }
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -64,6 +68,11 @@ export default new Vuex.Store({
       }
 
       state.isCalling = false;
+      state.isSharing = false;
+      state.callStatus = {
+        video: false,
+        audio: false
+      }
     },
     clearAll(state) {
       if (Object.keys(state.streamInfo).length > 0) {
@@ -87,6 +96,11 @@ export default new Vuex.Store({
 
       state.isJoined = false;
       state.isCalling = false;
+      state.isSharing = false;
+      state.callStatus = {
+        video: false,
+        audio: false
+      }
       // state.studentName = '';
     },
     setJoinedStatus(state, bool) {
@@ -101,5 +115,9 @@ export default new Vuex.Store({
     setStudentName(state, name) {
       state.studentName = name;
     },
+    setCallStatus(state, data) {
+      if (data.hasOwnProperty('video')) state.callStatus.video = data.video;
+      if (data.hasOwnProperty('audio')) state.callStatus.audio = data.audio;
+    }
   },
 })

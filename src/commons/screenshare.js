@@ -48,8 +48,26 @@ class ScreenShare {
       };
       peer.onicegatheringstatechange = e => {
         // 200703 ivypark, v1.0.2. gatheringstate -> candidate null 일때 SDP 전송으로 변경
-        if (peer.iceGatheringState === 'complete') {
+        if (e.currentTarget.connectionState === 'failed') {
+          let s = store.state;
+          if (window.location.href.indexOf('student') <= -1) window.resizeTo( 514, 606 );
+          eBus.$emit('showVideo', { on: false });
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'share'
+          });
 
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: '화면 공유가 종료되었습니다.'
+          });
+
+          sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+          sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
+          this.$store.commit('setSharingStatus', false);
+
+          sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+          this.endCall();
         }
       }
       let peerCount = 0;
@@ -85,17 +103,17 @@ class ScreenShare {
               on: false,
               menu: 'share'
             });
-    
+
             eBus.$emit('chat', {
               type: 'notice',
               message: '화면 공유가 종료되었습니다.'
             });
-    
+
             store.commit('setSharingStatus', false);
 
             sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
             WebRTC.endCall();
-            
+
             track.stop();
           }
         });
