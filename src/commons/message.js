@@ -299,14 +299,14 @@ export async function onMessage(resp) {
         audio: resp.status
       })
       break;
-      
-      case 'SetVideo':
-        eBus.$emit('video', {
-          type: 'set',
-          id: 'remote',
-          video: resp.status
-        })
-      break;
+
+    case 'SetVideo':
+      eBus.$emit('video', {
+        type: 'set',
+        id: 'remote',
+        video: resp.status
+      })
+    break;
 
     case 'Chat':
       eBus.$emit('chat', {

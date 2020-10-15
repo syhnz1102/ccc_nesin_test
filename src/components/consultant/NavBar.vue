@@ -50,6 +50,8 @@ export default {
   },
   created() {
     if (eBus._events['entranceNavbar']) { eBus._events['entranceNavbar'].pop() }
+    if (eBus._events['menu']) { eBus._events['menu'].pop() }
+    if (eBus._events['startShare']) { eBus._events['startShare'].pop() }
 
     eBus.$on('entranceNavbar', param => {
       console.log('navBar = ', param)
