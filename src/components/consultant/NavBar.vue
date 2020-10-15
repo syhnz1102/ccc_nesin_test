@@ -49,7 +49,9 @@ export default {
     }
   },
   created() {
-    eBus.$on('entrance', param => {
+    if (eBus._events['entranceNavbar']) { eBus._events['entranceNavbar'].pop() }
+
+    eBus.$on('entranceNavbar', param => {
       console.log('navBar = ', param)
       this.entrance = param.entrance;
       this.studentInfo.name = param.name;
@@ -212,9 +214,7 @@ export default {
 
         if (this.menu.share) {
           // Call 상태
-          console.log('쇼비디오 NavBar 1')
           eBus.$emit('showVideo', { on: true, type: 'share' });
-          console.log('쇼비디오 NavBar 2')
           window.resizeTo(854, 606);
 
           eBus.$emit('chat', {

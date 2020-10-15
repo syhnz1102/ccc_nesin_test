@@ -39,6 +39,7 @@ class ScreenShare {
           on: true,
           stream: streams[0]
         });
+        eBus.$emit('shareVideo', { on: true })
       }
 
       peer.onconnectionstatechange = e => {

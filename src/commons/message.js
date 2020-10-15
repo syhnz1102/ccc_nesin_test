@@ -64,7 +64,12 @@ export async function onMessage(resp) {
         store.commit('setJoinedStatus', true);
         if (window.location.href.indexOf('student') <= -1) {
           sendMessage('ChangeName', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId, name: store.state.studentName }, 'signalOp');
-          eBus.$emit('entrance', {
+          eBus.$emit('entranceStatusBar', {
+            entrance: true,
+            name: store.state.studentName
+          })
+
+          eBus.$emit('entranceNavbar', {
             entrance: true,
             name: store.state.studentName
           })
@@ -113,6 +118,7 @@ export async function onMessage(resp) {
           await webRTC.setRemoteDescription(resp.sdp, 'screen');
           sendMessage('SDP', { code: '200' });
           eBus.$emit('share', { on: true })
+          eBus.$emit('shareVideo', { on: true })
         }
       }
       break;
@@ -160,9 +166,8 @@ export async function onMessage(resp) {
       break;
 
     case 'ScreenShareConferenceEndSvr':
-      eBus.$emit('share', {
-        on: false
-      })
+      eBus.$emit('share', { on: false })
+      eBus.$emit('shareVideo', { on: false })
       break;
 
     case 'Presence':
@@ -198,7 +203,12 @@ export async function onMessage(resp) {
           store.commit('setJoinedStatus', false);
           store.commit('setCallingStatus', false);
 
-          eBus.$emit('entrance', {
+          eBus.$emit('entranceStatusBar', {
+            entrance: false,
+            name: ''
+          })
+
+          eBus.$emit('entranceNavbar', {
             entrance: false,
             name: ''
           })
@@ -246,6 +256,8 @@ export async function onMessage(resp) {
             type: 'notice',
             message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
           });
+
+          webRTC.endCall();
         }
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });
@@ -287,13 +299,13 @@ export async function onMessage(resp) {
         audio: resp.status
       })
       break;
-
-    case 'SetVideo':
-      eBus.$emit('video', {
-        type: 'set',
-        id: 'remote',
-        video: resp.status
-      })
+      
+      case 'SetVideo':
+        eBus.$emit('video', {
+          type: 'set',
+          id: 'remote',
+          video: resp.status
+        })
       break;
 
     case 'Chat':

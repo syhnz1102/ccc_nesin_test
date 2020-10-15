@@ -93,7 +93,6 @@ export default {
 
         if (this.share) {
           this.handleVideoOffBtnClick();
-          console.log('상담사비디오끔')
         }
       }
     })

@@ -90,7 +90,7 @@ export default {
       }
     })
 
-    eBus.$on('share', param => {
+    eBus.$on('shareVideo', param => {
       this.share = param.on;
     })
 

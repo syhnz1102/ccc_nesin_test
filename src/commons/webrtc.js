@@ -58,6 +58,8 @@ class WebRTC {
         console.debug(`## ${'local'} onconnectionstatechange ## `, e.currentTarget.connectionState);
         if (e.currentTarget.connectionState === 'connected') {
           startInterval();
+          if (eBus._events['video']) { eBus._events['video'].pop() }
+          if (eBus._events['share']) { eBus._events['share'].pop() }
         }
       };
 

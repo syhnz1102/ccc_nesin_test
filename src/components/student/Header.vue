@@ -27,10 +27,10 @@ export default {
   methods: {
      handleConsultExitBtnClick() {
        if (this.$store.state.socket) {
-         webRTC.clear();
+          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+          this.$store.state.socket.close();
 
-         this.$store.state.socket.close();
-         sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+          webRTC.clear();
        }
 
        router.push({ path: `/student` });

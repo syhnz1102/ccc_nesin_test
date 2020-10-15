@@ -85,11 +85,10 @@ export default {
         this.$refs.remoteVideo.srcObject = param.stream;
         this.$refs.remoteVideo.autoplay = true;
         this.$refs.remoteVideo.playsInline = true;
-
+        
         if (this.share) {
           this.offVideo.local = !this.offVideo.local;
           this.localVideo(this.offVideo);
-          console.log('학생비디오끔')
         }
       }
     })
@@ -127,7 +126,7 @@ export default {
 
       let s = this.$store.state;
       sendMessage('SetAudio', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, status: this.offMic.local }, 'signalOp');
-
+      
       if (s.streamInfo.local) {
         const tracks = s.streamInfo.local.getTracks();
         tracks.forEach(curr => {
