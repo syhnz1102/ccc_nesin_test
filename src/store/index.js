@@ -19,7 +19,8 @@ export default new Vuex.Store({
     callStatus: {
       video: false,
       audio: false
-    }
+    },
+    endCallForced: false
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -118,6 +119,9 @@ export default new Vuex.Store({
     setCallStatus(state, data) {
       if (data.hasOwnProperty('video')) state.callStatus.video = data.video;
       if (data.hasOwnProperty('audio')) state.callStatus.audio = data.audio;
-    }
+    },
+    setEndCallForcedStatus(state, bool) {
+      state.endCallForced = bool;
+    },
   },
 })
