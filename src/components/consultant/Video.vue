@@ -77,6 +77,11 @@ export default {
       await WebRTC.createOffer('local');
     }
 
+    if (eBus._events['init']) { eBus._events['init'].pop() }
+    if (eBus._events['video']) { eBus._events['video'].pop() }
+    if (eBus._events['share']) { eBus._events['share'].pop() }
+    if (eBus._events['consultInfo']) { eBus._events['consultInfo'].pop() }
+
     eBus.$on('init', param => {
       this.share = false;
       this.offVideo = {
