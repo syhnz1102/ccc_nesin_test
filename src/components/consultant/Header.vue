@@ -1,9 +1,6 @@
 <template>
    <div class="header">
       <div class="logo">
-<!--         <span class="img">-->
-<!--            <img v-bind:src="logoURL" />-->
-<!--         </span>-->
          <strong>{{ userName }} 상담 방</strong>
       </div>
       <div class="button">

@@ -30,7 +30,6 @@ class Session {
 
       this.socket.on('disconnect', () => {
         // webRTC.clear();
-        // eBus.$emit('video', { type: 'remove' });
         // eBus.$emit('popup', {
         //   on: true,
         //   type: 'Alert',
@@ -67,7 +66,7 @@ class Session {
   }
 
   handleIntervalProc() {
-    // sendMessage('KeepAlive', {});
+
   }
 
   stopInterval() {

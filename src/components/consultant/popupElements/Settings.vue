@@ -75,7 +75,7 @@
       });
 
       // 다시 보지 않기
-      console.log('-------------', this.isChecked, window.localStorage.getItem('IS_CHECKED_DEVICE'))
+      // console.log('-------------', this.isChecked, window.localStorage.getItem('IS_CHECKED_DEVICE'))
       this.isChecked = window.localStorage.getItem('IS_CHECKED_DEVICE') ? JSON.parse(window.localStorage.getItem('IS_CHECKED_DEVICE').toLowerCase()) : false;
       this.init();
 

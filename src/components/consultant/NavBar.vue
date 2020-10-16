@@ -54,7 +54,7 @@ export default {
     if (eBus._events['startShare']) { eBus._events['startShare'].pop() }
 
     eBus.$on('entranceNavbar', param => {
-      console.log('navBar = ', param)
+      // console.log('navBar = ', param)
       this.entrance = param.entrance;
       this.studentInfo.name = param.name;
       this.studentInfo.time = now()

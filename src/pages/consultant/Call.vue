@@ -55,7 +55,7 @@ export default {
   },
   created() {
     eBus.$on('showVideo', param => {
-      console.log('showVideo Event : ', param);
+      // console.log('showVideo Event : ', param);
       this.$store.commit('setCallingStatus', param.on);
       this.isCalling = param.on; // bool
       this.isSharing = param.type === 'share';

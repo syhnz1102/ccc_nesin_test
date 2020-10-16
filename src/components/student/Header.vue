@@ -1,9 +1,6 @@
 <template>
    <div class="header">
       <div class="logo">
-<!--         <span class="img">-->
-<!--            <img src="@/assets/student/images/img_logo_sample.png" />-->
-<!--         </span>-->
          <strong>입시 화상 상담</strong>
       </div>
       <div class="button">
@@ -34,8 +31,7 @@ export default {
        }
 
        router.push({ path: `/student` });
-       console.log('store : ', store.state)
-       // window.open("about:blank","_self").close();
+       // console.log('store : ', store.state)
      }
   }
 }

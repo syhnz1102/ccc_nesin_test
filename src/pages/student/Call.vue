@@ -36,7 +36,7 @@ import { eBus } from '../../commons/eventBus.js'
 import store from "../../store";
 import { sendMessage } from "../../commons/message";
 import Session from "../../commons/session";
-import { runningTime, stopInterval } from "../../commons/utils";
+import { stopInterval } from "../../commons/utils";
 
 export default {
   components: {

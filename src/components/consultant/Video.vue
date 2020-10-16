@@ -134,7 +134,6 @@ export default {
 
     eBus.$on('consultInfo', param => {
       this.name = param.name;
-      // this.interval = setInterval(this.intervalFunc, 1000);
     })
   },
   destroyed() {

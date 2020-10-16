@@ -49,7 +49,7 @@ export async function onMessage(resp) {
 
         }
 
-        console.log('store : ', store.state)
+        // console.log('store : ', store.state)
       }
       break;
 
@@ -90,13 +90,13 @@ export async function onMessage(resp) {
             // 학생
             eBus.$emit('video', { type: 'start' });
             eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
-                                 
+
             setTimeout(async () => {
               await webRTC.createPeer();
               await webRTC.createAnswer(resp.sdp, 'local');
             }, 500);
-            console.log(store.state)
-            
+            // console.log(store.state)
+
             eBus.$emit('chat', {
               type: 'notice',
               message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
@@ -123,7 +123,7 @@ export async function onMessage(resp) {
           // 상담사
           await webRTC.setRemoteDescription(resp.sdp, 'local');
           sendMessage('SDP', { code: '200' });
-          console.log(store.state)
+          // console.log(store.state)
           eBus.$emit('consultInfo', { name: store.state.studentName });
         }
       } else if (resp.usage === 'screen') {
@@ -159,39 +159,12 @@ export async function onMessage(resp) {
         }
       }
       break;
-    //
-    // case 'Candidate':
-    //   if (resp.usage === 'cam') {
-    //     if (resp.candidate) await webRTC.setCandidate(resp.candidate, resp.useMediaSvr === 'N' ? 'local' : resp.userId);
-    //     sendMessage('Candidate', { code: '200' });
-    //   }
-    //   break;
-    //
-    // case 'ReceiveFeed':
-    //   // sendMessage('ReceiveFeed', { code: '200' });
-    //
-    //   // TODO: 200728 ivypark, functionalization
-    //   resp.feeds.forEach(curr => {
-    //     sendMessage('SendFeed', { roomId: resp.roomId, feedId: curr.id, display: curr.display });
-    //   })
-    //   break;
-    //
-    // case 'SendFeed':
-    //   // TODO.
-    //   break;
-    //
+
     case 'SessionReserve':
       if (resp.code === '200') {
         let stream = await screenShare.createShareStream();
         await screenShare.createPeer('screen');
         await webRTC.createOffer('screen');
-        // eBus.$emit('share', {
-        //   type: 'add',
-        //   id: 'screen',
-        //   isLocal: true,
-        //   stream,
-        //   count: store.state.roomInfo.count
-        // })
       } else {
         eBus.$emit('popup', {
           on: true,
@@ -223,7 +196,7 @@ export async function onMessage(resp) {
                 // store.state.socket.close();
               }
               router.push({ path: `/student` });
-              console.log('store : ', store.state)
+              // console.log('store : ', store.state)
             }
           })
         } else if (window.location.href.indexOf('student') <= -1) {
@@ -273,20 +246,10 @@ export async function onMessage(resp) {
               type: 'notice',
               message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
             });
-          } else if (!store.state.isCalling) {//통화중 아님 == 강제종료
+          } else if (!store.state.isCalling) {
             eBus.$emit('showVideo', { on: false, share: false })
             eBus.$emit('progressBar', { on: false });
 
-            // eBus.$emit('chat', {
-            //   type: 'notice',
-            //   message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.2`
-            // });
-
-            // eBus.$emit('chat', {
-            //   type: 'notice',
-            //   message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.3`
-            // });
-            
             store.commit('setEndCallForcedStatus', true );
           }
           webRTC.endCall();
@@ -334,15 +297,6 @@ export async function onMessage(resp) {
 
     case 'ChangeName':
       store.commit('setStudentName', resp.name);
-      // eBus.$emit('entrance', {
-      //   entrance: true,
-      //   name: resp.name
-      // })
-      //
-      // eBus.$emit('chat', {
-      //   type: 'notice',
-      //   message: `${resp.name}님이 입장하였습니다.`
-      // })
       break;
 
     case 'SetAudio':

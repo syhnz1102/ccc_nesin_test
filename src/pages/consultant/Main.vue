@@ -3,12 +3,6 @@
     <div class="mainContainer">
       <div class="boxContainer">
         <div class="box">
-<!--          201013 ivypark, 내신닷컴 요청으로 로고 삭제 -->
-<!--          <div class="logo">-->
-<!--              <span class="img">-->
-<!--                <img v-bind:src="logoURL" />-->
-<!--              </span>-->
-<!--          </div>-->
           <div class="text">
               <strong>쉽고 편리한<br /> 화상 상담 서비스</strong>
               <p>아래 버튼을 눌러 상담을 시작해보세요.</p>

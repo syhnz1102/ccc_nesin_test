@@ -51,7 +51,6 @@ class WebRTC {
       store.commit('setPeerInfo', peerObj);
 
       let s = store.state;
-      // if (s.streamInfo.local) s.streamInfo.local.getTracks().forEach(track => s.peerInfo['local'].addTrack(track, s.streamInfo.local));
       s.streamInfo.local.getTracks().forEach(track => s.peerInfo['local'].addTrack(track, s.streamInfo.local));
 
       peer.onconnectionstatechange = e => {
@@ -59,8 +58,6 @@ class WebRTC {
         if (e.currentTarget.connectionState === 'connected') {
           sendMessage('StartCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
           startInterval();
-          // if (eBus._events['video']) { eBus._events['video'].pop() }
-          // if (eBus._events['share']) { eBus._events['share'].pop() }
         } else if (e.currentTarget.connectionState === 'failed') {
           let s = store.state;
           if (window.location.href.indexOf('student') <= -1) window.resizeTo( 514, 606 );
@@ -114,7 +111,6 @@ class WebRTC {
     try {
       const offer = await store.state.peerInfo[uid].createOffer(); // Promise
       await store.state.peerInfo[uid].setLocalDescription(offer); // Promise
-      // sendMessage('SDP', { sdp: offer, usage: 'cam', roomId: store.state.roomInfo.roomId, isSfu: true, userId: store.state.userInfo.id });
     } catch (e) {
       console.error(e);
     }
@@ -125,7 +121,6 @@ class WebRTC {
       await store.state.peerInfo[uid].setRemoteDescription(sdp);
       const answer = await store.state.peerInfo[uid].createAnswer();
       await store.state.peerInfo[uid].setLocalDescription(answer);
-      // sendMessage('SDP', { sdp: answer, usage: 'cam', roomId: store.state.roomInfo.roomId, isSfu: true, userId: store.state.userInfo.id });
     } catch (e) {
       console.error(e);
     }
@@ -135,75 +130,6 @@ class WebRTC {
     await store.state.peerInfo[uid].setRemoteDescription(sdp);
   }
 
-  // async setCandidate(candidate, uid) {
-  //   await store.state.peerInfo[uid].addIceCandidate(new RTCIceCandidate(candidate));
-  // }
-  //
-  // checkMediaDevices() {
-  //   return new Promise(resolve => {
-  //     navigator.mediaDevices.enumerateDevices()
-  //       .then(devices => {
-  //         console.debug('enumerateDevices : ', devices);
-  //         let cam = devices.some(elem => elem.kind === 'videoinput');
-  //         let mic = devices.some(elem => elem.kind === 'audioinput');
-  //
-  //         this.constraints.video = cam ? this.constraints.video : false;
-  //         this.constraints.audio = mic ? this.constraints.audio : false;
-  //
-  //         if (cam && mic) {
-  //           resolve(true);
-  //         } else {
-  //           eBus.$emit('popup', {
-  //             on: true,
-  //             type: 'Confirm',
-  //             title: '통화 방 입장 오류',
-  //             contents: `${!cam && !mic ? '카메라, 마이크' : !cam ? '카메라' : '마이크'} 장치가 인식되지 않습니다.\n회의실에 입장 하시겠습니까?`,
-  //             ok: () => {
-  //               // eBus.$emit('popup', { on: false });
-  //               resolve(true);
-  //             },
-  //             cancel: () => {
-  //               resolve(false);
-  //             }
-  //           })
-  //         }
-  //       })
-  //       .catch(e => {
-  //         console.error('## devices are not found: ', e);
-  //         eBus.$emit('popup', {
-  //           on: true,
-  //           type: 'Confirm',
-  //           title: '통화 방 입장 오류',
-  //           contents: `카메라, 마이크 장치가 인식되지 않습니다.\n회의실에 입장 하시겠습니까?`,
-  //           ok: () => {
-  //             // eBus.$emit('popup', { on: false });
-  //             resolve(true);
-  //           },
-  //           cancel: () => {
-  //             resolve(false);
-  //           }
-  //         })
-  //       });
-  //   });
-  // }
-  //
-  // setConstraint(constraints) {
-  //   let s = store.state.streamInfo;
-  //   if (s.local) {
-  //     const tracks = s.local.getTracks();
-  //     tracks.forEach(async curr => {
-  //       if (curr.kind === 'video') {
-  //         await curr.applyConstraints(constraints);
-  //         console.debug('getConstraints ----------> ', curr.getConstraints());
-  //       }
-  //     });
-  //   }
-  // }
-  //
-  // destroyRoom() {
-  //   sendMessage('DestroyRoom', { roomId: store.state.roomInfo.roomId });
-  // }
-  //
   endCall() {
     eBus.$emit('init', {});
     store.commit('endCall');

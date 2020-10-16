@@ -111,8 +111,6 @@ export default {
       }
     });
   },
-  async created() {
-  },
   methods: {
     localVideo(param) {
       this.offVideo.local = param.local

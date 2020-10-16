@@ -24,7 +24,7 @@ export default {
     if (eBus._events['entranceStatusBar']) { eBus._events['entranceStatusBar'].pop() }
 
     eBus.$on('entranceStatusBar', param => {
-      console.log('statusBar = ', param)
+      // console.log('statusBar = ', param)
       this.entrance = param.entrance;
     });
   },
