@@ -57,6 +57,7 @@ class WebRTC {
       peer.onconnectionstatechange = e => {
         console.debug(`## ${'local'} onconnectionstatechange ## `, e.currentTarget.connectionState);
         if (e.currentTarget.connectionState === 'connected') {
+          sendMessage('StartCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
           startInterval();
           // if (eBus._events['video']) { eBus._events['video'].pop() }
           // if (eBus._events['share']) { eBus._events['share'].pop() }
