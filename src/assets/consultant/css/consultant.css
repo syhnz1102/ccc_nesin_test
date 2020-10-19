@@ -34,6 +34,7 @@ body,
 .lnb {float:left;width:120px;height:100%;padding-top:60px;background:#f0f0f0;box-sizing:border-box}
 .lnb .user {padding:15px 0;text-align:center}
 .lnb .user .img {width:80px;height:80px;margin:0 auto;border-radius:80px;background:url('../images/icons.png') no-repeat 0 0}
+.lnb .user .img.on {background-position-x:-80px}
 .lnb .user .info {margin-top:10px;padding:0 10px;text-align:center}
 .lnb .user .info p {color:#999}
 .lnb .user .info .name {overflow:hidden;max-width:100px;white-space:nowrap;text-overflow:ellipsis;font-weight:500}
