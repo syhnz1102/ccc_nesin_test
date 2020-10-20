@@ -66,7 +66,7 @@ class ScreenShare {
           sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
           this.$store.commit('setSharingStatus', false);
 
-          sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+          // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
           this.endCall();
         }
       }
@@ -111,7 +111,7 @@ class ScreenShare {
 
             store.commit('setSharingStatus', false);
 
-            sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+            // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
             WebRTC.endCall();
 
             track.stop();

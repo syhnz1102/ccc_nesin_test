@@ -274,7 +274,6 @@ export async function onMessage(resp) {
             message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
           });
 
-          sendMessage('EndCall', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId });
           webRTC.endCall();
         }
       } else if (resp.action === 'join') {

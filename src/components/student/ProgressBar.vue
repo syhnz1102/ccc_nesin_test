@@ -62,7 +62,7 @@ export default {
         });
       }
 
-      sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+      // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
       WebRTC.endCall();
     },
   }

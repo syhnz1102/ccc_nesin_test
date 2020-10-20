@@ -1,5 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import store from '../store';
+import { sendMessage } from "../commons/message";
 
 Vue.use(Vuex);
 
@@ -62,6 +64,7 @@ export default new Vuex.Store({
       }
 
       for (let c in state.peerInfo) {
+        if (c === 'local') sendMessage('EndCall', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId });
         state.peerInfo[c].close();
         delete state.peerInfo[c];
       }
@@ -84,6 +87,7 @@ export default new Vuex.Store({
       }
 
       for (let c in state.peerInfo) {
+        if (c === 'local') sendMessage('EndCall', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId });
         state.peerInfo[c].close();
         delete state.peerInfo[c];
       }
