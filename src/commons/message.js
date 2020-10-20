@@ -330,7 +330,7 @@ export function sendMessage(op, data = {}, type = 'eventOp') {
   let obj = {};
   obj[type] = op;
   obj['cpCode'] = 'KP-20200101-01';
-  obj['authKey'] = 'KnowledgePoint';
+  obj['authKey'] = '';
   Object.assign(data, obj);
   console.debug(`[ ${op} ] Web -> Signal `, data);
   store.state.socket.emit('knowledgetalk', data);
