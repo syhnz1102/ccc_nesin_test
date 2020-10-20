@@ -253,7 +253,6 @@ export async function onMessage(resp) {
             store.commit('setEndCallForcedStatus', true );
           }
 
-          sendMessage('EndCall', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId });
           webRTC.endCall();
         } else if (window.location.href.indexOf('student') <= -1) {
           // 상담사인 경우
