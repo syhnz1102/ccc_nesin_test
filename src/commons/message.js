@@ -329,8 +329,8 @@ export async function onMessage(resp) {
 export function sendMessage(op, data = {}, type = 'eventOp') {
   let obj = {};
   obj[type] = op;
-  obj['cpCode'] = 'KP-20200101-01';
-  obj['authKey'] = '';
+  obj['cpCode'] = 'KP-NESIN-01';
+  obj['authKey'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcENvZGUiOiJLUC1ORVNJTi0wMSIsImNwTmFtZSI6Ik5FU0lORE9UQ09NIiwiY2F0ZWdvcnkiOiJjb25zdWx0aW5nIiwiYWxsb3dNYXhVc2VyIjoxMDAwMCwiYWxsb3dTdGFydERhdGUiOiIyMDIwLTEwLTA1IiwiYWxsb3dFbmREYXRlIjoiMjAyMS0xMC0wNCIsImlhdCI6MTYwMzE1ODU1NX0.Kd9Dr4WQ1SASYwI4UqBP_D63VTlXWFBo7ysY_aLXLJ0';
   Object.assign(data, obj);
   console.debug(`[ ${op} ] Web -> Signal `, data);
   store.state.socket.emit('knowledgetalk', data);
