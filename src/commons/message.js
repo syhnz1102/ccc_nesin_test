@@ -85,40 +85,20 @@ export async function onMessage(resp) {
       if (resp.code === '200' || (resp.useMediaSvr && resp.useMediaSvr === 'Y')) return;
       if (resp.usage === 'cam') {
         if (resp.sdp.type === 'offer') {
-          if (!store.state.endCallForced) {
-            sendMessage('SDP', { code: '200' });
-            // 학생
-            eBus.$emit('video', { type: 'start' });
-            eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
+          sendMessage('SDP', { code: '200' });
+          // 학생
+          eBus.$emit('video', { type: 'start' });
+          eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
 
-            setTimeout(async () => {
-              await webRTC.createPeer();
-              await webRTC.createAnswer(resp.sdp, 'local');
-            }, 500);
-            // console.log(store.state)
+          setTimeout(async () => {
+            await webRTC.createPeer();
+            await webRTC.createAnswer(resp.sdp, 'local');
+          }, 500);
 
-            eBus.$emit('chat', {
-              type: 'notice',
-              message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
-            });
-          } else if (store.state.endCallForced) {
-            eBus.$emit('showVideo', { on: false, share: false });
-
-            eBus.$emit('chat', {
-              type: 'notice',
-              message: `화상 상담이 시작되었습니다.`
-            });
-
-            setTimeout(async () => {
-              eBus.$emit('chat', {
-                type: 'notice',
-                message: `화상 상담이 종료되었습니다.`
-              });
-            }, 200);
-
-            store.commit('setEndCallForcedStatus', false );
-            webRTC.endCall();
-          }
+          eBus.$emit('chat', {
+            type: 'notice',
+            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
+          });          
         } else if (resp.sdp.type === 'answer') {
           // 상담사
           await webRTC.setRemoteDescription(resp.sdp, 'local');
@@ -128,34 +108,15 @@ export async function onMessage(resp) {
         }
       } else if (resp.usage === 'screen') {
         if (resp.sdp.type === 'offer') {
-          if (!store.state.endCallForced) {
             await screenShare.createPeer('screen');
             await webRTC.createAnswer(resp.sdp, 'screen');
             sendMessage('SDP', { code: '200' });
             eBus.$emit('showVideo', { on: true, share: true });
-          } else if (store.state.endCallForced) {
-            eBus.$emit('showVideo', { on: false, share: false });
-
-            eBus.$emit('chat', {
-              type: 'notice',
-              message: `화면 공유가 시작되었습니다.`
-            });
-
-            setTimeout(async () => {
-              eBus.$emit('chat', {
-                type: 'notice',
-                message: `화면 공유가 종료되었습니다.`
-              });
-            }, 200);
-
-            store.commit('setEndCallForcedStatus', false );
-            webRTC.endCall();
-          }
         } else if (resp.sdp.type === 'answer') {
           await webRTC.setRemoteDescription(resp.sdp, 'screen');
           sendMessage('SDP', { code: '200' });
           eBus.$emit('share', { on: true })
-          eBus.$emit('shareVideo', { on: true })
+          eBus.$emit('shareVideo', { on: true, type: 'share' })
         }
       }
       break;
@@ -238,43 +199,50 @@ export async function onMessage(resp) {
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
           // 학생일 경우
-          if (store.state.isCalling) {
-            eBus.$emit('showVideo', { on: false, share: store.state.isSharing })
-            eBus.$emit('progressBar', { on: false });
-
             eBus.$emit('chat', {
               type: 'notice',
               message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
             });
-          } else if (!store.state.isCalling) {
-            eBus.$emit('showVideo', { on: false, share: false })
+
+            sendMessage('ScreenShareConferenceEnd', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId, useMediaSvr: 'N' })
             eBus.$emit('progressBar', { on: false });
 
-            store.commit('setEndCallForcedStatus', true );
-          }
+            store.commit('setCallingStatus', false );
+            store.commit('setSharingStatus', false );
+            store.commit('setCallStatus', {
+              video: false,
+              audio: false
+            });
 
-          webRTC.endCall();
+            eBus.$emit('showVideo', { on: false })
+            webRTC.endCall();
         } else if (window.location.href.indexOf('student') <= -1) {
           // 상담사인 경우
           window.resizeTo( 514, 606 );
-          eBus.$emit('showVideo', { on: false });
-
-          eBus.$emit('menu', {
-            on: false,
-            menu: 'call'
-          });
-
-          eBus.$emit('menu', {
-            on: false,
-            menu: 'share'
-          });
-
-          eBus.$emit('chat', {
-            type: 'notice',
-            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
-          });
-
-          webRTC.endCall();
+            eBus.$emit('menu', {
+              on: false,
+              menu: 'call'
+            });
+  
+            eBus.$emit('menu', {
+              on: false,
+              menu: 'share'
+            });
+  
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
+            });
+            
+            store.commit('setCallingStatus', false );
+            store.commit('setSharingStatus', false );
+            store.commit('setCallStatus', {
+              video: false,
+              audio: false
+            });
+  
+            eBus.$emit('showVideo', { on: false });
+            webRTC.endCall();
         }
       } else if (resp.action === 'join') {
         if (resp.members) store.commit('setRoomInfo', { members: resp.members, count: Object.keys(resp.members).length });

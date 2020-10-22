@@ -19,8 +19,7 @@ export default new Vuex.Store({
     callStatus: {
       video: false,
       audio: false
-    },
-    endCallForced: false
+    }
   },
   mutations: {
     setSocketIo(state, socket) {
@@ -68,13 +67,6 @@ export default new Vuex.Store({
         state.peerInfo[c].close();
         delete state.peerInfo[c];
       }
-
-      state.isCalling = false;
-      state.isSharing = false;
-      state.callStatus = {
-        video: false,
-        audio: false
-      }
     },
     clearAll(state) {
       if (Object.keys(state.streamInfo).length > 0) {
@@ -121,9 +113,6 @@ export default new Vuex.Store({
     setCallStatus(state, data) {
       if (data.hasOwnProperty('video')) state.callStatus.video = data.video;
       if (data.hasOwnProperty('audio')) state.callStatus.audio = data.audio;
-    },
-    setEndCallForcedStatus(state, bool) {
-      state.endCallForced = bool;
     },
   },
 })

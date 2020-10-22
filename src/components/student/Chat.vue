@@ -80,6 +80,8 @@ export default {
       }
 
       chat.push({ type: 'right', contents: message, time });
+
+      this.$refs.chatMessage.focus(); //모바일에서 키보드 안내려가는지 확인해봐야함
     }
   }
 }

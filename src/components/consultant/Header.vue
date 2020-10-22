@@ -45,7 +45,8 @@ export default {
           this.$store.commit('setSharingStatus', false);
           window.resizeTo( 514, 606 );
           // router.push({ path: `/main` });
-          router.push({ path: `/main?userName=` + this.$store.state.studentName });
+          // router.push({ path: `/main?userName=` + this.$store.state.studentName });
+          window.close();
           console.log('store : ', store.state)
         }
       })

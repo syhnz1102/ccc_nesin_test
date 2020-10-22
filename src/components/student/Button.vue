@@ -19,6 +19,8 @@
 import { eBus } from '../../commons/eventBus';
 import { sendMessage } from "../../commons/message";
 import WebRTC from "../../commons/webrtc";
+import { getIntervalTime } from '../../commons/utils';
+import store from '../../store';
 
 export default {
   name: "Button",
@@ -43,25 +45,16 @@ export default {
       eBus.$emit('progressBar', { on: true })
     },
     handleEndCallBtnClick() {
-      let s = this.$store.state;
-      eBus.$emit('showVideo', { on: false });
-
-      if (this.share) {
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: '화면 공유가 종료되었습니다.'
-        });
-
-        sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
-        this.$store.commit('setSharingStatus', false);
-      } else {
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: '화상 상담이 종료되었습니다.'
-        });
+      if (getIntervalTime() === '00:00') {
+        eBus.$emit('popup', {
+          on: true,
+          type: 'Alert',
+          title: '화면 공유',
+          contents: '통화 연결이 된 후 종료가 가능합니다.'
+        })
+        return false;
       }
-
-      // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
+      let s = this.$store.state;
       WebRTC.endCall();
     }
   }

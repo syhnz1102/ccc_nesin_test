@@ -197,11 +197,6 @@ export default {
               // Call 상태
               eBus.$emit('showVideo', { on: true, type: 'share' });
               window.resizeTo(854, 606);
-
-              eBus.$emit('chat', {
-                type: 'notice',
-                message: '화면 공유가 시작되었습니다.'
-              });
             } else {
               // Call 상태 아님
               eBus.$emit('showVideo', { on: false });
@@ -218,11 +213,6 @@ export default {
           // Call 상태
           eBus.$emit('showVideo', { on: true, type: 'share' });
           window.resizeTo(854, 606);
-
-          eBus.$emit('chat', {
-            type: 'notice',
-            message: '화면 공유가 시작되었습니다.'
-          });
         } else {
           // Call 상태 아님
           eBus.$emit('showVideo', { on: false });

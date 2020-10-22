@@ -15,12 +15,24 @@ class ScreenShare {
       navigator.mediaDevices.getDisplayMedia({ video: true, audio: false })
         .then(stream => {
           if (typeof stream === 'object' && stream) {
+            eBus.$emit('chat', {
+              type: 'notice',
+              message: '화면 공유가 시작되었습니다.'
+            });
             store.commit('setStreamInfo', { screen: stream });
             resolve(stream);
           }
         })
         .catch(e => {
+          window.resizeTo(514, 606);
+          eBus.$emit('showVideo', { on: false })
+          store.commit('setSharingStatus', false);
+          eBus.$emit('menu', {
+            on: false,
+            menu: 'share'
+          });
           sendMessage('SessionReserveEnd', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId })
+          sendMessage('ScreenShareConferenceEnd', { userId: store.state.userInfo.id, roomId: store.state.roomInfo.roomId, useMediaSvr: 'N' })
         })
     })
   }
@@ -66,7 +78,6 @@ class ScreenShare {
           sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
           this.$store.commit('setSharingStatus', false);
 
-          // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
           this.endCall();
         }
       }
@@ -111,7 +122,6 @@ class ScreenShare {
 
             store.commit('setSharingStatus', false);
 
-            // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
             WebRTC.endCall();
 
             track.stop();

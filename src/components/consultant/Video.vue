@@ -176,38 +176,28 @@ export default {
       }
     },
     handleEndcallBtnClick() {
+      if (!this.interval) {
+        eBus.$emit('toast', '통화 연결이 된 후 종료가 가능합니다.');
+        return false;
+      }
       let s = this.$store.state;
       window.resizeTo( 514, 606 );
-      eBus.$emit('showVideo', { on: false });
-
       if (this.share) {
         eBus.$emit('menu', {
           on: false,
           menu: 'share'
         });
-
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: '화면 공유가 종료되었습니다.'
-        });
-
-        sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
-        sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
-        this.$store.commit('setSharingStatus', false);
       } else {
         eBus.$emit('menu', {
           on: false,
           menu: 'call'
         });
-
-        eBus.$emit('chat', {
-          type: 'notice',
-          message: '화상 상담이 종료되었습니다.'
-        });
       }
 
       // sendMessage('EndCall', { userId: s.userInfo.id, roomId: s.roomInfo.roomId });
       WebRTC.endCall();
+      sendMessage('SessionReserveEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId })
+      sendMessage('ScreenShareConferenceEnd', { userId: s.userInfo.id, roomId: s.roomInfo.roomId, useMediaSvr: 'N' })
     }
   }
 }
