@@ -13,6 +13,8 @@ export async function onMessage(resp) {
         store.commit('setRoomInfo', { roomId: resp.roomId });
         router.push({ path: `/room/${resp.roomId}` });
         sendMessage('RoomJoin', { roomId: window.location.href.split('/room/')[1] });
+      } else if (resp.code === '443') {
+        alert('이미 생성된 방입니다. 관리자에게 문의하세요.');
       }
       break;
     case 'RoomJoin':
