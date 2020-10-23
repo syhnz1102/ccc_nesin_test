@@ -8,7 +8,7 @@ export async function onMessage(resp) {
   console.debug(`[ ${resp.eventOp} ] Signal -> Web `, resp);
 
   switch (resp.eventOp || resp.signalOp) {
-    case 'CreateRoom':
+    case 'CreateRoomWithRoomId':
       if (resp.code === '200') {
         store.commit('setRoomInfo', { roomId: resp.roomId });
         router.push({ path: `/room/${resp.roomId}` });
@@ -23,11 +23,12 @@ export async function onMessage(resp) {
         return false;
       }
 
+      if (resp.code === '444') {
+        alert('최대 인원이 초과되었습니다. 메인으로 이동합니다.');
+        return router.push({ path: `${window.location.href.indexOf('student') > -1 ? '/student' : '/main'}` });
+      }
+
       if (resp.members) {
-        if (Object.keys(resp.members).length > 2) {
-          alert('최대 인원이 초과되었습니다. 메인으로 이동합니다.');
-          return router.push({ path: `${window.location.href.indexOf('student') > -1 ? '/student' : '/main'}` });
-        }
         store.commit('setUserInfo', { id: resp.userId, name: '상담사' });
         store.commit('setRoomInfo', { members: resp.members, roomId: resp.roomId, count: Object.keys(resp.members).length, type: Object.keys(resp.members).length > 2 ? 'multi' : 'p2p' });
 

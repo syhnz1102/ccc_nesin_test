@@ -29,14 +29,14 @@ export default {
     }
   },
   created() {
-    this.$store.commit('setStudentName', decodeURI(window.location.href.split('userName=')[1]));
+    this.$store.commit('setStudentName', decodeURI(window.location.href.split('userName=')[1]).split('&roomId=')[0]);
     document.onkeydown = this.doNotReload
   },
   methods: {
     async handleStartBtnClick() {
       const session = new Session();
       if (await session.connect()) {
-        sendMessage('CreateRoom', {});
+        sendMessage('CreateRoomWithRoomId', { roomId: window.location.href.split('&roomId=')[1], capacity: 2 });
       } else {
         session.close();
       }
