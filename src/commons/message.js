@@ -94,7 +94,7 @@ export async function onMessage(resp) {
           setTimeout(async () => {
             await webRTC.createPeer();
             await webRTC.createAnswer(resp.sdp, 'local');
-          }, 500);
+          }, 1000);
 
           eBus.$emit('chat', {
             type: 'notice',
