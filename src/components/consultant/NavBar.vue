@@ -1,7 +1,7 @@
 <template>
    <div class="lnb">
       <div class="user">
-         <div class="img"></div>
+         <div class="img" v-bind:class="{on: entrance}"></div>
          <div v-if="!entrance" class="info">
             <p>상담중인 학생이 없습니다.</p>
          </div>

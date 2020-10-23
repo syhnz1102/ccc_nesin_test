@@ -99,7 +99,7 @@ export async function onMessage(resp) {
           eBus.$emit('chat', {
             type: 'notice',
             message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
-          });          
+          });
         } else if (resp.sdp.type === 'answer') {
           // 상담사
           await webRTC.setRemoteDescription(resp.sdp, 'local');
@@ -224,24 +224,24 @@ export async function onMessage(resp) {
               on: false,
               menu: 'call'
             });
-  
+
             eBus.$emit('menu', {
               on: false,
               menu: 'share'
             });
-  
+
             eBus.$emit('chat', {
               type: 'notice',
               message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 종료되었습니다.`
             });
-            
+
             store.commit('setCallingStatus', false );
             store.commit('setSharingStatus', false );
             store.commit('setCallStatus', {
               video: false,
               audio: false
             });
-  
+
             eBus.$emit('showVideo', { on: false });
             webRTC.endCall();
         }
@@ -299,7 +299,7 @@ export function sendMessage(op, data = {}, type = 'eventOp') {
   let obj = {};
   obj[type] = op;
   obj['cpCode'] = 'KP-NESIN-01';
-  obj['authKey'] = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjcENvZGUiOiJLUC1ORVNJTi0wMSIsImNwTmFtZSI6Ik5FU0lORE9UQ09NIiwiY2F0ZWdvcnkiOiJjb25zdWx0aW5nIiwiYWxsb3dNYXhVc2VyIjoxMDAwMCwiYWxsb3dTdGFydERhdGUiOiIyMDIwLTEwLTA1IiwiYWxsb3dFbmREYXRlIjoiMjAyMS0xMC0wNCIsImlhdCI6MTYwMzE1ODU1NX0.Kd9Dr4WQ1SASYwI4UqBP_D63VTlXWFBo7ysY_aLXLJ0';
+  obj['authKey'] = '';
   Object.assign(data, obj);
   console.debug(`[ ${op} ] Web -> Signal `, data);
   store.state.socket.emit('knowledgetalk', data);
