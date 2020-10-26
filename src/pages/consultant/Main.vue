@@ -31,6 +31,11 @@ export default {
   created() {
     this.$store.commit('setStudentName', decodeURI(window.location.href.split('userName=')[1]).split('&roomId=')[0]);
     document.onkeydown = this.doNotReload
+    window.onpageshow = function(event) {
+      if (event.persisted || (window.performance && window.performance.navigation.type == 2)) {
+        alert('이벤트')
+      }
+    }
   },
   methods: {
     async handleStartBtnClick() {
