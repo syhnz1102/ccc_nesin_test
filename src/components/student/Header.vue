@@ -1,12 +1,12 @@
 <template>
-   <div class="header">
-      <div class="logo">
-         <strong>입시 화상 상담</strong>
-      </div>
-      <div class="button">
-         <button @click="handleConsultExitBtnClick">상담종료</button>
-      </div>
-   </div>
+  <div class="header">
+    <div class="logo">
+      <strong>입시 화상 상담</strong>
+    </div>
+    <div class="button">
+      <button @click="handleConsultExitBtnClick">상담종료</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -22,17 +22,17 @@ export default {
     }
   },
   methods: {
-     handleConsultExitBtnClick() {
-       if (this.$store.state.socket) {
-          sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
-          this.$store.state.socket.close();
+    handleConsultExitBtnClick() {
+      if (this.$store.state.socket) {
+        sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+        this.$store.state.socket.close();
+        console.log('header 학생 상담종료')
+        webRTC.clear();
+      }
 
-          webRTC.clear();
-       }
-
-       router.push({ path: `/student` });
+      router.push({ path: `/student` });
        // console.log('store : ', store.state)
-     }
+    }
   }
 }
 </script>

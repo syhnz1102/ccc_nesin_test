@@ -165,8 +165,7 @@ export async function onMessage(resp) {
             // window.location.reload();
           }
         } else if (window.location.href.indexOf('student') <= -1) {
-          // 상담사인 경우 방은 유지, notice만 줌
-          // 플러스로 비디오 닫고 인터벌도 끊어주기 (상담사)
+          // 상담사인 경우 방만 유지, notice만 줌
           webRTC.endCall();
 
           eBus.$emit('chat', {
@@ -199,6 +198,7 @@ export async function onMessage(resp) {
             on: false,
             menu: 'share'
           });
+          // sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
         }
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
@@ -263,6 +263,7 @@ export async function onMessage(resp) {
 
         if (store.state.socket) {
           sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+          console.log('message 학생 강제퇴장')
           webRTC.clear();
         }
       }
