@@ -198,7 +198,11 @@ export async function onMessage(resp) {
             on: false,
             menu: 'share'
           });
-          // sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+
+          if (store.state.socket) {
+            sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+            webRTC.clear();
+          }
         }
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
@@ -263,7 +267,6 @@ export async function onMessage(resp) {
 
         if (store.state.socket) {
           sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
-          console.log('message 학생 강제퇴장')
           webRTC.clear();
         }
       }

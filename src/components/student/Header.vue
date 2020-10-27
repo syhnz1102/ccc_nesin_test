@@ -26,7 +26,6 @@ export default {
       if (this.$store.state.socket) {
         sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
         this.$store.state.socket.close();
-        console.log('header 학생 상담종료')
         webRTC.clear();
       }
 
