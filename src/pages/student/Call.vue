@@ -65,6 +65,12 @@ export default {
     }
   },
   async created() {
+    document.onkeydown = this.doNotReload;
+    history.pushState(null, null, location.href);
+    // window.onpopstate = function() {
+    //   history.go(1);
+    // }
+
     store.commit('setRoomInfo', { roomId: window.location.href.split('/room/')[1] });
 
     if (!this.$store.state.studentName) {

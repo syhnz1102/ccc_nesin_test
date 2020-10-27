@@ -25,7 +25,11 @@ export default {
     }
   },
   created() {
-     document.onkeydown = this.doNotReload;
+    document.onkeydown = this.doNotReload;
+    history.pushState(null, null, location.href);
+    // window.onpopstate = function() {
+    //   history.go(1);
+    // }
   },
   methods: {
     handleStartBtnClick() {
