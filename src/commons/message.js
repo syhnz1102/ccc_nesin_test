@@ -197,11 +197,6 @@ export async function onMessage(resp) {
             on: false,
             menu: 'share'
           });
-
-          // if (store.state.socket) {
-          //   sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
-          //   webRTC.clear();
-          // }
         }
       } else if (resp.action === 'endCall') {
         if (window.location.href.indexOf('student') > -1) {
