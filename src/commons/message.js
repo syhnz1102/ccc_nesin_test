@@ -162,7 +162,7 @@ export async function onMessage(resp) {
             sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
             webRTC.clear();
             // store.state.socket.close();
-            window.location.reload();
+            // window.location.reload();
           }
         } else if (window.location.href.indexOf('student') <= -1) {
           // 상담사인 경우 방은 유지, notice만 줌
