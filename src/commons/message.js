@@ -154,15 +154,16 @@ export async function onMessage(resp) {
             title: '상담 종료',
             contents: '상담이 종료 되었습니다.',
             cancel: () => {
-              if (store.state.socket) {
-                sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
-                webRTC.clear();
-                // store.state.socket.close();
-              }
               router.push({ path: `/student` });
               // console.log('store : ', store.state)
             }
           })
+          if (store.state.socket) {
+            sendMessage('ExitRoom', { roomId: window.location.href.split('/room/')[1] });
+            webRTC.clear();
+            // store.state.socket.close();
+            window.location.reload();
+          }
         } else if (window.location.href.indexOf('student') <= -1) {
           // 상담사인 경우 방은 유지, notice만 줌
           // 플러스로 비디오 닫고 인터벌도 끊어주기 (상담사)

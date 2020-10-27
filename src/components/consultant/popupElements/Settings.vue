@@ -51,6 +51,7 @@
 <script>
   import { eBus } from '../../../commons/eventBus';
   import store from "../../../store";
+  import webRTC from "../../../commons/webrtc";
 
   export default {
     props: { contents: String, ok: Function, option: Object },
@@ -105,6 +106,7 @@
         }
       }
     },
+    beforeDestroy() { if (!this.option.inCall) webRTC.endCall(); },
     methods: {
       init() {
         const audioInput = this.$refs.audioInput;

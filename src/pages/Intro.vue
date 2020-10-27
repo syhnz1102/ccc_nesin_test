@@ -24,7 +24,7 @@ export default {
   methods: {
     btnHandler: () => {
       // window.open('main?userName=김내신(학생)&roomId=13232124', '', 'resizable=1, height=520, width=500, toolbar=0');
-      window.open('main?userName=김내신(학생)&roomId=12341234', '', 'resizable=1, height=520, width=500, toolbar=0');
+      window.open('main?userName=김내신(학생)&roomId=12341236', '', 'resizable=1, height=520, width=500, toolbar=0');
     }
   }
 }
