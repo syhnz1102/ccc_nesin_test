@@ -90,13 +90,14 @@ export async function onMessage(resp) {
         if (resp.sdp.type === 'offer') {
           sendMessage('SDP', { code: '200' });
           // 학생
-          eBus.$emit('video', { type: 'start' });
-          eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
 
           setTimeout(async () => {
+            eBus.$emit('video', { type: 'start' });
+            eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
+
             await webRTC.createPeer();
             await webRTC.createAnswer(resp.sdp, 'local');
-          }, 1500);
+          }, 2500);
 
           eBus.$emit('chat', {
             type: 'notice',
