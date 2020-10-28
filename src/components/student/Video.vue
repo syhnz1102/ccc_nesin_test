@@ -76,6 +76,7 @@ export default {
         this.$refs.localVideo.autoplay = true;
         this.$refs.localVideo.muted = true;
         this.$refs.localVideo.playsInline = true;
+        if (stream) param.ok();
       } else if (param.type === 'set') {
         if (param.hasOwnProperty('video')) {
           this.offVideo[param.id] = param.video;

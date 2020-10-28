@@ -90,17 +90,21 @@ export async function onMessage(resp) {
         if (resp.sdp.type === 'offer') {
           sendMessage('SDP', { code: '200' });
           // 학생
-          eBus.$emit('video', { type: 'start' });
-          eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
+          eBus.$emit('video', {
+            type: 'start',
+            ok: () => {
+              eBus.$emit('showVideo', { on: true, share: store.state.isSharing });
 
-          setTimeout(async () => {
-            await webRTC.createPeer();
-            await webRTC.createAnswer(resp.sdp, 'local');
-          }, 1500);
+              setTimeout(async () => {
+                await webRTC.createPeer();
+                await webRTC.createAnswer(resp.sdp, 'local');
+              }, 2000);
 
-          eBus.$emit('chat', {
-            type: 'notice',
-            message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
+              eBus.$emit('chat', {
+                type: 'notice',
+                message: `${store.state.isSharing ? '화면 공유가' : '화상 상담이'} 시작되었습니다.`
+              });
+            }
           });
         } else if (resp.sdp.type === 'answer') {
           // 상담사
