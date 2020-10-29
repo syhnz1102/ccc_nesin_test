@@ -3,11 +3,15 @@
       <div class="mainContainer">
          <div class="boxContainer">
             <div class="box">
-               <div class="text">
+               <div class="text" v-if="roomId">
                   <strong>쉽고 편리한<br /> 화상 상담 서비스</strong>
                   <p>아래 버튼을 눌러 상담을 시작해보세요.</p>
                </div>
-               <div class="button">
+               <div class="text" v-if="!roomId">
+                  <strong>상담이 종료되었습니다.</strong>
+                  <p>상담 창을 닫아주세요.</p>
+               </div>
+               <div class="button" v-if="roomId">
                   <button @click="handleStartBtnClick">상담 시작하기</button>
                </div>
             </div>
@@ -22,6 +26,7 @@ import store from "../../store";
 export default {
   data() {
     return {
+      roomId: this.$store.state.roomInfo.roomId
     }
   },
   created() {
